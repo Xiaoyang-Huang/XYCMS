@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WebSettingCollection>
+  <WebSetting>
+    <SiteUrl>self</SiteUrl>
+    <Theme>admin_default</Theme>
+    <Encoding>UTF-8</Encoding>
+    <SessionOutTime>30</SessionOutTime>
+    <EncryptKey>THISISXYFRAMEENCRYPTKEY</EncryptKey>
+    <EncryptIV>VITPYRCNEEMARYXSISIHT</EncryptIV>
+    <XySessionId>XyFrameSessionId</XySessionId>
+    <DebugMode>True</DebugMode>
+    <Config>
+      <Item Name="ext">html</Item>
+    </Config>
+  </WebSetting>
+  <WebSetting Name="admin_en-us">
+    <Theme>admin_en-us</Theme>
+    <Translate>
+      <Item Name="login-failed">cannot login, please check your account and password.</Item>
+      <Item Name="action-ignore">you didn't have permission to do that.</Item>
+    </Translate>
+  </WebSetting>
+  <WebSetting Name="admin_zh-cn">
+    <Theme>admin_zh-cn</Theme>
+    <Translate>
+      <Item Name="login-failed">登录失败，请检查您的用户名，密码和验证码是否输入正确。</Item>
+      <Item Name="action-ignore">您没有执行这项操作的权限。</Item>
+      <Item Name="error-empty">请填写所有的表单内容。</Item>
+      <Item Name="adduser-failed">用户名已存在。</Item>
+    </Translate>
+  </WebSetting>
+</WebSettingCollection>

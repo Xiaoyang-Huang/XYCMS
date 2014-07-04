@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AppSetting>
+  <ConnectionStrings>
+    <Item Name="Default" ConnectionString="Data Source=.;database=database;User ID=User;Password=Password" Provider="Xy.Data,Xy.Data.MSSQLDataBase" />
+    <Item Name="Update" ConnectionString="Data Source=.;database=database;User ID=User;Password=Password;" Provider="Xy.Data,Xy.Data.MSSQLDataBase" TimeOut="300" />
+  </ConnectionStrings>
+  <Controls>
+    <Control Name="Include" Type="Xy.Web,Xy.Web.Control.IncludeControl" />
+    <Control Name="Tag" Type="Xy.Web,Xy.Web.Control.TagControl" />
+    <Control Name="Pagination" Type="Xy.Web,Xy.Web.Control.PaginationControl" />
+    <Control Name="SetData" Type="Xy.Web,Xy.Web.Control.SetDataControl" />
+    <Control Name="Data" Type="Xy.Web,Xy.Web.Control.DataControl" >
+      <DataBuilder Name="EntityCollection" Type="XiaoYang.Entity,XiaoYang.Entity.EntityDataBuilder" />
+    </Control>
+    <Control Name="UserPower" Type="Xy.Web,Xy.Web.Control.UserPowerControl" />
+  </Controls>
+</AppSetting>

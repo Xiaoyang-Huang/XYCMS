@@ -1,0 +1,147 @@
+﻿<% @SetData Name="PageClass" %>typelist<% @End %>
+<% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
+<div class="innerLR innerT">
+    <div class="widget">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h3 class="heading">当前已有类型列表</h3>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+            <div  class="types">
+                <!-- Table -->
+			    <table class="table table-bordered table-mid">
+				    <!-- Table heading -->
+				    <thead>
+					    <tr>
+                            <th>ID</th>
+						    <th>名称</th>
+                            <th>父级</th>
+                            <th>标识</th>
+						    <th>描述</th>
+						    <th>操作</th>
+					    </tr>
+				    </thead>
+				    <!-- // Table heading END -->
+				    <!-- Table body -->
+				    <tbody>
+					    <!-- Table row -->
+                        <% @Data Provider="Procedure" Command="select a.*,b.[Name] as 'ParentTypeName' from [EntityType] a left join [EntityType] b on a.[ParentTypeID] = b.[ID]" XsltParameter="{ Ext='Config:ext' }" %>
+					        <tr class="item{ID}">
+                                <td><xsl:value-of select="ID" /></td>
+						        <td><xsl:value-of select="Name" /></td>
+                                <td>
+                                    <xsl:choose>
+                                        <xsl:when test="ParentTypeID > 0">
+                                            <xsl:value-of select="ParentTypeName" />
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <strong>顶级类型</strong>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </td>
+                                <td><xsl:value-of select="Key" /></td>
+						        <td><xsl:value-of select="Description" /></td>
+						        <td>
+                                    <a href="/entityType_edit_{ID}.{$Ext}" target="_blank" class="btn">管理属性</a>
+                                    <xsl:choose>
+                                        <xsl:when test="IsDisplay = 'False'">
+                                            <a href="/entityAction_type_display.{$Ext}" ajax-data="{{ ID:{ID},IsDisplay:'True' }}" ajax-success="UpdateContent" class="ajaxlink btn btn-primary">显示</a>    
+                                        </xsl:when>
+                                        <xsl:when test="IsDisplay = 'True'">
+                                            <a href="/entityAction_type_display.{$Ext}" ajax-data="{{ ID:{ID},IsDisplay:'False' }}" ajax-success="UpdateContent" class="ajaxlink btn btn-primary">隐藏</a>    
+                                        </xsl:when>
+                                    </xsl:choose>
+                                    <xsl:choose>
+                                        <xsl:when test="IsActive = 'False'">
+                                            <a href="/entityAction_type_active.{$Ext}" ajax-data="{{ ID:{ID},IsActive:'True' }}" ajax-success="UpdateContent" class="ajaxlink btn btn-primary">启用</a>    
+                                            <a class="btn delete btn-danger ajaxlink" ajax-confirm="删除类型将会删除该类型下所有的记录!" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="/entityAction_type_del.[% @Tag Provider='Config' Name='ext' %]">删除</a>
+                                        </xsl:when>
+                                        <xsl:when test="IsActive = 'True'">
+                                            <a href="/entityAction_type_active.{$Ext}" ajax-data="{{ ID:{ID},IsActive:'False' }}" ajax-success="UpdateContent" class="ajaxlink btn btn-primary">停用</a>
+                                        </xsl:when>
+                                    </xsl:choose>
+                                </td>
+					        </tr>
+                        <% @End %>
+					    <!-- // Table row END -->
+				    </tbody>
+				    <!-- // Table body END -->
+			    </table>
+			    <!-- // Table END -->
+            </div>
+            <hr />
+            <div class="row-fluid">
+                <form id="validateSubmitForm" action="/entityAction_type_add.<% @Tag Provider="Config" Name="ext" %>" method="post">
+                    <div class="span2">
+                        <input class="mb0 span12" id="powername" name="Name" type="text" placeholder="类型名称" />
+                    </div>
+                    <div class="span2">
+                        <select name="ParentTypeID">
+                            <option value="0">请选择父级类型</option>
+                            <% @Data Provider="Procedure" Command="select [ID],[Name] from [EntityType]" %>
+                                <option value="{ID}"><xsl:value-of select="Name" /></option>
+                            <% @End %>
+                        </select>
+                    </div>
+                    <div class="span2">
+                        <input class="mb0 span12" id="key" name="Key" type="text" placeholder="请输入标识" />
+                    </div>
+                    <div class="span4">
+                        <input class="mb0 span12" id="powerkey" name="Description" type="text" placeholder="类型描述" />
+                    </div>
+                    <div class="span2">
+                        <button class="span6 btn btn-default btn-primary" type="submit">添加</button>
+                    </div>
+                </form>
+            </div>
+		</div>
+	</div>
+</div>
+<% @Include File="foot.html" EnableScript="True" Config="admin_zh-cn" %>
+<script type="text/javascript">
+    $("#content").find("input[type=checkbox], textarea").uniform();
+    var validate = $("#validateSubmitForm").validate({
+        rules: {
+            Name: "required",
+            Key: "required",
+            Description: "required"
+        },
+        messages: {
+            Name: "请输入类型名称",
+            Key: "请输入标识",
+            Description: "请输入类型描述"
+        }
+    });
+
+    $('#validateSubmitForm').submit(function (evt) {
+        $form = $(evt.target);
+        try {
+            if (!validate.valid()) return false;
+            $form.ajaxSubmit(function (data) {
+                var result = eval('(' + data + ')');
+                if (result.status == "success") {
+                    UpdateContent();
+                } else {
+                    notyfy({ text: result.message, type: 'error', layout: 'top' });
+                }
+            })
+        } catch (ex) {
+            alert(ex);
+        }
+        return false;
+    })
+
+    function UpdateContent() {
+        $.ajax({
+            url: "<% @Tag Provider='Page' Name='Url' %>",
+            success: function (data) {
+                $data = $('.types', data);
+                $('.typelist .types').html($data.html());
+                $select = $('select[name=ParentTypeID]', data);
+                $('select[name=ParentTypeID]').html($select.html());
+            }
+        })
+    }
+</script>

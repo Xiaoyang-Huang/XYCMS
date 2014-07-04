@@ -1,0 +1,362 @@
+﻿<% @SetData Name="PageClass" %>userlist<% @End %>
+<% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
+<div class="innerLR innerT">
+    <div class="widget">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h3 class="heading">当前的用户列表</h3>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+            <div class="row-fluid mb10">
+                <form id="FilterForm" method="post" action="/userAction_getlist.<% @Tag Provider="Config" Name="ext" %>">
+                    <div class="span10">
+                        <label>过滤</label>
+                        <div class="row-fluid">
+                            <input class="mb0 span2" id="powername" name="Nickname" type="text" placeholder="用户名" />
+                            <input class="mb0 span2" id="Text1" name="Name" type="text" placeholder="用户账号" />
+                            <input class="mb0 span2" id="Text2" name="Email" type="text" placeholder="用户邮箱" />
+                            <select class="mb0 span2" name="UserGrouop">
+                                <option value="-1">请选择用户组</option>
+                                <% @Data Provider="Procedure" Command="Select [ID],[Name] from [UserGroup]" %>
+                                    <option value="{ID}"><xsl:value-of select="Name" /></option>
+                                <% @End %>
+                            </select>
+                            <input type="hidden" value="0" name="PageIndex" />
+                            <input class="span1 btn btn-default btn-primary" type="button" onclick="UpdateContent(0)" value="搜索" />        
+                        </div>
+                    </div>
+                    <div class="span2">
+                        <label>每页显示个数</label>
+                        <select class="page-size" name="PageSize" onchange="UpdateContent(0)">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="users">
+                <!-- Table -->
+                <% @Data Provider="Procedure" Procedure="XiaoYang_User_User_GetList" 
+                            Parameter="{ PageIndex='Form' PageSize='Form' Nickname='Form' Name='Form' Email='Form' UserGrouop='Form' !TotalCount }" 
+                            DefaultParameter="{ PageIndex='0' PageSize='10' Nickname='' Name='' Email='' UserGrouop='' }" 
+                            EnableScript="True" Root="/" %>
+			        <table class="table table-bordered table-mid">
+				        <!-- Table heading -->
+				        <thead>
+					        <tr>
+						        <th>用户ID</th>
+						        <th>用户名</th>
+						        <th>用户账号</th>
+                                <th>用户邮箱</th>
+                                <th>用户组</th>
+                                <th>操作</th>
+					        </tr>
+				        </thead>
+				        <!-- // Table heading END -->
+				        <!-- Table body -->
+				        <tbody>
+					        <!-- Table row -->
+                            <xsl:for-each select="DataTable/DataItem">
+					            <tr class="item{ID}">
+						            <td><xsl:value-of select="ID" /></td>
+                                    <td><xsl:value-of select="Nickname" /></td>
+						            <td><xsl:value-of select="Name" /></td>
+                                    <td><xsl:value-of select="Email" /></td>
+                                    <td><xsl:value-of select="GroupName" /><span class="hide"><xsl:value-of select="UserGroup" /></span></td>
+						            <td>
+                                        <a href="javascript:ShowEditUserBox({ID})" class="btn">修改</a>
+                                        <a class="btn ajaxlink" ajax-confirm="您确定要删除该用户?" href="/userAction_del.[% @Tag Provider='Config' Name='ext' %]" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent">删除</a>
+                                    </td>
+					            </tr>
+                            </xsl:for-each>
+					        <!-- // Table row END -->
+				        </tbody>
+				        <!-- // Table body END -->
+			        </table>
+			        <!-- // Table END -->
+                    <div class="row-fluid mt10">
+                        <div class="span6"><button class="btn btn-default btn-primary" type="submit" onclick="ShowAddUserBox()">添加用户</button></div>
+                        <div class="pagination pagination-right margin-none span6">
+	                        [% @Pagination Index="<xsl:value-of select="$PageIndex+1" />" Max="<xsl:value-of select="$TotalCount" />" Size="<xsl:value-of select="$PageSize" />" Count="3"  %]
+                                <xsl:text disable-output-escaping="yes"><![CDATA[
+						            <ul>
+                                        <xsl:choose>
+                                            <xsl:when test="Pages/@Current=1">
+                                                <li class="disabled"><a href="javascript:;">«</a></li>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <li><a href="javascript:UpdateContent({Pages/@Current+(-2)});">«</a></li>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:for-each select="Pages/Page">
+                                            <xsl:choose>
+                                                <xsl:when test="@Index=/Pages/@Current">
+                                                    <li><a href="javascript:;"><xsl:value-of select="@Index"/></a></li>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <li><a href="javascript:UpdateContent({@Index+(-1)});"><xsl:value-of select="@Index"/></a></li>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:for-each>
+                                        <xsl:choose>
+                                            <xsl:when test="Pages/@Current=Pages/@Max">
+                                                <li class="disabled"><a href="javascript:;">»</a></li>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <li><a href="javascript:UpdateContent({Pages/@Current});">»</a></li>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+						            </ul>
+                                ]]></xsl:text>
+                            [% @End %]
+                        </div>
+                    </div>
+                <% @End %>
+            </div>
+		</div>
+	</div>
+</div>
+<div class="adduser hide">
+    <h3>添加用户</h3>
+    <hr />
+    <div class="innerLR">
+        <form id="addUserForm" method="post" action="/userAction_add.<% @Tag Provider="Config" Name="ext" %>">
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>账号</label>
+                    <input type="text" name="Name" />
+                </div>
+                <div class="span6">
+                    <label>用户名</label>
+                    <input type="text" name="Nickname" />
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>密码</label>
+                    <input type="password" name="Password" />
+                </div>
+                <div class="span6">
+                    <label>重复密码</label>
+                    <input type="password" name="RepeatPassword" />
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>邮箱</label>
+                    <input type="text" name="Email" />
+                </div>
+                <div class="span6">
+                    <label>用户组</label>
+                    <select name="UserGroup">
+                        <option value="-1">请选择用户组</option>
+                        <% @Data Provider="Procedure" Command="Select [ID],[Name] from [UserGroup]" %>
+                            <option value="{ID}"><xsl:value-of select="Name" /></option>
+                        <% @End %>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="edituser hide">
+    <h3>编辑用户</h3>
+    <hr />
+    <div class="innerLR">
+        <form id="editUserForm" method="post" action="/userAction_edit.<% @Tag Provider="Config" Name="ext" %>">
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>账号</label>
+                    <h4 class="Name"></h4>
+                    <input type="hidden" name="ID"/>
+                </div>
+                <div class="span6">
+                    <label>用户名</label>
+                    <input type="text" name="Nickname" />
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>密码</label>
+                    <input type="password" name="Password" />
+                </div>
+                <div class="span6">
+                    <label>重复密码</label>
+                    <input type="password" name="RepeatPassword" />
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>邮箱</label>
+                    <span class="Email"></span>
+                </div>
+                <div class="span6">
+                    <label>用户组</label>
+                    <select name="UserGroup">
+                        <option value="-1">请选择用户组</option>
+                        <% @Data Provider="Procedure" Command="Select [ID],[Name] from [UserGroup]" %>
+                            <option value="{ID}"><xsl:value-of select="Name" /></option>
+                        <% @End %>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<% @Include File="foot.html" EnableScript="True" Config="admin_zh-cn" %>
+<script type="text/javascript">
+    $("#content").find("input[type=checkbox], textarea").uniform();
+    AjaxLink();
+    $.validator.addMethod("repeat", function (value, element, param) {
+        var pass = $(element).closest('form').find('input[name="' + param + '"]').val();
+        return this.optional(element) || value == pass;
+    });
+
+    function ShowAddUserBox() {
+        var $add = $('.adduser').clone();
+        var boxresult = false;
+        var box = bootbox.confirm($add.html(), function (result) {
+            boxresult = result;
+        });
+        var validate = box.find('form#addUserForm').validate({
+                rules: {
+                    Name: "required",
+                    Nickname: "required",
+                    Password: "required",
+                    RepeatPassword: {
+                        required: true,
+                        repeat: "Password"
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    UserGroup: {
+                        required: true,
+                        min: 1
+                    }
+            },
+            messages: {
+                Name: "请输入用户名",
+                Nickname: "请输入用户昵称",
+                Password: "请输入密码",
+                RepeatPassword: {
+                    required: "请重复密码",
+                    repeat: "密码不一致"
+                },
+                Email: {
+                    required: "请输入邮箱",
+                    email: "邮箱格式不正确"
+                },
+                UserGroup: "请选择用户组"
+            }
+        });
+
+        box.on('hide', function () {
+            if (boxresult) {
+                console.log(boxresult, validate.valid(), validate.checkForm(), validate);
+                if (!validate.valid()) {
+                    validate.showErrors()
+                    return false;
+                } else {
+                    box.find('form#addUserForm').ajaxSubmit(function (data) {
+                        var result = eval('(' + data + ')');
+                        if (result.status == "success") {
+                            UpdateContent();
+                        } else {
+                            notyfy({ text: result.message, type: 'error', layout: 'top' });
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    function ShowEditUserBox(id) {
+        var $edit = $('.edituser').clone();
+        var boxresult = false;
+        var box = bootbox.confirm($edit.html(), function (result) {
+            boxresult = result;
+        });
+
+        var validate = box.find('form#editUserForm').validate({
+            rules: {
+                Name: "required",
+                Nickname: "required",
+                RepeatPassword: {
+                    repeat: "Password"
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                UserGroup: {
+                    required: true,
+                    min: 1
+                }
+            },
+            messages: {
+                Name: "请输入用户名",
+                Nickname: "请输入用户昵称",
+                RepeatPassword: {
+                    repeat: "密码不一致"
+                },
+                Email: {
+                    required: "请输入邮箱",
+                    email: "邮箱格式不正确"
+                },
+                UserGroup: "请选择用户组"
+            }
+        });
+        box.on('shown', function () {
+            var _userItem = $('.item' + id);
+            var _user = {
+                ID: $('td:eq(0)', _userItem).text(),
+                Nickname: $('td:eq(1)', _userItem).text(),
+                Name: $('td:eq(2)', _userItem).text(),
+                Email: $('td:eq(3)', _userItem).text(),
+                UserGroup: $('td:eq(4) span', _userItem).text()
+            }
+            $('input[name="ID"]', box).val(_user.ID);
+            $('h4[class="Name"]', box).html(_user.Name);
+            $('input[name="Nickname"]', box).val(_user.Nickname);
+            $('span[class="Email"]', box).html(_user.Email);
+            $('select[name="UserGroup"]', box).val(_user.UserGroup);
+        });
+        console.log(bootbox, box);
+        box.on('hide', function () {
+            if (boxresult) {
+                console.log(boxresult, validate.valid(), validate.checkForm(), validate);
+                if (!validate.valid()) {
+                    validate.showErrors()
+                    return false;
+                } else {
+                    box.find('form#editUserForm').ajaxSubmit(function (data) {
+                        var result = eval('(' + data + ')');
+                        if (result.status == "success") {
+                            UpdateContent();
+                        } else {
+                            notyfy({ text: result.message, type: 'error', layout: 'top' });
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    function UpdateContent(pageindex) {
+        if (typeof pageindex != 'undefined') $('input[name="PageIndex"]').val(pageindex);
+        $.ajax({
+            url: "<% @Tag Provider='Page' Name='Url' %>",
+            type: "POST",
+            data: $('form#FilterForm').serializeArray(),
+            success: function (data) {
+                $data = $('.users', data);
+                $('.userlist .users').html($data.html());
+            }
+        })
+    }
+</script>

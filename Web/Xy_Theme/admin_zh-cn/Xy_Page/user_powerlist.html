@@ -1,0 +1,110 @@
+﻿<% @SetData Name="PageClass" %>powerlist<% @End %>
+<% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
+<div class="innerLR innerT">
+    <div class="widget">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h3 class="heading">当前的权限列表</h3>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+            <div  class="powers">
+                <% @Data Provider="Procedure" Command="Select * from [powerlist]" %>
+                    <xsl:if test="(position()-1) mod 6 = 0">
+                        <xsl:if test="position() != 1">
+                            <xsl:text disable-output-escaping="yes" ><![CDATA[</div>]]></xsl:text>
+                        </xsl:if>
+                        <xsl:text disable-output-escaping="yes" ><![CDATA[<div class="row-fluid powerlist-line">]]></xsl:text>
+                    </xsl:if>
+                    <div class="btn-group btn-block span2 mt0">
+				        <div class="leadcontainer">
+					        <button class="btn dropdown-lead btn-success"><xsl:value-of select="Description" /></button>
+				        </div>
+				        <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span> </a>
+				        <ul class="dropdown-menu pull-right">
+					        <li><a class="delete" deleteid="{ID}" href="#">删除</a></li>
+				        </ul>
+			        </div>
+                    <xsl:if test="position() = count(/DataTable/DataItem)">
+                        <xsl:text disable-output-escaping="yes" ><![CDATA[</div>]]></xsl:text>
+                    </xsl:if>
+                <% @End %>
+            </div>
+            <hr />
+            <div class="row-fluid">
+                <form id="validateSubmitForm" action="/powerAction_add.<% @Tag Provider="Config" Name="ext" %>" method="post">
+                    <div class="span2">
+                        <input class="mb0 span12" id="powername" name="Description" type="text" placeholder="权限名称" />
+                    </div>
+                    <div class="span6">
+                        <input class="mb0 span12" id="powerkey" name="Key" type="text" placeholder="权限识别码" />
+                    </div>
+                    <div class="span4">
+                        <button class="span6 btn btn-default btn-primary" type="submit">添加</button>
+                    </div>
+                </form>
+            </div>
+		</div>
+	</div>
+</div>
+<% @Include File="foot.html" EnableScript="True" Config="admin_zh-cn" %>
+<script type="text/javascript">
+    $("#content").find("select, input[type=checkbox], textarea").uniform();
+    var validate = $("#validateSubmitForm").validate({
+        rules: {
+            Description: "required",
+            Key: "required"
+        },
+        messages: {
+            Description: "请输入权限的名称",
+            Key: "请输入权限的识别码"
+        }
+    });
+    $('#validateSubmitForm').submit(function (evt) {
+        $form = $(evt.target);
+        try {
+            if (!validate.valid()) return false;
+            $form.ajaxSubmit(function (data) {
+                var result = eval('(' + data + ')');
+                if (result.status == "success") {
+                    UpdateContent();
+                } else {
+                    notyfy({ text: result.message, type: 'error', layout:'top' });
+                }
+            })
+        } catch (ex) {
+            alert(ex);
+        }
+        return false;
+    })
+
+    $('a.delete[deleteid]').live('click', function (evt) {
+        bootbox.confirm('确定要删除该权限?', function (result) {
+            if (result) {
+                $target = $(evt.target);
+                $.ajax({
+                    url: '<% @Tag Provider="App" Name="Domain" %>/powerAction_del.<% @Tag Provider="Config" Name="ext" %>?ID=' + $target.attr('deleteid'),
+                    success: function (data) {
+                        var result = eval('(' + data + ')');
+                        if (result.status == "success") {
+                            UpdateContent();
+                        } else {
+                            notyfy({ text: result.message, type: 'error', layout: 'top' });
+                        }
+                    }
+                })
+            }
+        });
+    })
+
+    function UpdateContent() {
+        $.ajax({
+            url: "<% @Tag Provider='Page' Name='Url' %>",
+            success: function (data) {
+                $data = $('.powers',data);
+                $('.powerlist .powers').html($data.html());
+            }
+        })
+    }
+</script>

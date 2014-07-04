@@ -1,0 +1,149 @@
+﻿<% @SetData Name="PageClass" %>grouplist<% @End %>
+<% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
+<div class="innerLR innerT">
+    <div class="widget">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h3 class="heading">当前已有用户组列表</h3>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+            <div  class="groups">
+                <!-- Table -->
+			    <table class="table table-bordered table-mid">
+				    <!-- Table heading -->
+				    <thead>
+					    <tr>
+						    <th>组名</th>
+						    <th>识别码</th>
+						    <th>操作</th>
+					    </tr>
+				    </thead>
+				    <!-- // Table heading END -->
+				    <!-- Table body -->
+				    <tbody>
+					    <!-- Table row -->
+                        <% @Data Provider="Procedure" Command="select * from [UserGroup]" EnableScript="True" %>
+					        <tr class="item{ID}">
+						        <td><xsl:value-of select="Name" /></td>
+						        <td><xsl:value-of select="Key" /></td>
+						        <td>
+                                    <a href="javascript:ShowPermissons({ID})" class="btn">修改组权限</a>
+                                    <a class="btn ajaxlink" ajax-confirm="您确定要删除该组?" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="/powerAction_delgroup.[% @Tag Provider='Config' Name='ext' %]?ID={ID}">删除</a>
+                                </td>
+					        </tr>
+                        <% @End %>
+					    <!-- // Table row END -->
+				    </tbody>
+				    <!-- // Table body END -->
+			    </table>
+			    <!-- // Table END -->
+            </div>
+            <hr />
+            <div class="row-fluid">
+                <form id="validateSubmitForm" action="/powerAction_addgroup.<% @Tag Provider="Config" Name="ext" %>" method="post">
+                    <div class="span2">
+                        <input class="mb0 span12" id="powername" name="Name" type="text" placeholder="组名称" />
+                    </div>
+                    <div class="span6">
+                        <input class="mb0 span12" id="powerkey" name="Key" type="text" placeholder="组识别码" />
+                    </div>
+                    <div class="span4">
+                        <button class="span6 btn btn-default btn-primary" type="submit">添加</button>
+                    </div>
+                </form>
+            </div>
+		</div>
+	</div>
+</div>
+<div class="powers" style="display:none;">
+    <% @Data Provider="Procedure" Command="select * from [PowerList]" EnableScript="True" %>
+            <button type="button" class="btn btn-primary power-btn power-btn{ID}" powerid="{ID}"><xsl:value-of select="Description" /></button>
+    <% @End %>
+</div>
+<% @Include File="foot.html" EnableScript="True" Config="admin_zh-cn" %>
+<script type="text/javascript">
+    AjaxLink();
+    $("#content").find("select, input[type=checkbox], textarea").uniform();
+    $('button.power-btn').live('click', function (evt) {
+        var $tar = $(evt.target);
+        if ($tar.hasClass('disabled')) return;
+        $tar.addClass('disabled');
+        var requestUrl = '';
+        if ($tar.hasClass('active'))
+            requestUrl = '<% @Tag Provider="App" Name="Domain" %>/powerAction_delship.<% @Tag Provider="Config" Name="ext" %>';
+        else
+            requestUrl = '<% @Tag Provider="App" Name="Domain" %>/powerAction_addship.<% @Tag Provider="Config" Name="ext" %>';
+        $.ajax({
+            url: requestUrl,
+            type: 'POST',
+            data: { PowerList: $tar.attr('powerid'), UserGroup: $tar.attr('groupid') },
+            success: function (data) {
+                var result = eval('(' + data + ')');
+                if (result.status == 'success') {
+                    $tar.removeClass('disabled');
+                    $tar.button('toggle');
+                } else {
+                    notyfy({ text: result.message, type: 'error', layout: 'top' });
+                }
+            }
+        });
+    })
+    var validate = $("#validateSubmitForm").validate({
+        rules: {
+            Name: "required",
+            Key: "required"
+        },
+        messages: {
+            Name: "请输入组的名字",
+            Key: "请输入组的识别码"
+        }
+    });
+    $('#validateSubmitForm').submit(function (evt) {
+        $form = $(evt.target);
+        try {
+            if (!validate.valid()) return false;
+            $form.ajaxSubmit(function (data) {
+                var result = eval('(' + data + ')');
+                if (result.status == "success") {
+                    UpdateContent();
+                } else {
+                    notyfy({ text: result.message, type: 'error', layout: 'top' });
+                }
+            })
+        } catch (ex) {
+            alert(ex);
+        }
+        return false;
+    })
+
+    function UpdateContent() {
+        $.ajax({
+            url: "<% @Tag Provider='Page' Name='Url' %>",
+            success: function (data) {
+                $data = $('.groups', data);
+                $('.grouplist .groups').html($data.html());
+            }
+        })
+    }
+
+    function ShowPermissons(id) {
+        $.ajax({
+            url: "/powerAction_getpowerbygroup.<% @Tag Provider="Config" Name="ext" %>?ID=" + id,
+            success: function (data) {
+                if($('.groups .item' + id).length == 0) return;
+                var _list = eval('(' + data + ')');
+                var _btns = $('.powers').clone();
+                _btns.find('button.power-btn').attr('groupid', id);
+                for (var i = 0; i < _list.length; i++) {
+                    var _item = _list[i];
+                    _btns.find('button.power-btn' + _item.id).addClass('active');
+                }
+                var box = bootbox.alert(_btns.html(), function (result) {
+                    console.log(_btns, _btns.find('.active').size(), result, arguments);
+                });
+            }
+        });
+    }
+</script>

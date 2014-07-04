@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
+<!--[if !IE]><!--><html><!-- <![endif]-->
+<head>
+	<title>XYStudio - Admin (v1.0)</title>
+	
+	<!-- Meta -->
+	<meta name="content-type" content="text/html" charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	
+	<% @Include File="css_reference.html" EnableScript="True" Config="default" %>
+	
+</head>
+<body class="<% @Tag Provider='Data' Name='PageClass' %>">
+	
+		<!-- Main Container Fluid -->
+	<div class="container-fluid fixed menu-left">
+		
+		<!-- Top navbar (note: add class "navbar-hidden" to close the navbar by default) -->
+		<div class="navbar main hidden-print">
+		
+			<!-- Wrapper -->
+			<div class="wrapper">
+			
+								<!-- Menu Toggle Button -->
+				<button type="button" class="btn btn-navbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<!-- // Menu Toggle Button END -->
+								
+								
+				<!-- Top Menu Right -->
+				<ul class="topnav pull-right">
+				
+					<!-- Language menu -->
+					<li class="hidden-phone dropdown dd-1 dd-flags" id="lang_nav">
+						<a href="#" data-toggle="dropdown"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/lang/chinese.png" alt="zh" /></a>
+				    	<ul class="dropdown-menu pull-left">
+                            <li class="active"><a href="?theme=zh-cn" title="Romanian"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/lang/chinese.png" alt="Chinese"> 简体中文</a></li>
+				      		<li><a href="?theme=en-us" title="English"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/lang/english.png" alt="English"> English</a></li>
+				    	</ul>
+					</li>
+					<!-- // Language menu END -->
+				
+					<!-- Dropdown -->
+					<li class="dropdown dd-1 visible-desktop">
+						<a href="" data-toggle="dropdown" class="glyphicons shield"><i></i>帮助 <span class="caret"></span></a>
+						<ul class="dropdown-menu pull-right">
+							<li class="dropdown submenu">
+	                    		<a href="#" class="dropdown-toggle glyphicons bell" data-toggle="dropdown"><i></i>关于小洋工作室</a>
+								<ul class="dropdown-menu submenu-hide pull-left">
+			                        <li><a href="#">简介</a>	</li>
+			                        <li><a href="#">XYFrame</a></li>
+                                    <li><a href="#">XYCMS</a></li>
+			                    </ul>
+			                </li>
+			                <li><a href="" class="glyphicons settings"><i></i>如何使用</a></li>
+						</ul>
+					</li>
+					<!-- // Dropdown END -->
+					
+					<!-- Profile / Logout menu -->
+					<li class="account dropdown dd-1">
+						<a data-toggle="dropdown" href="my_account.html" class="glyphicons logout lock"><span class="hidden-phone">XYCMS</span><i></i></a>
+						<ul class="dropdown-menu pull-right">
+							<li><a href="my_account.html" class="glyphicons cogwheel">站点设置<i></i></a></li>
+							<li class="profile">
+								<span>
+									<span class="heading">个人信息 <a href="my_account.html" class="pull-right">编辑</a></span>
+									<span class="img"></span>
+									<span class="details">
+										<a href="my_account.html"><% @Tag Provider="Data" Name="CurrentUser.Name" %></a>
+										<% @Tag Provider="Data" Name="CurrentUser.Email" %>
+									</span>
+									<span class="clearfix"></span>
+								</span>
+							</li>
+							<li>
+								<span>
+									<a class="btn btn-default btn-mini pull-right" href="/accessAction_logout.<% @Tag Provider='Config' Name='ext' %>">登出</a>
+								</span>
+							</li>
+						</ul>
+											</li>
+					<!-- // Profile / Logout menu END -->
+					
+				</ul>
+				<!-- // Top Menu Right END -->
+				
+				<div class="clearfix"></div>
+			</div>
+			<!-- // Wrapper END -->
+			
+			<span class="toggle-navbar"></span>
+		</div>
+		<!-- Top navbar END -->
+		
+		<!-- Sidebar menu & content wrapper -->
+		<div id="wrapper">
+		
+		<!-- Sidebar Menu -->
+		<div id="menu" class="hidden-print">
+		
+			<!-- Brand -->
+			<a href="/dashborad.html" class="appbrand">XYStudio <span>XYCMS</span></a>
+		
+			<!-- Scrollable menu wrapper with Maximum height -->
+			<div class="slim-scroll" data-scroll-height="800px">
+			
+			<!-- Sidebar Profile -->
+			<span class="profile">
+				<p>欢迎您</p>
+				<a class="img" href="my_account.html"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/avatar.jpg" alt="Avatar" /></a>
+				<span>
+					<ul>
+						<li><a href="" class="glyphicons lock"><i></i><% @Tag Provider="Data" Name="CurrentUser.Name" %></a></li>
+						<li><a href="" class="glyphicons keys"><i></i><% @Tag Provider="Data" Name="CurrentUser.Nickname" %></a></li>
+                        <% @Data Provider="Procedure" Command="select [Name] from [UserGroup] where [ID] = @ID" Parameter="{ ID='Data:CurrentUser.UserGroup|i' }" %>
+                            <li><a href="" class="glyphicons eject"><i></i><xsl:value-of select="Name" /></a></li>
+                        <% @End %>
+					</ul>
+				</span>
+			</span>
+			<!-- // Sidebar Profile END -->
+
+			<% @Include File="navigation.html" EnableScript="True" %>
+
+			<ul class="menu-1">
+				<li class="hasSubmenu active">
+					<a class="glyphicons wifi_alt" href="#menu-recent-stats" data-toggle="collapse"><i></i><span>Recent stats</span></a>
+					<ul class="collapse in" id="menu-recent-stats">
+						<li><a class="glyphicons envelope" href="#"><i></i><span>5 New Emails</span></a></li>
+						<li><a class="glyphicons chat" href="#"><i></i><span>New Message on 19 Jan</span></a></li>
+						<li><a class="glyphicons user_add" href="#"><i></i><span>10 Users Subscribed</span></a></li>
+						<li><a class="glyphicons cart_in" href="#"><i></i><span>2 Orders worth of &dollar;239</span></a></li>
+						<li><a class="glyphicons single circle_plus" href="#"><i></i><span>View all</span></a></li>
+					</ul>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+            <div class="separator top uniformjs menu_js hidden-phone">
+				<div class="innerLR">
+					<label for="toggle-menu-position" class="checkbox">
+						<div class="checker" id="uniform-toggle-menu-position"><span><input type="checkbox" class="checkbox" id="toggle-menu-position" style="opacity: 0;"></span></div> 
+						将导航放置在右边
+					</label>
+				</div>
+			</div>
+            <div class="uniformjs layout_js hidden-phone">
+				<div class="innerLR">
+					<label for="toggle-layout" class="checkbox">
+						<div class="checker" id="uniform-toggle-layout"><span><input type="checkbox" class="checkbox" id="toggle-layout" checked="checked" style="opacity: 0;"></span></div> 
+						更改显示方式
+					</label>
+				</div>
+			</div>
+			<div class="separator bottom"></div>
+			
+						
+						
+						
+			</div>
+			<!-- // Scrollable Menu wrapper with Maximum Height END -->
+			
+		</div>
+		<!-- // Sidebar Menu END -->
+		
+		<!-- Content -->
+		<div id="content">

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UrlRewrite>
+  <!-- static source handle -->
+  <Item Mime="application/x-font-woff" ContentType="ResourceFile"><![CDATA[.*\.woff$]]></Item>
+  <Item ContentType="ResourceFile"><![CDATA[(.*\.ttf|.*\.svg|.*\.otf|.*\.less)$]]></Item>
+
+  <!-- captcha -->
+  <Item Page="XiaoYang.Web,XiaoYang.Web.Global.Captcha" Mime="image/gif" EnableScript="True"><![CDATA[^/captcha\.(aspx|html)$]]></Item>
+  
+  <WebSite SiteUrlReg="admin\..*" WebConfig="admin_zh-cn">
+    
+    <Item File="install.html" Mime="text/html" EnableScript="True"><![CDATA[^/install\.(aspx|html)$]]></Item>
+
+    <Item File="index.html" Page="XiaoYang.Web,XiaoYang.Web.Global.ThemePage" Mime="text/html" EnableScript="True"><![CDATA[^/((default|index)\.(aspx|html))?$]]></Item>
+    <Item File="dashboard.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/dashboard\.(aspx|html)?$]]></Item>
+
+    <Item File="userPower_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/userPower_list\.(aspx|html)$]]></Item>
+    <Item File="userGroup_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/userGroup_list\.(aspx|html)$]]></Item>
+    <Item File="user_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/user_list\.(aspx|html)$]]></Item>>
+
+    <Item File="entity_list.html" Page="XiaoYang.Web,XiaoYang.Web.Action.EntityAction" Mime="text/html" EnableScript="True"><![CDATA[^/entityAction_(?<class>entity)_(?<type>list)(_(?<id>\d+))?\.(aspx|html)$]]></Item>
+    <Item File="entity_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityEditor" Mime="text/html" EnableScript="True"><![CDATA[^/entity_(?<type>[A-Za-z]*)_(?<id>\d+)\.(aspx|html)$]]></Item>
+    <Item File="entityType_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/entityType_list\.(aspx|html)$]]></Item>
+    <Item File="entityType_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityTypeEditor" Mime="text/html" EnableScript="True"><![CDATA[^/entityType_edit_(?<id>\d+)\.(aspx|html)$]]></Item>
+    <Item File="entityAttributeDisplay_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/entityAttributeDisplay_list\.(aspx|html)$]]></Item>
+    <Item File="entityAttributeDisplay_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.AttributeDisplayEditor" Mime="text/html" EnableScript="True"><![CDATA[^/entityAttributeDisplay_edit\.(aspx|html)$]]></Item>
+
+    <Item Mime="text/html" ContentType="ResourceFile"><![CDATA[^/.*/Xy_Script/ueditor/.*\.html$]]></Item>
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Global.UEditorHandler" Mime="text/plain"><![CDATA[^/ueditor_(?<type>[A-Za-z]*)_handler\.(aspx|html)$]]></Item>
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Global.SWFUploadHandler" Mime="text/plain" ><![CDATA[^/swfupload_(?<type>[A-Za-z]*)_handler\.(aspx|html)$]]></Item>
+
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Action.InstallAction" Mime="text/html" EnableScript="True"><![CDATA[^/installAction_(?<type>[A-Za-z]*)(_(?<step>\d+))?\.(aspx|html)$]]></Item>
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Action.AccessAction" Mime="text/html" EnableScript="True"><![CDATA[^/accessAction_(?<type>[A-Za-z]*)\.(aspx|html)$]]></Item>
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Action.UserAction" Mime="text/html" EnableScript="True"><![CDATA[^/userAction_(?<type>[A-Za-z]*)(_(?<step>\d+))?\.(aspx|html)$]]></Item>
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Action.PowerAction" Mime="text/html" EnableScript="True"><![CDATA[^/powerAction_(?<type>[A-Za-z]*)\.(aspx|html)$]]></Item>
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Action.EntityAction" Mime="text/html" EnableScript="True"><![CDATA[^/entityAction_(?<class>[A-Za-z]*)_(?<type>[A-Za-z]*)(_(?<id>\d+))?\.(aspx|html)$]]></Item>
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Action.TemplateAction" Mime="text/html" EnableScript="True"><![CDATA[^/templateAction_(?<class>[A-Za-z]*)_(?<type>[A-Za-z]*)\.(aspx|html)$]]></Item>
+
+    <Item File="error.html" Page="Xy.Web,Xy.Web.Page.ErrorPage" Mime="text/html" EnableScript="True"><![CDATA[^/error.(aspx|html)$]]></Item>
+  </WebSite>
+  
+  <Item Page="XiaoYang.Web,XiaoYang.Web.Admin.AttributeDisplay" />
+</UrlRewrite>

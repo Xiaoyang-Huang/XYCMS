@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
+<!--[if !IE]><!--><html><!-- <![endif]-->
+<head>
+	<title>XYCMS - 更新</title>
+	
+	<!-- Meta -->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+    <% @Include File="css_reference.html" EnableScript="True" Config="default" %>
+</head>
+<body class="update">
+	
+	<!-- Wrapper -->
+<div id="update">
+
+	<div class="container">
+	
+		<div class="wrapper">
+		
+			<h1 class="glyphicons hdd">XYCMS Admin Update<i></i></h1>
+		
+			<!-- Box -->
+			<div class="widget">
+				<div class="widget-head">
+					<h4 class="heading">安装信息</h4>
+				</div>
+				<div class="widget-body">
+                    <div class="infoBox hide">
+                        <div class="message">
+                            检查到一个更新文件,点击开始按钮进行更新
+                        </div>
+                        <a class="btn btn-block btn-primary" href="javascript:start()">开始</a>
+                    </div>
+				</div>
+			</div>
+			<!-- // Box END -->
+			
+		</div>
+		
+	</div>
+	
+</div>
+<!-- // Wrapper END -->
+    <% @Include File="script_reference.html" EnableScript="True" Config="default" %>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url:"/installAction_check.<% @Tag Provider="Config" Name="ext" %>",
+                success:function(data){
+                    var result = eval('(' + data + ')');
+                    if(result.status == 'success'){
+                        $('.infoBox').show();
+                    }else if(result.status == 'processing'){
+                        $('.infoBox a.btn').hide();
+                        $('.infoBox .message').html("一个更新正在进行中");
+                        $('.infoBox').show();
+                    }else{
+                        $('.infoBox a.btn').hide()
+                        $('.infoBox .message').html("未找到更新文件");
+                        $('.infoBox').show();
+                    }
+                }
+            })
+        })
+
+        var unfinished = true;
+        var loadProcessID = 0;
+        function start(){
+            unfinished = true;
+            $('.infoBox a.btn').addClass('disabled').html("处理中");
+            $('.infoBox a.btn').click(function(){return false;});
+            $.ajax({
+                url:"/installAction_start.<% @Tag Provider="Config" Name="ext" %>",
+                success:function(data){
+                    var result = eval('(' + data + ')');
+                    unfinished = false;
+                    clearTimeout(loadProcessID);
+                    if(result.status == 'success'){
+                        loadInformation();    
+                    }else if(result.status == 'error'){
+                        $('.infoBox .message').html(result.message);
+                    }
+                    $('.infoBox a.btn').html("完成");
+                },
+                error:function(data){
+                    unfinished = false;
+                    clearTimeout(loadProcessID);
+                }
+            });
+            loadProcessID = setTimeout(loadInformation,1000);
+        }
+
+        function loadInformation(){
+            $.ajax({
+                url:"/installAction_process.<% @Tag Provider="Config" Name="ext" %>",
+                async:false,
+                hide:true,
+                success:function(data){
+                    $('.infoBox .message').html(data);
+                    if(unfinished) loadProcessID = setTimeout(loadInformation,1000);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

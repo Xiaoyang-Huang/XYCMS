@@ -1,0 +1,27 @@
+#ignore dll file
+*.dll
+!/bin/*.dll
+
+#ignore config file
+/Web/Xy_App/App.xml
+
+#ignore cache file
+*.xycache
+
+#ignore log file
+/Web/Xy_Log/*.log
+/Web/Xy_Log/*.err
+/Web/Xy_Log/*.out
+
+#ignore upload file
+/Web/Upload
+
+#ignore visual studio debug folder
+obj/
+[Bb]in/
+!/bin
+*/aspnet_client
+/Web/*.mswwsettings
+
+#ignore cache folder
+/Web/Xy_Theme/*/Xy_Cache/

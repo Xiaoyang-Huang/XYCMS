@@ -1,0 +1,7 @@
+﻿<% @Tag Provider="Data" Name="Resource" EnableScript="True" %>
+<% @Data Provider="Data" Name="Attributes" %>
+    <div class="row-fluid">
+        <label><strong><xsl:value-of select="Name"/></strong><xsl:value-of select="Description"/></label>
+        <xsl:value-of select="Template" disable-output-escaping="yes" />
+    </div>
+<% @End %>

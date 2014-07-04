@@ -1,0 +1,61 @@
+﻿<% @SetData Name="PageClass" %>error<% @End %>
+<% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
+<div class="innerLR innerT">
+    <h3 class="glyphicons no-js circle_remove" style="line-height:41px; margin:10px 0;"><i></i><% @Tag Provider="Data" Name="Message" %></h3>
+    <div class="widget">
+        <div class="widget-head">
+            <h4 class="heading">Brief information</h4>
+        </div>
+        <div class="widget-body">
+            <table class="table">
+                <tr>
+                    <td><strong>Wrong Time:</strong></td>
+                    <td><% @Tag Provider="Data" Name="WrongTime" %></td>
+                </tr>
+                <tr>
+                    <td><strong>Client IP:</strong></td>
+                    <td><% @Tag Provider="Data" Name="ClientIP" %></td>
+                </tr>
+                <tr>
+                    <td><strong>Client Browser:</strong></td>
+                    <td><% @Tag Provider="Data" Name="ClientBrowser" %></td>
+                </tr>
+                <tr>
+                    <td><strong>URL:</strong></td>
+                    <td><% @Tag Provider="Data" Name="URL" %></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="widget">
+        <div class="widget-head">
+            <h4 class="heading">Detail information</h4>
+        </div>
+        <div class="widget-body">
+            <table class="table table-bordered table-condensed">
+                <% @Data Provider="Data" Name="Error" %>
+                    <tr>
+                        <td><strong>Message</strong></td><td><strong><xsl:value-of select="Message" disable-output-escaping="yes" /></strong></td>
+                    </tr>
+                    <tr>
+                        <td>Source</td>
+                        <td><xsl:value-of select="Source" disable-output-escaping="yes" /></td>
+                    </tr>
+                    <tr>
+                        <td>TargetSite</td>
+                        <td><xsl:value-of select="TargetSite" disable-output-escaping="yes" /></td>
+                    </tr>
+                    <tr>
+                        <td>Data</td>
+                        <td><xsl:value-of select="Data" disable-output-escaping="yes" /></td>
+                    </tr>
+                    <tr>
+                        <td>StackTrace</td>
+                        <td><xsl:value-of select="StackTrace" disable-output-escaping="yes" /></td>
+                    </tr>
+                <% @End %>    
+            </table>
+        </div>
+    </div>
+</div>
+<% @Include File="foot.html" EnableScript="True" Config="admin_zh-cn" %>
