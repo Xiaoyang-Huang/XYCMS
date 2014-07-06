@@ -1,3 +1,6 @@
+#ignore DB file
+DB/
+
 #ignore dll file
 *.dll
 !/bin/*.dll
