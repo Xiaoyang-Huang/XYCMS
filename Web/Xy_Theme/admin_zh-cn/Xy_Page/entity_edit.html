@@ -1,7 +1,7 @@
-﻿<% @SetData Name="PageClass" %>postedit<% @End %>
+﻿<% @SetData Name="PageClass" %>entityedit<% @End %>
 <% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
 <div class="innerLR innerT">
-    <form id="EditForm" method="post" action="/entityAction_entity_<% @Tag Provider="Group" Name="type" %>_<% @Tag Provider="Group" Name="id" %>.<% @Tag Provider="Config" Name="ext" %>">
+    <form id="EditForm" method="post" action="/entityAction_entity_<% @Tag Provider="Group" Name="type" %>_<% @Tag Provider="Group" Name="id" %>.<% @Tag Provider="Config" Name="ext" %>"  enctype="multipart/form-data">
         <input name="ID" value="<% @Tag Provider="Group" Name="id" %>" type="hidden" />
         <input name="IsActive" value="True" type="hidden" />
         <div class="widget widget-tabs widget-tabs-double-2">

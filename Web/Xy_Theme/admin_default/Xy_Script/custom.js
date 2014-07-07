@@ -132,7 +132,7 @@ function AjaxLink() {
                 success: function (data) {
                     if (typeof $tar.attr('ajax-success') != 'undefined') {
                         var fun = eval('(' + $tar.attr('ajax-success') + ')');
-                        if (fun != undefined) {
+                        if (typeof fun === 'function') {
                             fun(data);
                         }
                     }

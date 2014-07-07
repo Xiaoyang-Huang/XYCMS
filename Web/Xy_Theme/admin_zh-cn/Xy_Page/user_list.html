@@ -347,7 +347,7 @@
     }
 
     function UpdateContent(pageindex) {
-        if (typeof pageindex != 'undefined') $('input[name="PageIndex"]').val(pageindex);
+        if (typeof pageindex != 'undefined' && typeof pageindex != 'string') $('input[name="PageIndex"]').val(pageindex);
         $.ajax({
             url: "<% @Tag Provider='Page' Name='Url' %>",
             type: "POST",

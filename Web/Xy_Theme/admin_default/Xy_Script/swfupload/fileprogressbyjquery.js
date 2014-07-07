@@ -71,6 +71,21 @@ function FillProgressByJquery(file , fileHandler){
 	    })
 	}
 
+	this.Otherfinish = function (IconPath, filename, setDelete, fileobj) {
+	    fileProgressWrapper.attr('class', 'progressWrapper complete');
+	    progressBar.attr('class', 'progressBarComplete')
+	    progressBar.css('width', '100%');
+	    progressBarWrap.fadeOut();
+	    this.setStatus("Complete.");
+	    progressContent.html('<img src="' + IconPath + '" />');
+
+	    progressCancel.unbind();
+	    var thisInEvent = this;
+	    progressCancel.click(function (e) {
+	        thisInEvent.deleteUpload(fileHandler, filename, e);
+	    })
+	}
+
 	this.cancelUpload = function (fileHandler) {
 	    fileHandler.cancelUpload(fileProgressID);
 	    fileProgressWrapper.remove();

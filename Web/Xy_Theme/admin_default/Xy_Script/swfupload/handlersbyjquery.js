@@ -117,6 +117,29 @@ function uploadSuccess(file, serverData) {
     }
 }
 
+function uploadOtherSuccess(file, serverData) {
+    try {
+        var progress = new FillProgressByJquery(file, this);
+        if (serverData.indexOf("Error:") == 0) {
+            progress.setError();
+            progress.setStatus(serverData);
+        } else {
+            var savePath = window.location.href.substring(0, window.location.href.indexOf('/', 7)) + '/Upload/' + this.customSettings.savePath + '/original/' + serverData;
+            var videoIconPath = window.location.href.substring(0, window.location.href.indexOf('/', 7)) + '/Upload/' + this.customSettings.savePath + "/other.jpg";
+            progress.finish(videoIconPath, savePath, this);
+            if (getControlByClassOrId(this.customSettings.valueControl).length > 0) {
+                if (getControlByClassOrId(this.customSettings.valueControl).val().length > 0) {
+                    getControlByClassOrId(this.customSettings.valueControl).val(getControlByClassOrId(this.customSettings.valueControl).val() + this.customSettings.splitSymbol + serverData);
+                } else {
+                    getControlByClassOrId(this.customSettings.valueControl).val(serverData);
+                }
+            }
+        }
+    } catch (ex) {
+        this.debug(ex);
+    }
+}
+
 function uploadError(file, errorCode, message) {
     try {
         var progress = new FillProgressByJquery(file, this);
