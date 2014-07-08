@@ -56,7 +56,7 @@ Alter table [{0}] drop constraint DF_{0}_{1}; ";
         static void EntityAttribute_BeforeEdit(Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
             EntityAttribute _oldAttr = EntityAttribute.GetInstance(Convert.ToInt64(procedure.GetItem("ID")));
             bool _isMultiple = Convert.ToBoolean(procedure.GetItem("IsMultiple"));
-            if (_oldAttr.IsMultiple != _isMultiple) throw new Exception("单值与复值的转换请直接删除属性重建");
+            if (_oldAttr.IsMultiple != _isMultiple) throw new Exception("can not switch attribute multiple mode");
             StringBuilder _editAttrCommand = new StringBuilder();
             string _default = Convert.ToString(procedure.GetItem("Default"));
             if (!string.IsNullOrEmpty(_oldAttr.Default) && string.IsNullOrEmpty(_default)) {
@@ -110,8 +110,7 @@ CONSTRAINT [PK_{0}_{1}] PRIMARY KEY CLUSTERED
 END
 ELSE
 Delete FROM {0}_{1}";
-        private const string _commandPartern_AddSimpleAttribute = 
-@"ALTER TABLE [{0}] ADD [{1}] {2} ";
+        private const string _commandPartern_AddSimpleAttribute = @"ALTER TABLE [{0}] ADD [{1}] {2} ";
         private static void EntityAttribute_BeforeAdd(Xy.Data.Procedure produce, Xy.Data.DataBase DB) {
             string _attrName = Convert.ToString(produce.GetItem("Key"));
             EntityType _type = EntityType.GetInstance(Convert.ToInt16(produce.GetItem("TypeID")));

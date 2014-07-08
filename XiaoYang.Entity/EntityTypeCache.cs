@@ -34,83 +34,53 @@ namespace XiaoYang.Entity {
         private bool _hasMuli;
         public bool HasMulitple { get { return _hasMuli; } }
 
-        
-
-        private Xy.Data.Procedure _getSingleProcedureApplyToChild = null;
-        private Xy.Data.Procedure _getSingleProcedureNotApplyToChild = null;
-        private string _getCommandCache = string.Empty;
-        private string _getFieldCache = string.Empty;
-        private string _getTableCache = string.Empty;
-        private string getSelectCommand() {
-            StringBuilder _command = new StringBuilder();
-            //_command.AppendLine("select ");
-            _command = new StringBuilder();
-            for (int i = 0; i < _attrs.Length; i++) {
-                EntityAttribute _attr = _attrs[i];
-                if (i > 0) _command.Append(", ");
-                if (_attr.IsMultiple) {
-                    _command.AppendLine(string.Format("[{0}].[ID] as '{1}ID', [{0}].[{1}]", _attr.Table, _attr.Key));
-                } else {
-                    _command.AppendLine(string.Format("[{0}].[{1}]", _attr.Table, _attr.Key));
+        #region Cache Strings
+        private string _cacheString_Select_Command = string.Empty;
+        public string CacheString_Select_Command {
+            get {
+                if (string.IsNullOrEmpty(_cacheString_Select_Command)) {
+                    _cacheString_Select_Command = "select " + CacheString_Select_Field + "from " + CacheString_Select_Table; ;
                 }
-            }
-            _getFieldCache = _command.ToString();
-            _command = new StringBuilder();
-            for (int i = 0; i < _relatedTables.Length; i++) {
-                if (i == 0) {
-                    _command.AppendLine(string.Format("[{0}]", _relatedTables[i]));
-                } else {
-                    _command.AppendLine(string.Format("left join [{0}] on [{0}].[EntityID] = [EntityBase].[ID]", _relatedTables[i]));
-                }
-            }
-            _getTableCache = _command.ToString();
-            return "select " + _getFieldCache + "from " + _getTableCache;
-        }
-        internal Xy.Data.Procedure GetProcedure(bool inApplyToChild, params long[] inEntityID) {
-            bool _isSingle = inEntityID.Length > 1 ? false : true;
-            if (inApplyToChild && _isSingle && _getSingleProcedureApplyToChild != null) return _getSingleProcedureApplyToChild;
-            if (!inApplyToChild && _isSingle && _getSingleProcedureNotApplyToChild != null) return _getSingleProcedureNotApplyToChild;
-            StringBuilder _command;
-            if (_isSingle) {
-                _getSingleProcedureApplyToChild = new Xy.Data.Procedure("GetWithChild", string.Format(_getCommandCache + "where {0} [EntityBase].[ID] = @ID", string.Empty), new Xy.Data.ProcedureParameter("ID", System.Data.DbType.Int64));
-                _getSingleProcedureNotApplyToChild = new Xy.Data.Procedure("GetWithoutChild", string.Format(_getCommandCache + "where {0} [EntityBase].[ID] = @ID", "[TypeID] = " + _type.ID + " and "), new Xy.Data.ProcedureParameter("ID", System.Data.DbType.Int64));
-                if (inApplyToChild) return _getSingleProcedureApplyToChild;
-                else return _getSingleProcedureNotApplyToChild;
-            } else {
-                _command = new StringBuilder(_getCommandCache);
-                _command.AppendFormat("where {0} [EntityBase].[ID] in (", inApplyToChild ? string.Empty : "[EntityBase].[TypeID] = " + _type.ID + " and ");
-                for (int i = 0; i < inEntityID.Length; i++) {
-                    if (i > 0) _command.Append(',');
-                    _command.Append(inEntityID[i]);
-                }
-                _command.AppendLine(")");
-                return new Xy.Data.Procedure("GetMultiEntity", _command.ToString());
+                return _cacheString_Select_Command;
             }
         }
-        internal System.Data.DataTable GetListProcedure(string where, int pageIndex, int pageSize, string order, ref int totalRowCount) {
-            Xy.Data.Procedure _getList = new Xy.Data.Procedure("Entity_SplitPage",
-                new Xy.Data.ProcedureParameter[] { 
-                    new Xy.Data.ProcedureParameter("Select", System.Data.DbType.String),
-                    new Xy.Data.ProcedureParameter("TableName", System.Data.DbType.String),
-                    new Xy.Data.ProcedureParameter("Where", System.Data.DbType.String),
-                    new Xy.Data.ProcedureParameter("PageIndex", System.Data.DbType.Int32),
-                    new Xy.Data.ProcedureParameter("PageSize", System.Data.DbType.Int32),
-                    new Xy.Data.ProcedureParameter("Order", System.Data.DbType.String),
-                    new Xy.Data.ProcedureParameter("OrderBy", System.Data.DbType.String),
-                    new Xy.Data.ProcedureParameter("TotalRowCount", System.Data.DbType.Int32){ Direction = System.Data.ParameterDirection.InputOutput}
-            });
-            _getList.SetItem("Select", _getFieldCache);
-            _getList.SetItem("TableName", _getTableCache);
-            _getList.SetItem("Where", "[TypeID] = " + _type.ID + (string.IsNullOrEmpty(where) ? string.Empty : " and " + where));
-            _getList.SetItem("PageIndex", pageIndex);
-            _getList.SetItem("PageSize", pageSize);
-            _getList.SetItem("Order", "[EntityBase].[ID] desc");
-            _getList.SetItem("OrderBy", string.IsNullOrEmpty(order) ? "[ID] desc" : order);
-            _getList.SetItem("TotalRowCount", totalRowCount);
-            System.Data.DataTable _dt = _getList.InvokeProcedureFill();
-            totalRowCount = Convert.ToInt32(_getList.GetItem("TotalRowCount"));
-            return _dt;
+        private string _cacheString_Select_Field = string.Empty;
+        public string CacheString_Select_Field {
+            get {
+                if (string.IsNullOrEmpty(_cacheString_Select_Field)) {
+                    StringBuilder _command = new StringBuilder();
+                    for (int i = 0; i < _attrs.Length; i++) {
+                        EntityAttribute _attr = _attrs[i];
+                        if (i > 0) _command.Append(", ");
+                        if (_attr.IsMultiple) {
+                            _command.AppendLine(string.Format("[{0}].[ID] as '{1}ID', [{0}].[{1}]", _attr.Table, _attr.Key));
+                        } else {
+                            _command.AppendLine(string.Format("[{0}].[{1}]", _attr.Table, _attr.Key));
+                        }
+                    }
+                    _cacheString_Select_Field = _command.ToString();
+                }
+                return _cacheString_Select_Field;
+            }
         }
+        private string _cacheString_Select_Table = string.Empty;
+        public string CacheString_Select_Table {
+            get {
+                if (string.IsNullOrEmpty(_cacheString_Select_Table)) {
+                    StringBuilder _command = new StringBuilder();
+                    for (int i = 0; i < _relatedTables.Length; i++) {
+                        if (i == 0) {
+                            _command.AppendLine(string.Format("[{0}]", _relatedTables[i]));
+                        } else {
+                            _command.AppendLine(string.Format("left join [{0}] on [{0}].[EntityID] = [EntityBase].[ID]", _relatedTables[i]));
+                        }
+                    }
+                    _cacheString_Select_Table = _command.ToString();
+                }
+                return _cacheString_Select_Table;
+            }
+        }
+        #endregion
 
         private Dictionary<string, int> _attrDict = new Dictionary<string, int>();
         public XiaoYang.Entity.EntityAttribute GetAttribute(string inKey) {
@@ -178,7 +148,6 @@ namespace XiaoYang.Entity {
                 _attrDict.Add(_item.Key, i + 4);
             }
             _relatedTables = _tempRelatedTables.ToArray();
-            _getCommandCache = getSelectCommand();
         }
     }
 

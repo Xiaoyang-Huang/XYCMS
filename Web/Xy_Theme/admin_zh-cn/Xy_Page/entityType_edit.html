@@ -201,6 +201,21 @@
             $('#IsWebRelatedSwitch').attr('disabled', 'disabled');
             $('.toggle-button').toggleButtons('toggleActivation');
             webRelated = val;
+            $.ajax({
+                url: "/entityAction_type_multi.<% @Tag Provider='Config' Name='Ext' %>",
+                type: "post", 
+                data: { ID:<% @Tag Provider="Group" Name="ID" %>, IsWebRelated:val },
+                success: function (data) {
+                    var result = eval('(' + data + ')');
+                    if(result.status == "success"){
+                        notyfy({ text: result.message, type: result.status, layout: 'top', timeout:3000 });
+                        $('#IsWebRelatedSwitch').attr('disabled', '');
+                        $('.toggle-button').toggleButtons('toggleActivation');
+                    }else{
+                        notyfy({ text: result.message, type: 'error', layout: 'top', timeout:3000 });
+                    }
+                }
+            })
         }
     })
 

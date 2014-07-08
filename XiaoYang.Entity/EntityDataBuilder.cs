@@ -65,8 +65,8 @@ namespace XiaoYang.Entity {
                     }
                 }
             }
-            System.Data.DataTable _dt = _typeCache.GetListProcedure(_where, _pageIndex, _pageSize, _order, ref _totalCount);
-            EntityCollection _result = new EntityCollection(_dt, _typeCache.TypeInstance.ID);
+            XiaoYang.Entity.EntityHelper _helper = new EntityHelper(_typeCache.TypeInstance.ID);
+            EntityCollection _result = _helper.GetList(_where, _pageIndex, _pageSize, _order, ref _totalCount);
             return _result.GetXml();
         }
 

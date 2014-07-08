@@ -98,23 +98,14 @@ namespace XiaoYang.Web.Action {
                         case "active":
                             XiaoYang.Entity.EntityType.EditActive(Request.Form);
                             break;
+                        case "multi":
+                            XiaoYang.Entity.EntityType.EditWebRelated(Request.Form);
+                            break;
                         case "display":
                             XiaoYang.Entity.EntityType.EditDisplay(Request.Form);
                             break;
                         case "del":
                             XiaoYang.Entity.EntityType.Del(Convert.ToInt16(Request.Form["ID"]));
-                            break;
-                        case "template":
-                            //Xy.Web.Control.IncludeControl _pc = new Xy.Web.Control.IncludeControl();
-                            //System.Collections.Specialized.NameValueCollection _pcInitTag = new System.Collections.Specialized.NameValueCollection();
-                            //Xy.Web.HTMLContainer _pcContent = new Xy.Web.HTMLContainer(WebSetting.Encoding);
-                            //_pcInitTag.Add("File", "/entity_attributeDisplay.htm");
-                            //_pcInitTag.Add("Type", "XiaoYang.Web,XiaoYang.Web.Admin.AttributeTemplateEditor");
-                            //_pcInitTag.Add("Value", "{ TypeID=\"" + Request.Form["ID"] + "\" " + (string.IsNullOrEmpty(Request.Form["PostID"]) ? string.Empty : "PostID=\"" + Request.Form["PostID"]) + "\" }");
-                            //_pcInitTag.Add("EnableScript", "True");
-                            //_pc.Init(_pcInitTag, "AttributeTemplate", 999);
-                            //_pc.Handle(ThreadEntity, this, _pcContent);
-                            //Response.Write(_pcContent);
                             break;
                     }
                     break;

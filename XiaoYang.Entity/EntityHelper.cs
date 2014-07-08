@@ -29,7 +29,27 @@ namespace XiaoYang.Entity {
 
         public System.Data.DataTable Get(params long[] inEntityID) {
             if (inEntityID.Length == 0) return new System.Data.DataTable();
-            Xy.Data.Procedure _procedure = _cache.GetProcedure(_applyToChild, inEntityID);
+
+            //Xy.Data.Procedure _procedure = _cache.GetProcedure(_applyToChild, inEntityID);
+            Xy.Data.Procedure _procedure;
+            bool _isSingle = inEntityID.Length > 1 ? false : true;
+            StringBuilder _command;
+            if (_isSingle) {
+                if (_applyToChild){
+                    _procedure = new Xy.Data.Procedure("GetWithChild", string.Format(_cache.CacheString_Select_Command + "where {0} [EntityBase].[ID] = @ID", string.Empty), new Xy.Data.ProcedureParameter("ID", System.Data.DbType.Int64));
+                }else{
+                    _procedure = new Xy.Data.Procedure("GetWithoutChild", string.Format(_cache.CacheString_Select_Command + "where {0} [EntityBase].[ID] = @ID", "[TypeID] = " + _cache.TypeInstance.ID + " and "), new Xy.Data.ProcedureParameter("ID", System.Data.DbType.Int64));
+                }
+            } else {
+                _command = new StringBuilder(_cache.CacheString_Select_Command);
+                _command.AppendFormat("where {0} [EntityBase].[ID] in (", _applyToChild ? string.Empty : "[EntityBase].[TypeID] = " + _cache.TypeInstance.ID + " and ");
+                for (int i = 0; i < inEntityID.Length; i++) {
+                    if (i > 0) _command.Append(',');
+                    _command.Append(inEntityID[i]);
+                }
+                _command.AppendLine(")");
+                _procedure = new Xy.Data.Procedure("GetMultiEntity", _command.ToString());
+            }
             if (inEntityID.Length == 1) _procedure.SetItem("ID", inEntityID[0]);
             return _procedure.InvokeProcedureFill(_db);
         }
@@ -38,7 +58,27 @@ namespace XiaoYang.Entity {
             return GetList(nvc["Where"], Convert.ToInt32(nvc["PageIndex"]), Convert.ToInt32(nvc["PageSize"]), nvc["Order"], ref totalRowCount);
         }
         public EntityCollection GetList(string where, int pageIndex,int pageSize, string order, ref int totalRowCount) {
-            System.Data.DataTable _dt = _cache.GetListProcedure(where, pageIndex, pageSize, order, ref totalRowCount);
+            Xy.Data.Procedure _getList = new Xy.Data.Procedure("Entity_SplitPage",
+                new Xy.Data.ProcedureParameter[] { 
+                    new Xy.Data.ProcedureParameter("Select", System.Data.DbType.String),
+                    new Xy.Data.ProcedureParameter("TableName", System.Data.DbType.String),
+                    new Xy.Data.ProcedureParameter("Where", System.Data.DbType.String),
+                    new Xy.Data.ProcedureParameter("PageIndex", System.Data.DbType.Int32),
+                    new Xy.Data.ProcedureParameter("PageSize", System.Data.DbType.Int32),
+                    new Xy.Data.ProcedureParameter("Order", System.Data.DbType.String),
+                    new Xy.Data.ProcedureParameter("OrderBy", System.Data.DbType.String),
+                    new Xy.Data.ProcedureParameter("TotalRowCount", System.Data.DbType.Int32){ Direction = System.Data.ParameterDirection.InputOutput}
+            });
+            _getList.SetItem("Select", _cache.CacheString_Select_Field);
+            _getList.SetItem("TableName", _cache.CacheString_Select_Table);
+            _getList.SetItem("Where", "[TypeID] = " + _cache.TypeInstance.ID + (string.IsNullOrEmpty(where) ? string.Empty : " and " + where));
+            _getList.SetItem("PageIndex", pageIndex);
+            _getList.SetItem("PageSize", pageSize);
+            _getList.SetItem("Order", "[EntityBase].[ID] desc");
+            _getList.SetItem("OrderBy", string.IsNullOrEmpty(order) ? "[ID] desc" : order);
+            _getList.SetItem("TotalRowCount", totalRowCount);
+            System.Data.DataTable _dt = _getList.InvokeProcedureFill();
+            totalRowCount = Convert.ToInt32(_getList.GetItem("TotalRowCount"));
             EntityCollection _ec = new EntityCollection(_dt, _cache.TypeInstance.ID);
             return _ec;
         }
