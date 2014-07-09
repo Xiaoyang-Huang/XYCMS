@@ -7,6 +7,34 @@ namespace XiaoYang.Entity {
 
         private static Dictionary<long, string> _typeNames = null;
 
+        public readonly static EntityAttribute EntityBase_ID = new EntityAttribute() {
+            ID = -1, TypeID = -1, Name = "ID", Key = "ID",
+            Type = "System.Data.DbType.Int64|", Default = string.Empty,
+            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
+            Display = -1
+        };
+
+        public readonly static EntityAttribute EntityBase_TypeID = new EntityAttribute() {
+            ID = -1, TypeID = -1, Name = "TypeID", Key = "TypeID",
+            Type = "System.Data.DbType.Int16|", Default = string.Empty,
+            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
+            Display = -1
+        };
+
+        public readonly static EntityAttribute EntityBase_IsActive = new EntityAttribute() {
+            ID = -1, TypeID = -1, Name = "IsActive", Key = "IsActive",
+            Type = "System.Data.DbType.Boolean|", Default = string.Empty,
+            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
+            Display = -1
+        };
+
+        public readonly static EntityAttribute EntityBase_UpdateTime = new EntityAttribute() {
+            ID = -1, TypeID = -1, Name = "UpdateTime", Key = "UpdateTime",
+            Type = "System.Data.DbType.DateTime|", Default = string.Empty,
+            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
+            Display = -1
+        };
+
         public string Table { get {
             if (TypeID <= 0) {
                 if (ID > 0) throw new Exception("Type ID is incorrect");
@@ -51,8 +79,7 @@ Alter table [{0}] drop constraint DF_{0}_{1}; ";
         private const string _commandPartern_UpdateDefault = @"Update [{0}] set [{1}] = '{2}' where [{1}] is null;";
         private const string _commandPartern_EditAttribute = @"Alter table [{0}] alter column [{1}] {2};";
         private const string _commandPartern_EditAttributeName = @"exec sp_rename '{0}.{1}','{2}','column';";
-        private const string _commandPartern_AddConstraintDefault =
-@"Alter table [{0}] add constraint DF_{0}_{1} default ('{2}') for [{1}];";
+        private const string _commandPartern_AddConstraintDefault = @"Alter table [{0}] add constraint DF_{0}_{1} default ('{2}') for [{1}];";
         static void EntityAttribute_BeforeEdit(Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
             EntityAttribute _oldAttr = EntityAttribute.GetInstance(Convert.ToInt64(procedure.GetItem("ID")));
             bool _isMultiple = Convert.ToBoolean(procedure.GetItem("IsMultiple"));

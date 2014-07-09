@@ -50,6 +50,14 @@ namespace XiaoYang.Entity {
 			if (cols["TypeClass"] != null) { this.TypeClass = Convert.ToString(inTempRow["TypeClass"]); }
 		}
 
+		public void FillRow(System.Data.DataRow inTempRow) {
+			inTempRow["ID"] = this.ID;
+			inTempRow["Name"] = this.Name;
+			inTempRow["Template"] = this.Template;
+			inTempRow["Resource"] = this.Resource;
+			inTempRow["TypeClass"] = this.TypeClass;
+		}
+
 		public Xy.Data.Procedure FillProcedure(Xy.Data.Procedure inItem) {
 			inItem.SetItem("ID", this.ID);
 			inItem.SetItem("Name", this.Name);

@@ -34,6 +34,9 @@ namespace XiaoYang.Entity {
         private bool _hasMuli;
         public bool HasMulitple { get { return _hasMuli; } }
 
+        private bool _isWebRelated;
+        public bool IsWebRelated { get { return _isWebRelated; } }
+
         #region Cache Strings
         private string _cacheString_Select_Command = string.Empty;
         public string CacheString_Select_Command {
@@ -100,36 +103,16 @@ namespace XiaoYang.Entity {
                 EntityAttribute _item = null;
                 switch (i) {
                     case 0:
-                        _item = new EntityAttribute() {
-                            ID = -1, TypeID = -1, Name = "ID", Key = "ID",
-                            Type = "System.Data.DbType.Int64|", Default = string.Empty,
-                            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
-                            Display = -1
-                        };
+                        _item = XiaoYang.Entity.EntityAttribute.EntityBase_ID;
                         break;
                     case 1:
-                        _item = new EntityAttribute() {
-                            ID = -1, TypeID = -1, Name = "TypeID", Key = "TypeID",
-                            Type = "System.Data.DbType.Int16|", Default = string.Empty,
-                            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
-                            Display = -1
-                        };
+                        _item = XiaoYang.Entity.EntityAttribute.EntityBase_TypeID;
                         break;
                     case 2:
-                        _item = new EntityAttribute() {
-                            ID = -1, TypeID = -1, Name = "IsActive", Key = "IsActive",
-                            Type = "System.Data.DbType.Boolean|", Default = string.Empty,
-                            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
-                            Display = -1
-                        };
+                        _item = XiaoYang.Entity.EntityAttribute.EntityBase_IsActive;
                         break;
                     case 3:
-                        _item = new EntityAttribute() {
-                            ID = -1, TypeID = -1, Name = "UpdateTime", Key = "UpdateTime",
-                            Type = "System.Data.DbType.DateTime|", Default = string.Empty,
-                            IsMultiple = false, IsNull = false, Split = string.Empty, Description = "Defaut attirbute",
-                            Display = -1
-                        };
+                        _item = XiaoYang.Entity.EntityAttribute.EntityBase_UpdateTime;
                         break;
                 }
                 _attrs[i] = _item;
@@ -139,7 +122,7 @@ namespace XiaoYang.Entity {
             }
             for (int i = 0; i < _attrsTable.Rows.Count; i++) {
                 EntityAttribute _item = new EntityAttribute();
-                _item.Fill(_attrsTable.Rows[i]); //descrease make more comfortable and read-able sense
+                _item.Fill(_attrsTable.Rows[i]);
                 if (_item.IsMultiple) _hasMuli = true;
                 if (!_tempRelatedTables.Contains(_item.Table)) _tempRelatedTables.Add(_item.Table);
                 _attrs[i + 4] = _item;

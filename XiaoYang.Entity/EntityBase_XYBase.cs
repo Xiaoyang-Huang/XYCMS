@@ -48,6 +48,13 @@ namespace XiaoYang.Entity {
 			if (cols["UpdateTime"] != null) { this.UpdateTime = Convert.ToDateTime(inTempRow["UpdateTime"]); }
 		}
 
+		public void FillRow(System.Data.DataRow inTempRow) {
+			inTempRow["ID"] = this.ID;
+			inTempRow["TypeID"] = this.TypeID;
+			inTempRow["IsActive"] = this.IsActive;
+			inTempRow["UpdateTime"] = this.UpdateTime;
+		}
+
 		public Xy.Data.Procedure FillProcedure(Xy.Data.Procedure inItem) {
 			inItem.SetItem("ID", this.ID);
 			inItem.SetItem("TypeID", this.TypeID);

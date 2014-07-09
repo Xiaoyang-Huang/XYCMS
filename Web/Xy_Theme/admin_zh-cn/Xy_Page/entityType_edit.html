@@ -7,20 +7,22 @@
 <% @SetData Name="PageClass" %>attrlist<% @End %>
 <% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
 <div class="innerLR innerT">
+    <% @Tag Provider="Data" Name="Item.IsActive" Mode="Compare" CompareMethod="NotEqual" CompareValue="True" %>
     <div class="widget">
 		<!-- Widget heading -->
 		<div class="widget-head">
-			<h3 class="heading">开启多站点支持</h3>
+			<h3 class="heading">关联键</h3>
 		</div>
 		<!-- // Widget heading END -->
 		<div class="widget-body">
-            <div class="toggle-button">
-				<input id="IsWebRelatedSwitch" type="checkbox"
-                <% @Tag Provider="Data" Name="Item.IsWebRelated" Mode="Compare" CompareMode="Equal" CompareValue="True" %>checked="checked"<% @End %>
-                <% @Tag Provider="Data" Name="Item.IsActive" Mode="Compare" CompareMode="NotEqual" CompareValue="True" %>disabled="disabled"<% @End %> />
+            <div class="btn-group" data-toggle="buttons-radio">
+				<button type="button" class="btn btn-primary">Left</button>
+				<button type="button" class="btn btn-primary">Middle</button>
+				<button type="button" class="btn btn-primary">Right</button>
 			</div>
 		</div>
 	</div>
+    <% @End %>
     <div class="widget">
 		<!-- Widget heading -->
 		<div class="widget-head">
@@ -193,32 +195,6 @@
 </div>
 <% @Include File="foot.html" EnableScript="True" Config="admin_zh-cn" %>
 <script type="text/javascript">
-    var webRelated = $('#IsWebRelatedSwitch').is(':checked');
-
-    $('#IsWebRelatedSwitch').change(function (evt) {
-        var val = $('#IsWebRelatedSwitch').is(':checked');
-        if (val != webRelated) {
-            $('#IsWebRelatedSwitch').attr('disabled', 'disabled');
-            $('.toggle-button').toggleButtons('toggleActivation');
-            webRelated = val;
-            $.ajax({
-                url: "/entityAction_type_multi.<% @Tag Provider='Config' Name='Ext' %>",
-                type: "post", 
-                data: { ID:<% @Tag Provider="Group" Name="ID" %>, IsWebRelated:val },
-                success: function (data) {
-                    var result = eval('(' + data + ')');
-                    if(result.status == "success"){
-                        notyfy({ text: result.message, type: result.status, layout: 'top', timeout:3000 });
-                        $('#IsWebRelatedSwitch').attr('disabled', '');
-                        $('.toggle-button').toggleButtons('toggleActivation');
-                    }else{
-                        notyfy({ text: result.message, type: 'error', layout: 'top', timeout:3000 });
-                    }
-                }
-            })
-        }
-    })
-
     function ajaxAddForm() {
         $('input[type=hidden][name=Type]').val($("#typeName").val() + "|" + $("#typeLength").val());
         $("#AddForm").ajaxSubmit(function (data) {

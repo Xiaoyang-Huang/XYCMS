@@ -56,7 +56,7 @@
                                     <xsl:choose>
                                         <xsl:when test="IsActive = 'False'">
                                             <a href="/entityAction_type_active.{$Ext}" ajax-data="{{ ID:{ID},IsActive:'True' }}" ajax-success="UpdateContent" class="ajaxlink btn btn-primary">启用</a>    
-                                            <a class="btn delete btn-danger ajaxlink" ajax-confirm="删除类型将会删除该类型下所有的记录!" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="/entityAction_type_del.[% @Tag Provider='Config' Name='ext' %]">删除</a>
+                                            <a class="btn delete btn-danger ajaxlink" ajax-confirm="删除类型将会删除该类型下所有的记录!" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="/entityAction_type_del.{$Ext}">删除</a>
                                         </xsl:when>
                                         <xsl:when test="IsActive = 'True'">
                                             <a href="/entityAction_type_active.{$Ext}" ajax-data="{{ ID:{ID},IsActive:'False' }}" ajax-success="UpdateContent" class="ajaxlink btn btn-primary">停用</a>
@@ -80,6 +80,7 @@
                     <div class="span2">
                         <select name="ParentTypeID">
                             <option value="0">请选择父级类型</option>
+                            <option value="0">顶级类型</option>
                             <% @Data Provider="Procedure" Command="select [ID],[Name] from [EntityType]" %>
                                 <option value="{ID}"><xsl:value-of select="Name" /></option>
                             <% @End %>

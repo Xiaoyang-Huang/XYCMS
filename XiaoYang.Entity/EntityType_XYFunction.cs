@@ -29,6 +29,11 @@ namespace XiaoYang.Entity {
 			EditActive.AddItem("IsActive", System.Data.DbType.Boolean);
 			AddProcedure(EditActive);
 
+			Xy.Data.Procedure EditBaseKey = new Xy.Data.Procedure(R("EditBaseKey"));
+			EditBaseKey.AddItem("ID", System.Data.DbType.Int16);
+			EditBaseKey.AddItem("BaseKey", System.Data.DbType.String);
+			AddProcedure(EditBaseKey);
+
 			Xy.Data.Procedure EditDisplay = new Xy.Data.Procedure(R("EditDisplay"));
 			EditDisplay.AddItem("ID", System.Data.DbType.Int16);
 			EditDisplay.AddItem("IsDisplay", System.Data.DbType.Boolean);
@@ -88,6 +93,18 @@ namespace XiaoYang.Entity {
 		}
 		public static int EditActive(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
 			return EditActive(Convert.ToInt16(values["ID"]), Convert.ToBoolean(values["IsActive"]), DB);
+		}
+		#endregion
+
+		#region int EditBaseKey(short inID, string inBaseKey, Xy.Data.DataBase DB = null)
+		public static int EditBaseKey(short inID, string inBaseKey, Xy.Data.DataBase DB = null) {
+			Xy.Data.Procedure item = XiaoYang.Entity.EntityType.GetProcedure(R("EditBaseKey"));
+			item.SetItem("ID", inID);
+			item.SetItem("BaseKey", inBaseKey);
+			return item.InvokeProcedure(DB);
+		}
+		public static int EditBaseKey(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
+			return EditBaseKey(Convert.ToInt16(values["ID"]), values["BaseKey"], DB);
 		}
 		#endregion
 

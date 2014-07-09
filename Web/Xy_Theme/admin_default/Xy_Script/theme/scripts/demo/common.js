@@ -414,7 +414,7 @@ $(function()
 	if ($('.selectpicker').length) $('.selectpicker').selectpicker();
 	
 	// bootstrap-toggle-buttons
-	if ($('.toggle-button').length) $('.toggle-button').toggleButtons();
+	//if ($('.toggle-button').length) $('.toggle-button').toggleButtons();
 	
 	/*
 	 * UniformJS: Sexy form elements

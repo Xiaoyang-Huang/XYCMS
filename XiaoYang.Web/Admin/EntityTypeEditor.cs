@@ -10,7 +10,17 @@ namespace XiaoYang.Web.Admin {
                 XiaoYang.Entity.EntityType _currentEntityType = XiaoYang.Entity.EntityType.GetInstance(_id);
                 PageData.AddXyDataModel("Item", _currentEntityType);
             }
-            PageData.Add("Attributes", Entity.EntityAttribute.GetByTypeID(_id));
+            System.Data.DataTable _attributes = Entity.EntityAttribute.GetByTypeID(_id);
+            PageData.Add("Attributes", _attributes);
+
+            System.Data.DataTable _baseKeys = _attributes.Clone();
+            System.Data.DataRow _baseKey;
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_ID.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_TypeID.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_IsActive.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_UpdateTime.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+
+            PageData.Add("BaseKeys", _baseKeys);
         }
     }
 }

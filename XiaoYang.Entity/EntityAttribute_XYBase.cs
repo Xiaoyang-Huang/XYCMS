@@ -62,6 +62,20 @@ namespace XiaoYang.Entity {
 			if (cols["Split"] != null) { this.Split = Convert.ToString(inTempRow["Split"]); }
 		}
 
+		public void FillRow(System.Data.DataRow inTempRow) {
+			inTempRow["ID"] = this.ID;
+			inTempRow["TypeID"] = this.TypeID;
+			inTempRow["Name"] = this.Name;
+			inTempRow["Key"] = this.Key;
+			inTempRow["Type"] = this.Type;
+			inTempRow["Default"] = this.Default;
+			inTempRow["Display"] = this.Display;
+			inTempRow["IsMultiple"] = this.IsMultiple;
+			inTempRow["IsNull"] = this.IsNull;
+			inTempRow["Description"] = this.Description;
+			inTempRow["Split"] = this.Split;
+		}
+
 		public Xy.Data.Procedure FillProcedure(Xy.Data.Procedure inItem) {
 			inItem.SetItem("ID", this.ID);
 			inItem.SetItem("TypeID", this.TypeID);

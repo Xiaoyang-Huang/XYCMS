@@ -4,17 +4,21 @@
 	<!-- Menu Regular Item (add class active to LI for an active menu item) -->
 	<li class="glyphicons right_arrow"><a href="/dashboard.<% @Tag Provider="Config" Name="ext" %>"><i></i><span>控制面板</span></a></li>
 
-    <!-- Submenu Level 1 (active) -->
-	<li class="hasSubmenu glyphicons right_arrow">
-		<a data-toggle="collapse" href="#submenu-article"><i></i><span>发布内容管理</span></a>
-		<ul class="collapse" id="submenu-article">
-			<!-- Submenu Level 1 Regular Items -->
-            <% @Data Provider="Procedure" Command="select * from [EntityType] where [IsActive] = 'True' and [IsDisplay] = 'True'" EnableScript="True" %>
-                <li><a href="/entityAction_entity_list_{ID}.[% @Tag Provider='Config' Name='ext' %]"><span><xsl:value-of select="Name" /></span></a></li>
-            <% @End %>
-			<!-- // Submenu Level 1 Regular Items END -->
-		</ul>
-	</li>
+    <% @Data Provider="Procedure" Command="select * from [EntityType] where [IsActive] = 'True' and [IsDisplay] = 'True'" XsltParameter="{ Ext='Config:ext'}" Root="/" %>
+    <xsl:if test="count(DataTable/DataItem) > 0">
+        <!-- Submenu Level 1 (active) -->
+	    <li class="hasSubmenu glyphicons right_arrow">
+		    <a data-toggle="collapse" href="#submenu-article"><i></i><span>发布内容管理</span></a>
+		    <ul class="collapse" id="submenu-article">
+			    <!-- Submenu Level 1 Regular Items -->
+                <xsl:for-each select="DataTable/DataItem">
+                    <li><a href="/entityAction_entity_list_{ID}.{$Ext}"><span><xsl:value-of select="Name" /></span></a></li>
+			        <!-- // Submenu Level 1 Regular Items END -->
+                </xsl:for-each>
+		    </ul>
+	    </li>
+    </xsl:if>
+    <% @End %>
 
     <!-- Submenu Level 1 (active) -->
 	<li class="hasSubmenu glyphicons right_arrow">
