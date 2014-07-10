@@ -14,7 +14,6 @@ namespace XiaoYang.Entity {
         public short ID { get; set; }
         public string Name { get; set; }
         public string Key { get; set; }
-        public string BaseKey { get; set; }
         public bool IsDisplay { get; set; }
         public bool IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
@@ -50,7 +49,6 @@ namespace XiaoYang.Entity {
 			if (cols["ID"] != null) { this.ID = Convert.ToInt16(inTempRow["ID"]); }
 			if (cols["Name"] != null) { this.Name = Convert.ToString(inTempRow["Name"]); }
 			if (cols["Key"] != null) { this.Key = Convert.ToString(inTempRow["Key"]); }
-			if (cols["BaseKey"] != null) { this.BaseKey = Convert.ToString(inTempRow["BaseKey"]); }
 			if (cols["IsDisplay"] != null) { this.IsDisplay = Convert.ToBoolean(inTempRow["IsDisplay"]); }
 			if (cols["IsActive"] != null) { this.IsActive = Convert.ToBoolean(inTempRow["IsActive"]); }
 			if (cols["UpdateTime"] != null) { this.UpdateTime = Convert.ToDateTime(inTempRow["UpdateTime"]); }
@@ -62,7 +60,6 @@ namespace XiaoYang.Entity {
 			inTempRow["ID"] = this.ID;
 			inTempRow["Name"] = this.Name;
 			inTempRow["Key"] = this.Key;
-			inTempRow["BaseKey"] = this.BaseKey;
 			inTempRow["IsDisplay"] = this.IsDisplay;
 			inTempRow["IsActive"] = this.IsActive;
 			inTempRow["UpdateTime"] = this.UpdateTime;
@@ -74,7 +71,6 @@ namespace XiaoYang.Entity {
 			inItem.SetItem("ID", this.ID);
 			inItem.SetItem("Name", this.Name);
 			inItem.SetItem("Key", this.Key);
-			inItem.SetItem("BaseKey", this.BaseKey);
 			inItem.SetItem("IsDisplay", this.IsDisplay);
 			inItem.SetItem("IsActive", this.IsActive);
 			inItem.SetItem("UpdateTime", this.UpdateTime);
@@ -84,7 +80,7 @@ namespace XiaoYang.Entity {
 		}
 
 		public string[] GetAttributesName() {
-			return new string[]{ "ID", "Name", "Key", "BaseKey", "IsDisplay", "IsActive", "UpdateTime", "Description", "ParentTypeID" };
+			return new string[]{ "ID", "Name", "Key", "IsDisplay", "IsActive", "UpdateTime", "Description", "ParentTypeID" };
 		}
 
 		public object GetAttributesValue(string inName) {
@@ -95,8 +91,6 @@ namespace XiaoYang.Entity {
 					return this.Name;
 				case "Key":
 					return this.Key;
-				case "BaseKey":
-					return this.BaseKey;
 				case "IsDisplay":
 					return this.IsDisplay;
 				case "IsActive":
@@ -132,19 +126,17 @@ namespace XiaoYang.Entity {
 	@ID smallint,
 	@Name nvarchar(64),
 	@Key nvarchar(64),
-	@BaseKey nvarchar(64),
 	@IsDisplay bit,
 	@IsActive bit,
 	@UpdateTime datetime,
 	@Description nvarchar(256),
 	@ParentTypeID smallint
 
-	[ID] , [Name] , [Key] , [BaseKey] , [IsDisplay] , [IsActive] , [UpdateTime] , [Description] , [ParentTypeID]
-	@ID , @Name , @Key , @BaseKey , @IsDisplay , @IsActive , @UpdateTime , @Description , @ParentTypeID
+	[ID] , [Name] , [Key] , [IsDisplay] , [IsActive] , [UpdateTime] , [Description] , [ParentTypeID]
+	@ID , @Name , @Key , @IsDisplay , @IsActive , @UpdateTime , @Description , @ParentTypeID
 	[ID] = @ID,
 	[Name] = @Name,
 	[Key] = @Key,
-	[BaseKey] = @BaseKey,
 	[IsDisplay] = @IsDisplay,
 	[IsActive] = @IsActive,
 	[UpdateTime] = @UpdateTime,
@@ -159,7 +151,6 @@ namespace XiaoYang.Entity {
             item.AddItem("ID", System.Data.DbType.System.Data.DbType.Int16);
             item.AddItem("Name", System.Data.DbType.System.Data.DbType.String);
             item.AddItem("Key", System.Data.DbType.System.Data.DbType.String);
-            item.AddItem("BaseKey", System.Data.DbType.System.Data.DbType.String);
             item.AddItem("IsDisplay", System.Data.DbType.System.Data.DbType.Boolean);
             item.AddItem("IsActive", System.Data.DbType.System.Data.DbType.Boolean);
             item.AddItem("UpdateTime", System.Data.DbType.System.Data.DbType.DateTime);
@@ -167,12 +158,11 @@ namespace XiaoYang.Entity {
             item.AddItem("ParentTypeID", System.Data.DbType.System.Data.DbType.Int16);
             AddProcedure(item);
 
-            short formID, string formName, string formKey, string formBaseKey, bool formIsDisplay, bool formIsActive, DateTime formUpdateTime, string formDescription, short formParentTypeID
-            formID, formName, formKey, formBaseKey, formIsDisplay, formIsActive, formUpdateTime, formDescription, formParentTypeID
+            short formID, string formName, string formKey, bool formIsDisplay, bool formIsActive, DateTime formUpdateTime, string formDescription, short formParentTypeID
+            formID, formName, formKey, formIsDisplay, formIsActive, formUpdateTime, formDescription, formParentTypeID
             protected short formID;
             protected string formName;
             protected string formKey;
-            protected string formBaseKey;
             protected bool formIsDisplay;
             protected bool formIsActive;
             protected DateTime formUpdateTime;
@@ -182,30 +172,27 @@ namespace XiaoYang.Entity {
             formID = Convert.ToInt16(Request.Form["ID"]);
             formName = Request.Form["Name"];
             formKey = Request.Form["Key"];
-            formBaseKey = Request.Form["BaseKey"];
             formIsDisplay = Convert.ToBoolean(Request.Form["IsDisplay"]);
             formIsActive = Convert.ToBoolean(Request.Form["IsActive"]);
             formUpdateTime = Convert.ToDateTime(Request.Form["UpdateTime"]);
             formDescription = Request.Form["Description"];
             formParentTypeID = Convert.ToInt16(Request.Form["ParentTypeID"]);
 
-            short inID, string inName, string inKey, string inBaseKey, bool inIsDisplay, bool inIsActive, DateTime inUpdateTime, string inDescription, short inParentTypeID
-            inID, inName, inKey, inBaseKey, inIsDisplay, inIsActive, inUpdateTime, inDescription, inParentTypeID
+            short inID, string inName, string inKey, bool inIsDisplay, bool inIsActive, DateTime inUpdateTime, string inDescription, short inParentTypeID
+            inID, inName, inKey, inIsDisplay, inIsActive, inUpdateTime, inDescription, inParentTypeID
             item.SetItem("ID", inID);
             item.SetItem("Name", inName);
             item.SetItem("Key", inKey);
-            item.SetItem("BaseKey", inBaseKey);
             item.SetItem("IsDisplay", inIsDisplay);
             item.SetItem("IsActive", inIsActive);
             item.SetItem("UpdateTime", inUpdateTime);
             item.SetItem("Description", inDescription);
             item.SetItem("ParentTypeID", inParentTypeID);
 
-            ID, Name, Key, BaseKey, IsDisplay, IsActive, UpdateTime, Description, ParentTypeID
+            ID, Name, Key, IsDisplay, IsActive, UpdateTime, Description, ParentTypeID
             ID = _item.ID;
             Name = _item.Name;
             Key = _item.Key;
-            BaseKey = _item.BaseKey;
             IsDisplay = _item.IsDisplay;
             IsActive = _item.IsActive;
             UpdateTime = _item.UpdateTime;

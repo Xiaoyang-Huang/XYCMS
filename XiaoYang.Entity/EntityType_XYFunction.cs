@@ -29,11 +29,6 @@ namespace XiaoYang.Entity {
 			EditActive.AddItem("IsActive", System.Data.DbType.Boolean);
 			AddProcedure(EditActive);
 
-			Xy.Data.Procedure EditBaseKey = new Xy.Data.Procedure(R("EditBaseKey"));
-			EditBaseKey.AddItem("ID", System.Data.DbType.Int16);
-			EditBaseKey.AddItem("BaseKey", System.Data.DbType.String);
-			AddProcedure(EditBaseKey);
-
 			Xy.Data.Procedure EditDisplay = new Xy.Data.Procedure(R("EditDisplay"));
 			EditDisplay.AddItem("ID", System.Data.DbType.Int16);
 			EditDisplay.AddItem("IsDisplay", System.Data.DbType.Boolean);
@@ -42,11 +37,6 @@ namespace XiaoYang.Entity {
 			Xy.Data.Procedure EditUpdateTime = new Xy.Data.Procedure(R("EditUpdateTime"));
 			EditUpdateTime.AddItem("ID", System.Data.DbType.Int16);
 			AddProcedure(EditUpdateTime);
-
-			Xy.Data.Procedure EditWebRelated = new Xy.Data.Procedure(R("EditWebRelated"));
-			EditWebRelated.AddItem("ID", System.Data.DbType.Int16);
-			EditWebRelated.AddItem("IsWebRelated", System.Data.DbType.Boolean);
-			AddProcedure(EditWebRelated);
 
 			Xy.Data.Procedure Get = new Xy.Data.Procedure(R("Get"));
 			Get.AddItem("ID", System.Data.DbType.Int16);
@@ -96,18 +86,6 @@ namespace XiaoYang.Entity {
 		}
 		#endregion
 
-		#region int EditBaseKey(short inID, string inBaseKey, Xy.Data.DataBase DB = null)
-		public static int EditBaseKey(short inID, string inBaseKey, Xy.Data.DataBase DB = null) {
-			Xy.Data.Procedure item = XiaoYang.Entity.EntityType.GetProcedure(R("EditBaseKey"));
-			item.SetItem("ID", inID);
-			item.SetItem("BaseKey", inBaseKey);
-			return item.InvokeProcedure(DB);
-		}
-		public static int EditBaseKey(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
-			return EditBaseKey(Convert.ToInt16(values["ID"]), values["BaseKey"], DB);
-		}
-		#endregion
-
 		#region int EditDisplay(short inID, bool inIsDisplay, Xy.Data.DataBase DB = null)
 		public static int EditDisplay(short inID, bool inIsDisplay, Xy.Data.DataBase DB = null) {
 			Xy.Data.Procedure item = XiaoYang.Entity.EntityType.GetProcedure(R("EditDisplay"));
@@ -128,18 +106,6 @@ namespace XiaoYang.Entity {
 		}
 		public static int EditUpdateTime(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
 			return EditUpdateTime(Convert.ToInt16(values["ID"]), DB);
-		}
-		#endregion
-
-		#region int EditWebRelated(short inID, bool inIsWebRelated, Xy.Data.DataBase DB = null)
-		public static int EditWebRelated(short inID, bool inIsWebRelated, Xy.Data.DataBase DB = null) {
-			Xy.Data.Procedure item = XiaoYang.Entity.EntityType.GetProcedure(R("EditWebRelated"));
-			item.SetItem("ID", inID);
-			item.SetItem("IsWebRelated", inIsWebRelated);
-			return item.InvokeProcedure(DB);
-		}
-		public static int EditWebRelated(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
-			return EditWebRelated(Convert.ToInt16(values["ID"]), Convert.ToBoolean(values["IsWebRelated"]), DB);
 		}
 		#endregion
 

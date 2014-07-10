@@ -15,10 +15,10 @@ namespace XiaoYang.Web.Admin {
 
             System.Data.DataTable _baseKeys = _attributes.Clone();
             System.Data.DataRow _baseKey;
-            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_ID.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
-            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_TypeID.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
-            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_IsActive.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
-            _baseKey = _baseKeys.NewRow(); XiaoYang.Entity.EntityAttribute.EntityBase_UpdateTime.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Tools.Entity.EntityBase_ID.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Tools.Entity.EntityBase_TypeID.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Tools.Entity.EntityBase_IsActive.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
+            _baseKey = _baseKeys.NewRow(); XiaoYang.Tools.Entity.EntityBase_UpdateTime.FillRow(_baseKey); _baseKeys.Rows.Add(_baseKey);
 
             PageData.Add("BaseKeys", _baseKeys);
         }

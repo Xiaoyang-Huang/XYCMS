@@ -42,11 +42,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity.cs" />
-    <Compile Include="EntityCollection.cs" />
-    <Compile Include="EntityDataBuilder.cs" />
-    <Compile Include="EntityHelper.cs" />
-    <Compile Include="EntityTypeCache.cs" />
+    <Compile Include="EntityInterface.cs" />
+    <Compile Include="DefaultEntityType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityAttribute.cs" />
     <Compile Include="EntityAttribute_XYBase.cs">
@@ -76,6 +73,7 @@
     <Compile Include="EntityType_XYFunction.cs">
       <DependentUpon>EntityType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Entity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
