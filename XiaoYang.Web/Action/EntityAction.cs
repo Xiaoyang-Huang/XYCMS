@@ -17,9 +17,9 @@ namespace XiaoYang.Web.Action {
             return Xy.Web.Page.PageErrorState.Handled;
         }
 
-        
-        //public override void ValidateUrl() {
-        //    switch (Request.GroupString["class"]) {
+
+        public override void ValidateUrl() {
+            switch (Request.GroupString["class"]) {
         //        case "entity":
         //            switch (Request.GroupString["type"]) {
         //                case "list":
@@ -74,53 +74,53 @@ namespace XiaoYang.Web.Action {
         //                    break;
         //            }
         //            break;
-        //        case "type":
-        //            switch (Request.GroupString["type"]) {
-        //                case "add":
-        //                    XiaoYang.Entity.EntityType.Add(Request.Form);
-        //                    break;
-        //                case "getattr":
-        //                    Xy.Web.Control.DataControl _dc = new Xy.Web.Control.DataControl();
-        //                    System.Collections.Specialized.NameValueCollection _dcInitTag = new System.Collections.Specialized.NameValueCollection();
-        //                    Xy.Web.HTMLContainer _dcData = new Xy.Web.HTMLContainer(WebSetting.Encoding);
-        //                    Xy.Web.HTMLContainer _dcContent = new Xy.Web.HTMLContainer(WebSetting.Encoding);
-        //                    _dcInitTag.Add("Provider", "Procedure");
-        //                    _dcInitTag.Add("Command", @"select [PostAttribute].*, [PostType].[IsActive] from [PostAttribute] left join [PostType] on [PostAttribute].[TypeID] = [PostType].[ID] where [TypeID] = @TypeID");
-        //                    _dcInitTag.Add("Parameter", @"{ TypeID=""" + Request.QueryString["ID"] + @"|i"" }");
-        //                    _dcInitTag.Add("EnableScript", "True");
-        //                    _dcInitTag.Add("EnableCode", "True");
-        //                    _dcInitTag.Add("Xslt", "attributelist.xslt");
-        //                    _dc.Init(_dcInitTag, "PostAttributeControl", 999);
-        //                    _dc.InnerData = _dcData;
-        //                    _dc.Handle(ThreadEntity, this, _dcContent);
-        //                    Response.Write(_dcContent);
-        //                    break;
-        //                case "active":
-        //                    XiaoYang.Entity.EntityType.EditActive(Request.Form);
-        //                    break;
-        //                case "display":
-        //                    XiaoYang.Entity.EntityType.EditDisplay(Request.Form);
-        //                    break;
-        //                case "del":
-        //                    XiaoYang.Entity.EntityType.Del(Convert.ToInt16(Request.Form["ID"]));
-        //                    break;
-        //            }
-        //            break;
-        //        case "attr":
-        //            switch (Request.GroupString["type"]) {
-        //                case "add":
-        //                    XiaoYang.Entity.EntityAttribute.Add(Request.Form);
-        //                    break;
-        //                case "edit":
-        //                    XiaoYang.Entity.EntityAttribute.Edit(Request.Form);
-        //                    break;
-        //                case "del":
-        //                    XiaoYang.Entity.EntityAttribute.Del(Request.Form);
-        //                    break;
-        //            }
-        //            break;
-        //    }
-        //}
+                case "type":
+                    switch (Request.GroupString["type"]) {
+                        case "add":
+                            XiaoYang.Entity.EntityType.Add(Request.Form);
+                            break;
+                        //case "getattr":
+                        //    Xy.Web.Control.DataControl _dc = new Xy.Web.Control.DataControl();
+                        //    System.Collections.Specialized.NameValueCollection _dcInitTag = new System.Collections.Specialized.NameValueCollection();
+                        //    Xy.Web.HTMLContainer _dcData = new Xy.Web.HTMLContainer(WebSetting.Encoding);
+                        //    Xy.Web.HTMLContainer _dcContent = new Xy.Web.HTMLContainer(WebSetting.Encoding);
+                        //    _dcInitTag.Add("Provider", "Procedure");
+                        //    _dcInitTag.Add("Command", @"select [PostAttribute].*, [PostType].[IsActive] from [PostAttribute] left join [PostType] on [PostAttribute].[TypeID] = [PostType].[ID] where [TypeID] = @TypeID");
+                        //    _dcInitTag.Add("Parameter", @"{ TypeID=""" + Request.QueryString["ID"] + @"|i"" }");
+                        //    _dcInitTag.Add("EnableScript", "True");
+                        //    _dcInitTag.Add("EnableCode", "True");
+                        //    _dcInitTag.Add("Xslt", "attributelist.xslt");
+                        //    _dc.Init(_dcInitTag, "PostAttributeControl", 999);
+                        //    _dc.InnerData = _dcData;
+                        //    _dc.Handle(ThreadEntity, this, _dcContent);
+                        //    Response.Write(_dcContent);
+                        //    break;
+                        case "active":
+                            XiaoYang.Entity.EntityType.EditActive(Request.Form);
+                            break;
+                        case "display":
+                            XiaoYang.Entity.EntityType.EditDisplay(Request.Form);
+                            break;
+                        case "del":
+                            XiaoYang.Entity.EntityType.Del(Convert.ToInt16(Request.Form["ID"]));
+                            break;
+                    }
+                    break;
+                case "attr":
+                    switch (Request.GroupString["type"]) {
+                        case "add":
+                            XiaoYang.Entity.EntityAttribute.Add(Request.Form);
+                            break;
+                        case "edit":
+                            XiaoYang.Entity.EntityAttribute.Edit(Request.Form);
+                            break;
+                        case "del":
+                            XiaoYang.Entity.EntityAttribute.Del(Request.Form);
+                            break;
+                    }
+                    break;
+            }
+        }
 
         public override List<Xy.Web.Control.IControl> HandleControl(List<Xy.Web.Control.IControl> Controls) {
             return base.HandleControl(Controls);

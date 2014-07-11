@@ -18,10 +18,11 @@ namespace XiaoYang.Entity {
         public string Type { get; set; }
         public string Default { get; set; }
         public long Display { get; set; }
-        public bool IsMultiple { get; set; }
         public bool IsNull { get; set; }
         public string Description { get; set; }
-        public string Split { get; set; }
+        public bool IsPrimary { get; set; }
+        public bool IsIncrease { get; set; }
+        public long FKID { get; set; }
 
 		public static string R(string name) {
 		    return "XiaoYang_Entity_EntityAttribute_" + name;
@@ -56,10 +57,11 @@ namespace XiaoYang.Entity {
 			if (cols["Type"] != null) { this.Type = Convert.ToString(inTempRow["Type"]); }
 			if (cols["Default"] != null) { this.Default = Convert.ToString(inTempRow["Default"]); }
 			if (cols["Display"] != null) { this.Display = Convert.ToInt64(inTempRow["Display"]); }
-			if (cols["IsMultiple"] != null) { this.IsMultiple = Convert.ToBoolean(inTempRow["IsMultiple"]); }
 			if (cols["IsNull"] != null) { this.IsNull = Convert.ToBoolean(inTempRow["IsNull"]); }
 			if (cols["Description"] != null) { this.Description = Convert.ToString(inTempRow["Description"]); }
-			if (cols["Split"] != null) { this.Split = Convert.ToString(inTempRow["Split"]); }
+			if (cols["IsPrimary"] != null) { this.IsPrimary = Convert.ToBoolean(inTempRow["IsPrimary"]); }
+			if (cols["IsIncrease"] != null) { this.IsIncrease = Convert.ToBoolean(inTempRow["IsIncrease"]); }
+			if (cols["FKID"] != null) { this.FKID = Convert.ToInt64(inTempRow["FKID"]); }
 		}
 
 		public void FillRow(System.Data.DataRow inTempRow) {
@@ -70,10 +72,11 @@ namespace XiaoYang.Entity {
 			inTempRow["Type"] = this.Type;
 			inTempRow["Default"] = this.Default;
 			inTempRow["Display"] = this.Display;
-			inTempRow["IsMultiple"] = this.IsMultiple;
 			inTempRow["IsNull"] = this.IsNull;
 			inTempRow["Description"] = this.Description;
-			inTempRow["Split"] = this.Split;
+			inTempRow["IsPrimary"] = this.IsPrimary;
+			inTempRow["IsIncrease"] = this.IsIncrease;
+			inTempRow["FKID"] = this.FKID;
 		}
 
 		public Xy.Data.Procedure FillProcedure(Xy.Data.Procedure inItem) {
@@ -84,15 +87,16 @@ namespace XiaoYang.Entity {
 			inItem.SetItem("Type", this.Type);
 			inItem.SetItem("Default", this.Default);
 			inItem.SetItem("Display", this.Display);
-			inItem.SetItem("IsMultiple", this.IsMultiple);
 			inItem.SetItem("IsNull", this.IsNull);
 			inItem.SetItem("Description", this.Description);
-			inItem.SetItem("Split", this.Split);
+			inItem.SetItem("IsPrimary", this.IsPrimary);
+			inItem.SetItem("IsIncrease", this.IsIncrease);
+			inItem.SetItem("FKID", this.FKID);
 			return inItem;
 		}
 
 		public string[] GetAttributesName() {
-			return new string[]{ "ID", "TypeID", "Name", "Key", "Type", "Default", "Display", "IsMultiple", "IsNull", "Description", "Split" };
+			return new string[]{ "ID", "TypeID", "Name", "Key", "Type", "Default", "Display", "IsNull", "Description", "IsPrimary", "IsIncrease", "FKID" };
 		}
 
 		public object GetAttributesValue(string inName) {
@@ -111,14 +115,16 @@ namespace XiaoYang.Entity {
 					return this.Default;
 				case "Display":
 					return this.Display;
-				case "IsMultiple":
-					return this.IsMultiple;
 				case "IsNull":
 					return this.IsNull;
 				case "Description":
 					return this.Description;
-				case "Split":
-					return this.Split;
+				case "IsPrimary":
+					return this.IsPrimary;
+				case "IsIncrease":
+					return this.IsIncrease;
+				case "FKID":
+					return this.FKID;
 				default:
 					return null;
 			}
@@ -148,13 +154,14 @@ namespace XiaoYang.Entity {
 	@Type nvarchar(64),
 	@Default nvarchar(256),
 	@Display bigint,
-	@IsMultiple bit,
 	@IsNull bit,
 	@Description nvarchar(256),
-	@Split nvarchar(1)
+	@IsPrimary bit,
+	@IsIncrease bit,
+	@FKID bigint
 
-	[ID] , [TypeID] , [Name] , [Key] , [Type] , [Default] , [Display] , [IsMultiple] , [IsNull] , [Description] , [Split]
-	@ID , @TypeID , @Name , @Key , @Type , @Default , @Display , @IsMultiple , @IsNull , @Description , @Split
+	[ID] , [TypeID] , [Name] , [Key] , [Type] , [Default] , [Display] , [IsNull] , [Description] , [IsPrimary] , [IsIncrease] , [FKID]
+	@ID , @TypeID , @Name , @Key , @Type , @Default , @Display , @IsNull , @Description , @IsPrimary , @IsIncrease , @FKID
 	[ID] = @ID,
 	[TypeID] = @TypeID,
 	[Name] = @Name,
@@ -162,10 +169,11 @@ namespace XiaoYang.Entity {
 	[Type] = @Type,
 	[Default] = @Default,
 	[Display] = @Display,
-	[IsMultiple] = @IsMultiple,
 	[IsNull] = @IsNull,
 	[Description] = @Description,
-	[Split] = @Split
+	[IsPrimary] = @IsPrimary,
+	[IsIncrease] = @IsIncrease,
+	[FKID] = @FKID
 */
 #endregion
 
@@ -179,14 +187,15 @@ namespace XiaoYang.Entity {
             item.AddItem("Type", System.Data.DbType.System.Data.DbType.String);
             item.AddItem("Default", System.Data.DbType.System.Data.DbType.String);
             item.AddItem("Display", System.Data.DbType.System.Data.DbType.Int64);
-            item.AddItem("IsMultiple", System.Data.DbType.System.Data.DbType.Boolean);
             item.AddItem("IsNull", System.Data.DbType.System.Data.DbType.Boolean);
             item.AddItem("Description", System.Data.DbType.System.Data.DbType.String);
-            item.AddItem("Split", System.Data.DbType.System.Data.DbType.String);
+            item.AddItem("IsPrimary", System.Data.DbType.System.Data.DbType.Boolean);
+            item.AddItem("IsIncrease", System.Data.DbType.System.Data.DbType.Boolean);
+            item.AddItem("FKID", System.Data.DbType.System.Data.DbType.Int64);
             AddProcedure(item);
 
-            long formID, short formTypeID, string formName, string formKey, string formType, string formDefault, long formDisplay, bool formIsMultiple, bool formIsNull, string formDescription, string formSplit
-            formID, formTypeID, formName, formKey, formType, formDefault, formDisplay, formIsMultiple, formIsNull, formDescription, formSplit
+            long formID, short formTypeID, string formName, string formKey, string formType, string formDefault, long formDisplay, bool formIsNull, string formDescription, bool formIsPrimary, bool formIsIncrease, long formFKID
+            formID, formTypeID, formName, formKey, formType, formDefault, formDisplay, formIsNull, formDescription, formIsPrimary, formIsIncrease, formFKID
             protected long formID;
             protected short formTypeID;
             protected string formName;
@@ -194,10 +203,11 @@ namespace XiaoYang.Entity {
             protected string formType;
             protected string formDefault;
             protected long formDisplay;
-            protected bool formIsMultiple;
             protected bool formIsNull;
             protected string formDescription;
-            protected string formSplit;
+            protected bool formIsPrimary;
+            protected bool formIsIncrease;
+            protected long formFKID;
 
             formID = Convert.ToInt64(Request.Form["ID"]);
             formTypeID = Convert.ToInt16(Request.Form["TypeID"]);
@@ -206,13 +216,14 @@ namespace XiaoYang.Entity {
             formType = Request.Form["Type"];
             formDefault = Request.Form["Default"];
             formDisplay = Convert.ToInt64(Request.Form["Display"]);
-            formIsMultiple = Convert.ToBoolean(Request.Form["IsMultiple"]);
             formIsNull = Convert.ToBoolean(Request.Form["IsNull"]);
             formDescription = Request.Form["Description"];
-            formSplit = Request.Form["Split"];
+            formIsPrimary = Convert.ToBoolean(Request.Form["IsPrimary"]);
+            formIsIncrease = Convert.ToBoolean(Request.Form["IsIncrease"]);
+            formFKID = Convert.ToInt64(Request.Form["FKID"]);
 
-            long inID, short inTypeID, string inName, string inKey, string inType, string inDefault, long inDisplay, bool inIsMultiple, bool inIsNull, string inDescription, string inSplit
-            inID, inTypeID, inName, inKey, inType, inDefault, inDisplay, inIsMultiple, inIsNull, inDescription, inSplit
+            long inID, short inTypeID, string inName, string inKey, string inType, string inDefault, long inDisplay, bool inIsNull, string inDescription, bool inIsPrimary, bool inIsIncrease, long inFKID
+            inID, inTypeID, inName, inKey, inType, inDefault, inDisplay, inIsNull, inDescription, inIsPrimary, inIsIncrease, inFKID
             item.SetItem("ID", inID);
             item.SetItem("TypeID", inTypeID);
             item.SetItem("Name", inName);
@@ -220,12 +231,13 @@ namespace XiaoYang.Entity {
             item.SetItem("Type", inType);
             item.SetItem("Default", inDefault);
             item.SetItem("Display", inDisplay);
-            item.SetItem("IsMultiple", inIsMultiple);
             item.SetItem("IsNull", inIsNull);
             item.SetItem("Description", inDescription);
-            item.SetItem("Split", inSplit);
+            item.SetItem("IsPrimary", inIsPrimary);
+            item.SetItem("IsIncrease", inIsIncrease);
+            item.SetItem("FKID", inFKID);
 
-            ID, TypeID, Name, Key, Type, Default, Display, IsMultiple, IsNull, Description, Split
+            ID, TypeID, Name, Key, Type, Default, Display, IsNull, Description, IsPrimary, IsIncrease, FKID
             ID = _item.ID;
             TypeID = _item.TypeID;
             Name = _item.Name;
@@ -233,10 +245,11 @@ namespace XiaoYang.Entity {
             Type = _item.Type;
             Default = _item.Default;
             Display = _item.Display;
-            IsMultiple = _item.IsMultiple;
             IsNull = _item.IsNull;
             Description = _item.Description;
-            Split = _item.Split;
+            IsPrimary = _item.IsPrimary;
+            IsIncrease = _item.IsIncrease;
+            FKID = _item.FKID;
 
 */
 #endregion

@@ -59,13 +59,6 @@
     <Compile Include="EntityAttributeDisplay_XYFunction.cs">
       <DependentUpon>EntityAttributeDisplay.cs</DependentUpon>
     </Compile>
-    <Compile Include="EntityBase.cs" />
-    <Compile Include="EntityBase_XYBase.cs">
-      <DependentUpon>EntityBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EntityBase_XYFunction.cs">
-      <DependentUpon>EntityBase.cs</DependentUpon>
-    </Compile>
     <Compile Include="EntityType.cs" />
     <Compile Include="EntityType_XYBase.cs">
       <DependentUpon>EntityType.cs</DependentUpon>

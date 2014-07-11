@@ -18,12 +18,13 @@ namespace XiaoYang.Entity {
 			Add.AddItem("Name", System.Data.DbType.String);
 			Add.AddItem("Key", System.Data.DbType.String);
 			Add.AddItem("Type", System.Data.DbType.String);
-			Add.AddItem("IsNull", System.Data.DbType.Boolean);
-			Add.AddItem("IsMultiple", System.Data.DbType.Boolean);
-			Add.AddItem("Split", System.Data.DbType.String);
-			Add.AddItem("Description", System.Data.DbType.String);
 			Add.AddItem("Default", System.Data.DbType.String);
 			Add.AddItem("Display", System.Data.DbType.Int64);
+			Add.AddItem("IsNull", System.Data.DbType.Boolean);
+			Add.AddItem("Description", System.Data.DbType.String);
+			Add.AddItem("IsPrimary", System.Data.DbType.Boolean);
+			Add.AddItem("IsIncrease", System.Data.DbType.Boolean);
+			Add.AddItem("FKID", System.Data.DbType.Int64);
 			AddProcedure(Add);
 
 			Xy.Data.Procedure Del = new Xy.Data.Procedure(R("Del"));
@@ -35,12 +36,13 @@ namespace XiaoYang.Entity {
 			Edit.AddItem("Name", System.Data.DbType.String);
 			Edit.AddItem("Key", System.Data.DbType.String);
 			Edit.AddItem("Type", System.Data.DbType.String);
-			Edit.AddItem("IsNull", System.Data.DbType.Boolean);
-			Edit.AddItem("IsMultiple", System.Data.DbType.Boolean);
-			Edit.AddItem("Split", System.Data.DbType.String);
-			Edit.AddItem("Description", System.Data.DbType.String);
 			Edit.AddItem("Default", System.Data.DbType.String);
 			Edit.AddItem("Display", System.Data.DbType.Int64);
+			Edit.AddItem("IsNull", System.Data.DbType.Boolean);
+			Edit.AddItem("Description", System.Data.DbType.String);
+			Edit.AddItem("IsPrimary", System.Data.DbType.Boolean);
+			Edit.AddItem("IsIncrease", System.Data.DbType.Boolean);
+			Edit.AddItem("FKID", System.Data.DbType.Int64);
 			AddProcedure(Edit);
 
 			Xy.Data.Procedure Get = new Xy.Data.Procedure(R("Get"));
@@ -54,23 +56,24 @@ namespace XiaoYang.Entity {
 		}
 
 
-		#region long Add(short inTypeID, string inName, string inKey, string inType, bool inIsNull, bool inIsMultiple, string inSplit, string inDescription, string inDefault, long inDisplay, Xy.Data.DataBase DB = null)
-		public static long Add(short inTypeID, string inName, string inKey, string inType, bool inIsNull, bool inIsMultiple, string inSplit, string inDescription, string inDefault, long inDisplay, Xy.Data.DataBase DB = null) {
+		#region long Add(short inTypeID, string inName, string inKey, string inType, string inDefault, long inDisplay, bool inIsNull, string inDescription, bool inIsPrimary, bool inIsIncrease, long inFKID, Xy.Data.DataBase DB = null)
+		public static long Add(short inTypeID, string inName, string inKey, string inType, string inDefault, long inDisplay, bool inIsNull, string inDescription, bool inIsPrimary, bool inIsIncrease, long inFKID, Xy.Data.DataBase DB = null) {
 			Xy.Data.Procedure item = XiaoYang.Entity.EntityAttribute.GetProcedure(R("Add"));
 			item.SetItem("TypeID", inTypeID);
 			item.SetItem("Name", inName);
 			item.SetItem("Key", inKey);
 			item.SetItem("Type", inType);
-			item.SetItem("IsNull", inIsNull);
-			item.SetItem("IsMultiple", inIsMultiple);
-			item.SetItem("Split", inSplit);
-			item.SetItem("Description", inDescription);
 			item.SetItem("Default", inDefault);
 			item.SetItem("Display", inDisplay);
+			item.SetItem("IsNull", inIsNull);
+			item.SetItem("Description", inDescription);
+			item.SetItem("IsPrimary", inIsPrimary);
+			item.SetItem("IsIncrease", inIsIncrease);
+			item.SetItem("FKID", inFKID);
 			return Convert.ToInt64(item.InvokeProcedureResult(DB));
 		}
 		public static long Add(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
-			return Add(Convert.ToInt16(values["TypeID"]), values["Name"], values["Key"], values["Type"], Convert.ToBoolean(values["IsNull"]), Convert.ToBoolean(values["IsMultiple"]), values["Split"], values["Description"], values["Default"], Convert.ToInt64(values["Display"]), DB);
+			return Add(Convert.ToInt16(values["TypeID"]), values["Name"], values["Key"], values["Type"], values["Default"], Convert.ToInt64(values["Display"]), Convert.ToBoolean(values["IsNull"]), values["Description"], Convert.ToBoolean(values["IsPrimary"]), Convert.ToBoolean(values["IsIncrease"]), Convert.ToInt64(values["FKID"]), DB);
 		}
 		#endregion
 
@@ -85,23 +88,24 @@ namespace XiaoYang.Entity {
 		}
 		#endregion
 
-		#region int Edit(long inID, string inName, string inKey, string inType, bool inIsNull, bool inIsMultiple, string inSplit, string inDescription, string inDefault, long inDisplay, Xy.Data.DataBase DB = null)
-		public static int Edit(long inID, string inName, string inKey, string inType, bool inIsNull, bool inIsMultiple, string inSplit, string inDescription, string inDefault, long inDisplay, Xy.Data.DataBase DB = null) {
+		#region int Edit(long inID, string inName, string inKey, string inType, string inDefault, long inDisplay, bool inIsNull, string inDescription, bool inIsPrimary, bool inIsIncrease, long inFKID, Xy.Data.DataBase DB = null)
+		public static int Edit(long inID, string inName, string inKey, string inType, string inDefault, long inDisplay, bool inIsNull, string inDescription, bool inIsPrimary, bool inIsIncrease, long inFKID, Xy.Data.DataBase DB = null) {
 			Xy.Data.Procedure item = XiaoYang.Entity.EntityAttribute.GetProcedure(R("Edit"));
 			item.SetItem("ID", inID);
 			item.SetItem("Name", inName);
 			item.SetItem("Key", inKey);
 			item.SetItem("Type", inType);
-			item.SetItem("IsNull", inIsNull);
-			item.SetItem("IsMultiple", inIsMultiple);
-			item.SetItem("Split", inSplit);
-			item.SetItem("Description", inDescription);
 			item.SetItem("Default", inDefault);
 			item.SetItem("Display", inDisplay);
+			item.SetItem("IsNull", inIsNull);
+			item.SetItem("Description", inDescription);
+			item.SetItem("IsPrimary", inIsPrimary);
+			item.SetItem("IsIncrease", inIsIncrease);
+			item.SetItem("FKID", inFKID);
 			return item.InvokeProcedure(DB);
 		}
 		public static int Edit(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
-			return Edit(Convert.ToInt64(values["ID"]), values["Name"], values["Key"], values["Type"], Convert.ToBoolean(values["IsNull"]), Convert.ToBoolean(values["IsMultiple"]), values["Split"], values["Description"], values["Default"], Convert.ToInt64(values["Display"]), DB);
+			return Edit(Convert.ToInt64(values["ID"]), values["Name"], values["Key"], values["Type"], values["Default"], Convert.ToInt64(values["Display"]), Convert.ToBoolean(values["IsNull"]), values["Description"], Convert.ToBoolean(values["IsPrimary"]), Convert.ToBoolean(values["IsIncrease"]), Convert.ToInt64(values["FKID"]), DB);
 		}
 		#endregion
 

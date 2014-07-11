@@ -42,9 +42,10 @@
 						    <th>类型</th>
 						    <th>默认值</th>
                             <th>模板</th>
-                            <th>分隔</th>
-                            <th>复值</th>
-                            <th>空值</th>
+                            <th>允许空值</th>
+                            <th>主键</th>
+                            <th>自增</th>
+                            <th>外键</th>
                             <th>描述</th>
                             <th>操作</th>
 					    </tr>
@@ -69,9 +70,10 @@
                                     </xsl:choose>
                                 </td>
                                 <td><xsl:value-of select="DisplayName" /></td>
-                                <td><xsl:value-of select="Split" /></td>
-                                <td><xsl:value-of select="IsMultiple" /></td>
                                 <td><xsl:value-of select="IsNull" /></td>
+                                <td><xsl:value-of select="IsPrimary" /></td>
+                                <td><xsl:value-of select="IsIncrease" /></td>
+                                <td><xsl:value-of select="FKID" /></td>
                                 <td><xsl:value-of select="Description" /></td>
 						        <td>
                                     <xsl:choose>
