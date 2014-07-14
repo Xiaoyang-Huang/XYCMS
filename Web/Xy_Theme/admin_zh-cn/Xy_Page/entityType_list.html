@@ -125,7 +125,7 @@
                 if (result.status == "success") {
                     UpdateContent();
                 } else {
-                    notyfy({ text: result.message, type: 'error', layout: 'top' });
+                    notyfy({ text: result.message, type: 'error', layout: 'top', timeout:3000});
                 }
             })
         } catch (ex) {
@@ -134,15 +134,20 @@
         return false;
     })
 
-    function UpdateContent() {
-        $.ajax({
-            url: "<% @Tag Provider='Page' Name='Url' %>",
-            success: function (data) {
-                $data = $('.types', data);
-                $('.typelist .types').html($data.html());
-                $select = $('select[name=ParentTypeID]', data);
-                $('select[name=ParentTypeID]').html($select.html());
-            }
-        })
+    function UpdateContent(data) {
+        var result = eval('(' + data + ')');
+        if (result.status == "success") {
+            $.ajax({
+                url: "<% @Tag Provider='Page' Name='Url' %>",
+                success: function (data) {
+                    $data = $('.types', data);
+                    $('.typelist .types').html($data.html());
+                    $select = $('select[name=ParentTypeID]', data);
+                    $('select[name=ParentTypeID]').html($select.html());
+                }
+            })
+        } else {
+            notyfy({ text: result.message, type: 'error', layout: 'top', timeout: 3000 });
+        }
     }
 </script>

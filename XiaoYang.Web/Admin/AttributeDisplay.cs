@@ -16,8 +16,6 @@ namespace XiaoYang.Web.Admin {
                             .Replace("{{TypeKey}}", PageData["Type.Key"].GetDataString())
                             .Replace("{{TypeName}}", PageData["Type.Name"].GetDataString())
                             .Replace("{{EntityID}}", PageData["Entity.ID"] == null ? string.Empty : PageData["Entity.ID"].GetDataString())
-                            .Replace("{{IsMultiple}}", _attr.IsMultiple.ToString())
-                            .Replace("{{Split}}", _attr.Split)
                             .Replace("{{Value}}", PageData["Entity." + _attr.Key] == null ? _attr.Default : PageData["Entity." + _attr.Key].GetDataString());
             Xy.Web.HTMLContainer _container = new Xy.Web.HTMLContainer(WebSetting.Encoding);
             if (PageData["Resource" + _attrDisplay.ID] == null) {
