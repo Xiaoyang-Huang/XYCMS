@@ -40,11 +40,11 @@ namespace XiaoYang.Entity {
             throw new NotImplementedException();
         }
 
-        public System.Data.DataTable Get(long[] ID) {
+        public System.Data.DataTable Get(string where) {
             throw new NotImplementedException();
         }
 
-        public int Del(long[] ID) {
+        public int Del(string where) {
             throw new NotImplementedException();
         }
 

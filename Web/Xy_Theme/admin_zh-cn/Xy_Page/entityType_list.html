@@ -144,6 +144,26 @@
                     $('.typelist .types').html($data.html());
                     $select = $('select[name=ParentTypeID]', data);
                     $('select[name=ParentTypeID]').html($select.html());
+                    $nav = $('ul.menu-0', data);
+                    $('ul.menu-0').html($nav.html());
+                    $('#menu .collapse').on('show', function (e) {
+                        e.stopPropagation();
+                        $(this).parents('.hasSubmenu:first').addClass('active');
+                    })
+	                .on('hidden', function (e) {
+	                    e.stopPropagation();
+	                    $(this).parents('.hasSubmenu:first').removeClass('active');
+	                });
+	                $('.menu-0').find('a').each(function (i, o) {
+	                    var curUrl = location.href.toString();
+	                    if (curUrl.indexOf('#') > -1)
+	                        curUrl = curUrl.substr(0, curUrl.indexOf('#'));
+	                    if (o.href == curUrl) {
+	                        $(o).closest('ul.collapse').addClass('in');
+	                        $(o).closest('li.hasSubmenu').addClass('active');
+	                        $(o).closest('li').addClass('current');
+	                    }
+	                });
                 }
             })
         } else {

@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace XiaoYang.Entity {
+
+    public interface IEntity: Xy.Data.IDataModelDisplay {
+        void Get(string where);
+        void Add();
+        void Edit();
+        void Del();
+        List<IEntity> GetList(string where, int pageIndex, int pageSize, string order, ref int totalRowCount);
+
+        void SetAttributesValue(string inName, object value);
+    }
+
     public interface IEntityType {
         void ClearTable();
         void CreateTable();
@@ -15,9 +26,9 @@ namespace XiaoYang.Entity {
 
         long Add(System.Collections.Specialized.NameValueCollection values);
         int Edit(System.Collections.Specialized.NameValueCollection values, long[] ID);
-        System.Data.DataTable Get(long[] ID);
+        System.Data.DataTable Get(string where);
         //Entity GetEntity(long[] ID);
-        int Del(long[] ID);
+        int Del(string where);
         System.Data.DataTable GetList(string where, int pageIndex, int pageSize, string order, ref int totalRowCount);
         //EntityCollection GetEntityList(string where, int pageIndex, int pageSize, string order, ref int totalRowCount);
     }

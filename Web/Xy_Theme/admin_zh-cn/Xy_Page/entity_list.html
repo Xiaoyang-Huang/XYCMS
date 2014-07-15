@@ -15,19 +15,12 @@
         <div class="widget-body">
             <form id="FilterForm" method="post" action="<% @Tag Provider='Page' Name='Url' %>">
                 <input type="hidden" name="PageIndex" value="<% @Tag Provider="Form" Name="PageIndex" Default="0" %>" />
-                <input type="hidden" name="Filter" value="<% @Data Provider="Data" Name="Attributes" %><xsl:if test="Key != 'TypeID' and Key != 'IsActive' and Key != 'UpdateTime'" ><xsl:value-of select="Key" />,</xsl:if><% @End %>" />
+                <input type="hidden" name="Filter" value="" />
                 <div class="row-fluid">
                     <div class="span10">
                         <label>请选择显示字段</label>
                         <% @Data Provider="Data" Name="Attributes" %>
-                            <xsl:choose>
-                                <xsl:when test="Key != 'TypeID' and Key != 'IsActive' and Key != 'UpdateTime'">
-                                    <a class="btn filterbtn filter{Key} active" href="javascript:ToggleFilter('{Key}');" value="{Key}"><xsl:value-of select="Name" /></a>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <a class="btn filterbtn filter{Key}" href="javascript:ToggleFilter('{Key}');" value="{Key}"><xsl:value-of select="Name" /></a>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                            <a class="btn filterbtn filter{Key}" href="javascript:ToggleFilter('{Key}');" value="{Key}"><xsl:value-of select="Name" /></a>
                         <% @End %>
                     </div>
                     <div class="span2">
@@ -87,5 +80,4 @@
         })
         return false;
     }
-    UpdateContent();
 </script>

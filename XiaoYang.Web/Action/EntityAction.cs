@@ -20,41 +20,41 @@ namespace XiaoYang.Web.Action {
 
         public override void ValidateUrl() {
             switch (Request.GroupString["class"]) {
-        //        case "entity":
-        //            switch (Request.GroupString["type"]) {
-        //                case "list":
-        //                    short _typeID = Convert.ToInt16(Request.GroupString["id"]);
+                case "entity":
+                    switch (Request.GroupString["type"]) {
+                        case "list":
+                            short _typeID = Convert.ToInt16(Request.GroupString["id"]);
 
-        //                    int _totalCout = -1;
+                            int _totalCout = -1;
 
-        //                    int _pageIndex = 0,_pageSize = 20;
-        //                    string _where = string.Empty, _order = string.Empty, _filters = string.Empty;
-        //                    if (!string.IsNullOrEmpty(Request.Form["PageIndex"])) _pageIndex = Convert.ToInt32(Request.Form["PageIndex"]);
-        //                    if (!string.IsNullOrEmpty(Request.Form["PageSize"])) _pageSize = Convert.ToInt32(Request.Form["PageSize"]);
-        //                    if (!string.IsNullOrEmpty(Request.Form["Where"])) _where = Request.Form["Where"];
-        //                    if (!string.IsNullOrEmpty(Request.Form["Order"])) _order = Request.Form["Order"];
-        //                    if (!string.IsNullOrEmpty(Request.Form["Filter"])) _filters = Request.Form["Filter"].Trim(',') + ',';
-
-        //                    XiaoYang.Entity.EntityHelper _helper = new Entity.EntityHelper(_typeID);
-
-
-        //                    PageData.AddXyDataModel("EntityType", Entity.EntityType.GetInstance(_typeID));
-        //                    System.Data.DataTable _dt = new System.Data.DataTable();
-        //                    _dt.Columns.Add("Name", typeof(string));
-        //                    _dt.Columns.Add("Key", typeof(string));
-        //                    _dt.Columns.Add("IsShow", typeof(bool));
-        //                    for (int i = 0; i < _helper.CacheInstance.AttributeKeys.Length; i++) {
-        //                        System.Data.DataRow _row = _dt.NewRow();
-        //                        _row["Name"] = _helper.CacheInstance.AttributeNames[i];
-        //                        _row["Key"] = _helper.CacheInstance.AttributeKeys[i];
-        //                        _row["IsShow"] = _filters.IndexOf(_helper.CacheInstance.AttributeKeys[i] + ',') != -1;
-        //                        _dt.Rows.Add(_row);
-        //                    }
-        //                    PageData.Add("Attributes", _dt);
-        //                    XiaoYang.Entity.EntityCollection _ec = _helper.GetList(_where, _pageIndex, _pageSize, _order, ref _totalCout);
-        //                    PageData.AddEntireXyDataModel("EntityList", _ec);
-        //                    PageData["EntityList"].CreatePagination(_pageIndex, _pageSize, _totalCout, 9);
-        //                    break;
+                            int _pageIndex = 0,_pageSize = 20;
+                            string _where = string.Empty, _order = string.Empty, _filters = string.Empty;
+                            if (!string.IsNullOrEmpty(Request.Form["PageIndex"])) _pageIndex = Convert.ToInt32(Request.Form["PageIndex"]);
+                            if (!string.IsNullOrEmpty(Request.Form["PageSize"])) _pageSize = Convert.ToInt32(Request.Form["PageSize"]);
+                            if (!string.IsNullOrEmpty(Request.Form["Where"])) _where = Request.Form["Where"];
+                            if (!string.IsNullOrEmpty(Request.Form["Order"])) _order = Request.Form["Order"];
+                            if (!string.IsNullOrEmpty(Request.Form["Filter"])) _filters = Request.Form["Filter"].Trim(',') + ',';
+                            
+                            PageData.AddXyDataModel("EntityType", Entity.EntityType.GetInstance(_typeID));
+                            System.Data.DataTable _dt = new System.Data.DataTable();
+                            _dt.Columns.Add("Name", typeof(string));
+                            _dt.Columns.Add("Key", typeof(string));
+                            _dt.Columns.Add("IsShow", typeof(bool));
+                            System.Data.DataTable _attrs = Entity.EntityAttribute.GetAllByTypeID(_typeID);
+                            for (int i = 0; i < _attrs.Rows.Count; i++) {
+                                System.Data.DataRow _row = _dt.NewRow();
+                                Entity.EntityAttribute _attr = new Entity.EntityAttribute();
+                                _attr.Fill(_attrs.Rows[i]);
+                                _row["Name"] = _attr.Name;
+                                _row["Key"] = _attr.Key;
+                                _row["IsShow"] = _filters.IndexOf(_attr.Key + ',') != -1;
+                                _dt.Rows.Add(_row);
+                            }
+                            PageData.Add("Attributes", _dt);
+                            //XiaoYang.Entity.EntityCollection _ec = _helper.GetList(_where, _pageIndex, _pageSize, _order, ref _totalCout);
+                            //PageData.AddEntireXyDataModel("EntityList", _ec);
+                            //PageData["EntityList"].CreatePagination(_pageIndex, _pageSize, _totalCout, 9);
+                            break;
         //                case "add":
         //                    XiaoYang.Entity.EntityHelper _addHelper = new Entity.EntityHelper(Convert.ToInt16(Request.GroupString["id"]));
         //                    long _addID = _addHelper.Add(Request.Form);
@@ -72,8 +72,8 @@ namespace XiaoYang.Web.Action {
         //                    XiaoYang.Entity.EntityHelper _delHelper = new Entity.EntityHelper(_delEntity.TypeID);
         //                    _delHelper.Del(_delEntity.ID);
         //                    break;
-        //            }
-        //            break;
+                    }
+                    break;
                 case "type":
                     switch (Request.GroupString["type"]) {
                         case "add":

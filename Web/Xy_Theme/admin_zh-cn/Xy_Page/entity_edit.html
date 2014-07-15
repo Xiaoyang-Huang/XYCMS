@@ -14,16 +14,10 @@
             </div>
             <div class="widget-body">
                 <div class="tab-content">
-                    <% @Data Provider="Data" Name="TypeChain" EnableScript="True" %>
+                    <% @Data Provider="Data" Name="TypeChain" %>
                     <div id="type{position()}" class="tab-pane widget-body-regular">
                         [% @Data Provider="Procedure" Command="select * from [EntityAttribute] where [TypeID] = @TypeID" Parameter="{ TypeID='<xsl:value-of select="ID" />|s' }" EnableScript="True" %]
-                        <div class="row-fluid">
-                            <label>
-                                <xyxsl:value-of select="Name" />
-                                <xyxsl:if test="string-length(Description) > 0">(<xyxsl:value-of select="Description" />)</xyxsl:if>
-                            </label>
-                            [% @Include Type="XiaoYang.Web,XiaoYang.Web.Admin.AttributeDisplay" Value="{ AttributeID='<xyxsl:value-of select="ID" />' }" EnableScript="True" %]
-                        </div>
+                        
                         [% @End %]
                     </div>
                     <% @End %>
