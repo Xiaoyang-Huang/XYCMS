@@ -11,6 +11,10 @@
     <DebugMode>True</DebugMode>
     <Config>
       <Item Name="ext">html</Item>
+      <Item Name="EntityHandles">
+        XiaoYang.Entity,XiaoYang.Entity.Handle.Default
+        XiaoYang.Entity,XiaoYang.Entity.Handle.MultipleLanguage
+      </Item>
     </Config>
   </WebSetting>
   <WebSetting Name="admin_en-us">

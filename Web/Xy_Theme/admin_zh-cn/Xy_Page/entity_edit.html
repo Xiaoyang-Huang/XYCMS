@@ -1,31 +1,26 @@
 ﻿<% @SetData Name="PageClass" %>entityedit<% @End %>
 <% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
 <div class="innerLR innerT">
-    <form id="EditForm" method="post" action="/entityAction_entity_<% @Tag Provider="Group" Name="type" %>_<% @Tag Provider="Group" Name="id" %>.<% @Tag Provider="Config" Name="ext" %>"  enctype="multipart/form-data">
-        <input name="ID" value="<% @Tag Provider="Group" Name="id" %>" type="hidden" />
-        <input name="IsActive" value="True" type="hidden" />
-        <div class="widget widget-tabs widget-tabs-double-2">
-            <div class="widget-head">
-                <ul>
-                    <% @Data Provider="Data" Name="TypeChain" %>
-                        <li><a class="glyphicons notes_2" href="#type{position()}" data-toggle="tab"><i></i><span><xsl:value-of select="Name" /></span></a></li>
-                    <% @End %>
-                </ul>
-            </div>
-            <div class="widget-body">
-                <div class="tab-content">
-                    <% @Data Provider="Data" Name="TypeChain" %>
-                    <div id="type{position()}" class="tab-pane widget-body-regular">
-                        [% @Data Provider="Procedure" Command="select * from [EntityAttribute] where [TypeID] = @TypeID" Parameter="{ TypeID='<xsl:value-of select="ID" />|s' }" EnableScript="True" %]
-                        
-                        [% @End %]
-                    </div>
-                    <% @End %>
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-primary pull-right" type="submit">保存</button>
-    </form>
+    <div class="widget widget-tabs widget-tabs-double">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<ul>
+                <% @Data Provider="Data" Name="TypeChain" %>
+				    <li><a href="#Entity_{Key}" data-toggle="tab"><span class="strong"><xsl:value-of select="Name" /></span><span><xsl:value-of select="Description" /></span></a></li>
+                <% @End %>
+			</ul>
+		</div>
+		<!-- // Widget heading END -->
+		<div class="widget-body">
+			<div class="tab-content">
+                <% @Data Provider="Data" Name="TypeChain" %>
+				    <div class="tab-pane" id="Entity_{Key}">
+                        <xsl:value-of select="EditPage" />
+				    </div>
+                <% @End %>
+			</div>
+		</div>
+	</div>
 </div>
 <% @Include File="foot.html" EnableScript="True" Config="admin_zh-cn" %>
 <script type="text/javascript">

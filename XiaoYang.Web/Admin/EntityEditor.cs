@@ -22,19 +22,37 @@ namespace XiaoYang.Web.Admin {
                     //PageData.AddXyDataModel("Entity", _entity);
                     break;
             }
-            System.Data.DataTable _typeChain = Entity.EntityType.Get(_typeID);
-            if (_typeChain.Rows.Count == 0) throw new Exception("can not found entity type");
-            Entity.EntityType _type = new Entity.EntityType();
-            _type.Fill(_typeChain.Rows[0]);
-            while (_type.ParentTypeID > 0) {
+            System.Data.DataTable _typeChain = new System.Data.DataTable();
+            _typeChain.Columns.Add("ID", typeof(Int16));
+            _typeChain.Columns.Add("Name", typeof(String));
+            _typeChain.Columns.Add("Key", typeof(String));
+            _typeChain.Columns.Add("IsDisplay", typeof(Boolean));
+            _typeChain.Columns.Add("IsActive", typeof(Boolean));
+            _typeChain.Columns.Add("UpdateTime", typeof(DateTime));
+            _typeChain.Columns.Add("Description", typeof(String));
+            _typeChain.Columns.Add("ParentTypeID", typeof(Int16));
+            _typeChain.Columns.Add("Handle", typeof(String));
+            _typeChain.Columns.Add("EditPage", typeof(String));
+            Entity.EntityType _type = Entity.EntityType.GetInstance(_typeID);
+            if (_type == null) throw new Exception("can not found entity type");
+            PageData.AddXyDataModel("Type", _type);
+            while (_type != null) {
+                System.Data.DataRow _row = _typeChain.NewRow();
+                _type.FillRow(_row);
+
+                Xy.Web.Page.PageAbstract _editPage = _type.HandleInstance.GetEditPageClass();
+                _editPage.Init(this, WebSetting);
+                _editPage.SetNewContainer(new Xy.Web.HTMLContainer(WebSetting.Encoding));
+                _editPage.SetContent(_type.HandleInstance.GetEditPageTemplate(new Xy.Web.HTMLContainer(WebSetting.Encoding)));
+                _editPage.Handle("editPage", string.Empty, true, true);
+                _row["EditPage"] = _editPage.HTMLContainer.ToString();
+
+                _typeChain.Rows.Add(_row);
+
                 _type = Entity.EntityType.GetInstance(_type.ParentTypeID);
-                System.Data.DataRow _newRow = _typeChain.NewRow();
-                _type.FillRow(_newRow);
-                _typeChain.Rows.Add(_newRow);
             }
             _typeChain.DefaultView.Sort = "ID ASC";
             _typeChain = _typeChain.DefaultView.ToTable();
-            PageData.AddXyDataModel("Type", _type);
             PageData.Add("TypeChain", _typeChain);
         }
     }

@@ -20,7 +20,7 @@
 
     <Item File="entity_list.html" Page="XiaoYang.Web,XiaoYang.Web.Action.EntityAction" Mime="text/html" EnableScript="True"><![CDATA[^/entityAction_(?<class>entity)_(?<type>list)(_(?<id>\d+))?\.(aspx|html)$]]></Item>
     <Item File="entity_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityEditor" Mime="text/html" EnableScript="True"><![CDATA[^/entity_(?<type>[A-Za-z]*)_(?<id>\d+)\.(aspx|html)$]]></Item>
-    <Item File="entityType_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/entityType_list\.(aspx|html)$]]></Item>
+    <Item File="entityType_list.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityTypeEditor" Mime="text/html" EnableScript="True"><![CDATA[^/entityType_list\.(aspx|html)$]]></Item>
     <Item File="entityType_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityTypeEditor" Mime="text/html" EnableScript="True"><![CDATA[^/entityType_edit_(?<id>\d+)\.(aspx|html)$]]></Item>
     <Item File="entityAttributeDisplay_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/entityAttributeDisplay_list\.(aspx|html)$]]></Item>
     <Item File="entityAttributeDisplay_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.AttributeDisplayEditor" Mime="text/html" EnableScript="True"><![CDATA[^/entityAttributeDisplay_edit\.(aspx|html)$]]></Item>

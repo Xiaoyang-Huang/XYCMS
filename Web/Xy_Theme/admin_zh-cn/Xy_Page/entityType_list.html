@@ -19,6 +19,7 @@
 						    <th>名称</th>
                             <th>父级</th>
                             <th>标识</th>
+                            <th>绑定类</th>
 						    <th>描述</th>
 						    <th>操作</th>
 					    </tr>
@@ -42,6 +43,7 @@
                                     </xsl:choose>
                                 </td>
                                 <td><xsl:value-of select="Key" /></td>
+                                <td><xsl:value-of select="Handle" /></td>
 						        <td><xsl:value-of select="Description" /></td>
 						        <td>
                                     <a href="/entityType_edit_{ID}.{$Ext}" target="_blank" class="btn">管理属性</a>
@@ -77,6 +79,9 @@
                     <div class="span2">
                         <input class="mb0 span12" id="powername" name="Name" type="text" placeholder="类型名称" />
                     </div>
+                    <div class="span1">
+                        <input class="mb0 span12" id="key" name="Key" type="text" placeholder="请输入标识" />
+                    </div>
                     <div class="span2">
                         <select name="ParentTypeID">
                             <option value="0">请选择父级类型</option>
@@ -87,9 +92,14 @@
                         </select>
                     </div>
                     <div class="span2">
-                        <input class="mb0 span12" id="key" name="Key" type="text" placeholder="请输入标识" />
+                        <select name="Handle">
+                            <option value="XiaoYang.Entity.Handle.Default">请选择处理类</option>
+                            <% @Data Provider="Data" Name="Handles" Root="DataTable/Handles" %>
+                                <option value="{.}"><xsl:value-of select="." /></option>
+                            <% @End %>
+                        </select>
                     </div>
-                    <div class="span4">
+                    <div class="span3">
                         <input class="mb0 span12" id="powerkey" name="Description" type="text" placeholder="类型描述" />
                     </div>
                     <div class="span2">
@@ -123,7 +133,7 @@
             $form.ajaxSubmit(function (data) {
                 var result = eval('(' + data + ')');
                 if (result.status == "success") {
-                    UpdateContent();
+                    UpdateContent(data);
                 } else {
                     notyfy({ text: result.message, type: 'error', layout: 'top', timeout:3000});
                 }

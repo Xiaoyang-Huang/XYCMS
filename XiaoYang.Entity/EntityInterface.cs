@@ -14,23 +14,27 @@ namespace XiaoYang.Entity {
         void SetAttributesValue(string inName, object value);
     }
 
-    public interface IEntityType {
-        void ClearTable();
+    public interface IEntityHandle {
+
+        void Init(XiaoYang.Entity.EntityType type);
+
         void CreateTable();
         void DropTable();
+        Xy.Web.Page.PageAbstract GetEditPageClass();
+        Xy.Web.HTMLContainer GetEditPageTemplate(Xy.Web.HTMLContainer container);
 
-        void AddAttribute();
-        void EditAttribute();
-        void DelAttribute();
-        void GetAttributes();
+        //void AddAttribute();
+        //void EditAttribute();
+        //void DelAttribute();
+        //void GetAttributes();
 
-        long Add(System.Collections.Specialized.NameValueCollection values);
-        int Edit(System.Collections.Specialized.NameValueCollection values, long[] ID);
-        System.Data.DataTable Get(string where);
-        //Entity GetEntity(long[] ID);
-        int Del(string where);
-        System.Data.DataTable GetList(string where, int pageIndex, int pageSize, string order, ref int totalRowCount);
-        //EntityCollection GetEntityList(string where, int pageIndex, int pageSize, string order, ref int totalRowCount);
+        //long Add(System.Collections.Specialized.NameValueCollection values);
+        //int Edit(System.Collections.Specialized.NameValueCollection values, long[] ID);
+        //System.Data.DataTable Get(string where);
+        ////Entity GetEntity(long[] ID);
+        //int Del(string where);
+        //System.Data.DataTable GetList(string where, int pageIndex, int pageSize, string order, ref int totalRowCount);
+        ////EntityCollection GetEntityList(string where, int pageIndex, int pageSize, string order, ref int totalRowCount);
     }
 
     public interface IEntityAttribute {

@@ -51,10 +51,7 @@
       </tbody>
     </table>
     <div class="row-fluid mt10">
-      <div class="span6">
-        <a class="btn btn-default btn-primary" href="entity_add_{$TypeID}.{$Ext}">添加发布</a>
-      </div>
-      <div class="pagination pagination-right margin-none span6">
+      <div class="pagination pagination-right margin-none span12">
 			  <ul>
         [% @Data Provider="Data" Name="EntityList" Root="/" %]
           <xyxsl:for-each select="{$TypeName}Collection/{$TypeName}" />

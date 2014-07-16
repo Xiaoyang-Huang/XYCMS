@@ -17,6 +17,7 @@ namespace XiaoYang.Entity {
 			Add.AddItem("Name", System.Data.DbType.String);
 			Add.AddItem("Key", System.Data.DbType.String);
 			Add.AddItem("ParentTypeID", System.Data.DbType.Int16);
+			Add.AddItem("Handle", System.Data.DbType.String);
 			Add.AddItem("Description", System.Data.DbType.String);
 			AddProcedure(Add);
 
@@ -49,17 +50,18 @@ namespace XiaoYang.Entity {
 		}
 
 
-		#region short Add(string inName, string inKey, short inParentTypeID, string inDescription, Xy.Data.DataBase DB = null)
-		public static short Add(string inName, string inKey, short inParentTypeID, string inDescription, Xy.Data.DataBase DB = null) {
+		#region short Add(string inName, string inKey, short inParentTypeID, string inHandle, string inDescription, Xy.Data.DataBase DB = null)
+		public static short Add(string inName, string inKey, short inParentTypeID, string inHandle, string inDescription, Xy.Data.DataBase DB = null) {
 			Xy.Data.Procedure item = XiaoYang.Entity.EntityType.GetProcedure(R("Add"));
 			item.SetItem("Name", inName);
 			item.SetItem("Key", inKey);
 			item.SetItem("ParentTypeID", inParentTypeID);
+			item.SetItem("Handle", inHandle);
 			item.SetItem("Description", inDescription);
 			return Convert.ToInt16(item.InvokeProcedureResult(DB));
 		}
 		public static short Add(System.Collections.Specialized.NameValueCollection values, Xy.Data.DataBase DB = null) {
-			return Add(values["Name"], values["Key"], Convert.ToInt16(values["ParentTypeID"]), values["Description"], DB);
+			return Add(values["Name"], values["Key"], Convert.ToInt16(values["ParentTypeID"]), values["Handle"], values["Description"], DB);
 		}
 		#endregion
 

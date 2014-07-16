@@ -65,10 +65,25 @@ namespace DesktopControl {
             //XiaoYang.Entity.EntityCollection _ec = new XiaoYang.Entity.EntityCollection(_helper.Get(39), 23);
             //XiaoYang.Entity.Entity _e = _ec[0];
             //Console.WriteLine(_e.GetXml().CreateNavigator().OuterXml);
-            string test1 = "abcd";
-            string test2 = "ab";
-            Console.WriteLine(test1.Substring(test2.Length));
+
+            //System.Data.DataTable _dt = XiaoYang.Entity.EntityType.Get(3);
+            //foreach (System.Data.DataColumn _col in _dt.Columns) {
+            //    Xy.Tools.Debug.Log.WriteEventLog(_col.Caption + " | " + _col.DataType);
+            //}
+
+            Xy.Tools.Debug.TimeWatch _tw = new Xy.Tools.Debug.TimeWatch();
+            _tw.WatchEvent += new Xy.Tools.Debug.TimeWatch.WatchFunction(_tw_WatchEvent1);
+            _tw.WatchEvent += new Xy.Tools.Debug.TimeWatch.WatchFunction(_tw_WatchEvent2);
+            _tw.Watch(10000);
         }
+
+        static void _tw_WatchEvent1() {
+            Type test = Type.GetType("System.Int16");
+        }
+        static void _tw_WatchEvent2() {
+            Type test = typeof(int);
+        }
+
         #region Multiple attribute test
 //        static void Main(string[] args) {
 //            Xy.Tools.Debug.TimeWatch _tw = new Xy.Tools.Debug.TimeWatch();

@@ -19,6 +19,7 @@ namespace XiaoYang.Entity {
         public DateTime UpdateTime { get; set; }
         public string Description { get; set; }
         public short ParentTypeID { get; set; }
+        public string Handle { get; set; }
 
 		public static string R(string name) {
 		    return "XiaoYang_Entity_EntityType_" + name;
@@ -54,6 +55,7 @@ namespace XiaoYang.Entity {
 			if (cols["UpdateTime"] != null) { this.UpdateTime = Convert.ToDateTime(inTempRow["UpdateTime"]); }
 			if (cols["Description"] != null) { this.Description = Convert.ToString(inTempRow["Description"]); }
 			if (cols["ParentTypeID"] != null) { this.ParentTypeID = Convert.ToInt16(inTempRow["ParentTypeID"]); }
+			if (cols["Handle"] != null) { this.Handle = Convert.ToString(inTempRow["Handle"]); }
 		}
 
 		public void FillRow(System.Data.DataRow inTempRow) {
@@ -65,6 +67,7 @@ namespace XiaoYang.Entity {
 			inTempRow["UpdateTime"] = this.UpdateTime;
 			inTempRow["Description"] = this.Description;
 			inTempRow["ParentTypeID"] = this.ParentTypeID;
+			inTempRow["Handle"] = this.Handle;
 		}
 
 		public Xy.Data.Procedure FillProcedure(Xy.Data.Procedure inItem) {
@@ -76,11 +79,12 @@ namespace XiaoYang.Entity {
 			inItem.SetItem("UpdateTime", this.UpdateTime);
 			inItem.SetItem("Description", this.Description);
 			inItem.SetItem("ParentTypeID", this.ParentTypeID);
+			inItem.SetItem("Handle", this.Handle);
 			return inItem;
 		}
 
 		public string[] GetAttributesName() {
-			return new string[]{ "ID", "Name", "Key", "IsDisplay", "IsActive", "UpdateTime", "Description", "ParentTypeID" };
+			return new string[]{ "ID", "Name", "Key", "IsDisplay", "IsActive", "UpdateTime", "Description", "ParentTypeID", "Handle" };
 		}
 
 		public object GetAttributesValue(string inName) {
@@ -101,6 +105,8 @@ namespace XiaoYang.Entity {
 					return this.Description;
 				case "ParentTypeID":
 					return this.ParentTypeID;
+				case "Handle":
+					return this.Handle;
 				default:
 					return null;
 			}
@@ -130,10 +136,11 @@ namespace XiaoYang.Entity {
 	@IsActive bit,
 	@UpdateTime datetime,
 	@Description nvarchar(256),
-	@ParentTypeID smallint
+	@ParentTypeID smallint,
+	@Handle nvarchar(64)
 
-	[ID] , [Name] , [Key] , [IsDisplay] , [IsActive] , [UpdateTime] , [Description] , [ParentTypeID]
-	@ID , @Name , @Key , @IsDisplay , @IsActive , @UpdateTime , @Description , @ParentTypeID
+	[ID] , [Name] , [Key] , [IsDisplay] , [IsActive] , [UpdateTime] , [Description] , [ParentTypeID] , [Handle]
+	@ID , @Name , @Key , @IsDisplay , @IsActive , @UpdateTime , @Description , @ParentTypeID , @Handle
 	[ID] = @ID,
 	[Name] = @Name,
 	[Key] = @Key,
@@ -141,7 +148,8 @@ namespace XiaoYang.Entity {
 	[IsActive] = @IsActive,
 	[UpdateTime] = @UpdateTime,
 	[Description] = @Description,
-	[ParentTypeID] = @ParentTypeID
+	[ParentTypeID] = @ParentTypeID,
+	[Handle] = @Handle
 */
 #endregion
 
@@ -156,10 +164,11 @@ namespace XiaoYang.Entity {
             item.AddItem("UpdateTime", System.Data.DbType.System.Data.DbType.DateTime);
             item.AddItem("Description", System.Data.DbType.System.Data.DbType.String);
             item.AddItem("ParentTypeID", System.Data.DbType.System.Data.DbType.Int16);
+            item.AddItem("Handle", System.Data.DbType.System.Data.DbType.String);
             AddProcedure(item);
 
-            short formID, string formName, string formKey, bool formIsDisplay, bool formIsActive, DateTime formUpdateTime, string formDescription, short formParentTypeID
-            formID, formName, formKey, formIsDisplay, formIsActive, formUpdateTime, formDescription, formParentTypeID
+            short formID, string formName, string formKey, bool formIsDisplay, bool formIsActive, DateTime formUpdateTime, string formDescription, short formParentTypeID, string formHandle
+            formID, formName, formKey, formIsDisplay, formIsActive, formUpdateTime, formDescription, formParentTypeID, formHandle
             protected short formID;
             protected string formName;
             protected string formKey;
@@ -168,6 +177,7 @@ namespace XiaoYang.Entity {
             protected DateTime formUpdateTime;
             protected string formDescription;
             protected short formParentTypeID;
+            protected string formHandle;
 
             formID = Convert.ToInt16(Request.Form["ID"]);
             formName = Request.Form["Name"];
@@ -177,9 +187,10 @@ namespace XiaoYang.Entity {
             formUpdateTime = Convert.ToDateTime(Request.Form["UpdateTime"]);
             formDescription = Request.Form["Description"];
             formParentTypeID = Convert.ToInt16(Request.Form["ParentTypeID"]);
+            formHandle = Request.Form["Handle"];
 
-            short inID, string inName, string inKey, bool inIsDisplay, bool inIsActive, DateTime inUpdateTime, string inDescription, short inParentTypeID
-            inID, inName, inKey, inIsDisplay, inIsActive, inUpdateTime, inDescription, inParentTypeID
+            short inID, string inName, string inKey, bool inIsDisplay, bool inIsActive, DateTime inUpdateTime, string inDescription, short inParentTypeID, string inHandle
+            inID, inName, inKey, inIsDisplay, inIsActive, inUpdateTime, inDescription, inParentTypeID, inHandle
             item.SetItem("ID", inID);
             item.SetItem("Name", inName);
             item.SetItem("Key", inKey);
@@ -188,8 +199,9 @@ namespace XiaoYang.Entity {
             item.SetItem("UpdateTime", inUpdateTime);
             item.SetItem("Description", inDescription);
             item.SetItem("ParentTypeID", inParentTypeID);
+            item.SetItem("Handle", inHandle);
 
-            ID, Name, Key, IsDisplay, IsActive, UpdateTime, Description, ParentTypeID
+            ID, Name, Key, IsDisplay, IsActive, UpdateTime, Description, ParentTypeID, Handle
             ID = _item.ID;
             Name = _item.Name;
             Key = _item.Key;
@@ -198,6 +210,7 @@ namespace XiaoYang.Entity {
             UpdateTime = _item.UpdateTime;
             Description = _item.Description;
             ParentTypeID = _item.ParentTypeID;
+            Handle = _item.Handle;
 
 */
 #endregion
