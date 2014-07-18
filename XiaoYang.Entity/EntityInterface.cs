@@ -21,7 +21,6 @@ namespace XiaoYang.Entity {
         void CreateTable();
         void DropTable();
         Xy.Web.Page.PageAbstract GetEditPageClass();
-        Xy.Web.HTMLContainer GetEditPageTemplate(Xy.Web.HTMLContainer container);
 
         //void AddAttribute();
         //void EditAttribute();

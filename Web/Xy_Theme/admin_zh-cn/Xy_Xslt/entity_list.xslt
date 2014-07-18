@@ -14,7 +14,7 @@
           <xsl:for-each select="DataTable/DataItem">
             <xsl:if test="IsShow = 'True'">
               <th>
-                <xsl:value-of select="Name" />
+                <xsl:value-of select="Name"/>
               </th>
             </xsl:if>
           </xsl:for-each>

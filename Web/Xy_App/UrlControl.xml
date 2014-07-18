@@ -37,7 +37,7 @@
     <Item Page="XiaoYang.Web,XiaoYang.Web.Action.TemplateAction" Mime="text/html" EnableScript="True"><![CDATA[^/templateAction_(?<class>[A-Za-z]*)_(?<type>[A-Za-z]*)\.(aspx|html)$]]></Item>
 
     <Item File="error.html" Page="Xy.Web,Xy.Web.Page.ErrorPage" Mime="text/html" EnableScript="True"><![CDATA[^/error.(aspx|html)$]]></Item>
+
+    <Item Page="XiaoYang.Web,XiaoYang.Web.Admin.AttributeDisplay" />
   </WebSite>
-  
-  <Item Page="XiaoYang.Web,XiaoYang.Web.Admin.AttributeDisplay" />
 </UrlRewrite>

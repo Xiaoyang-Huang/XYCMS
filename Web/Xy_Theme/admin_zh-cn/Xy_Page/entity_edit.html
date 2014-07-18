@@ -15,7 +15,7 @@
 			<div class="tab-content">
                 <% @Data Provider="Data" Name="TypeChain" %>
 				    <div class="tab-pane" id="Entity_{Key}">
-                        <xsl:value-of select="EditPage" />
+                        <xsl:value-of select="EditPage" disable-output-escaping="yes" />
 				    </div>
                 <% @End %>
 			</div>
