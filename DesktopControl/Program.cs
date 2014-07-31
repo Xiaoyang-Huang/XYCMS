@@ -71,10 +71,32 @@ namespace DesktopControl {
             //    Xy.Tools.Debug.Log.WriteEventLog(_col.Caption + " | " + _col.DataType);
             //}
 
-            Xy.Tools.Debug.TimeWatch _tw = new Xy.Tools.Debug.TimeWatch();
-            _tw.WatchEvent += new Xy.Tools.Debug.TimeWatch.WatchFunction(_tw_WatchEvent1);
-            _tw.WatchEvent += new Xy.Tools.Debug.TimeWatch.WatchFunction(_tw_WatchEvent2);
-            _tw.Watch(10000);
+            //Xy.Tools.Debug.TimeWatch _tw = new Xy.Tools.Debug.TimeWatch();
+            //_tw.WatchEvent += new Xy.Tools.Debug.TimeWatch.WatchFunction(_tw_WatchEvent1);
+            //_tw.WatchEvent += new Xy.Tools.Debug.TimeWatch.WatchFunction(_tw_WatchEvent2);
+            //_tw.Watch(10000);
+            System.Text.RegularExpressions.Regex _reg = new System.Text.RegularExpressions.Regex(@"^/Xy_Theme/mobile/Xy_Css/\w+(_(?<compress>\d+))?\.less$");
+            string _test1 = "/Xy_Theme/mobile/Xy_Css/style_compress.less";
+            string _test2 = "/Xy_Theme/mobile/Xy_Css/styles.less";
+            string _test3 = "/Xy_Theme/mobile/Xy_Css/style_123.less";
+            Console.WriteLine(_reg.IsMatch(_test1));
+            Console.WriteLine(_reg.Match(_test1).Groups["compress"]);
+            foreach (System.Text.RegularExpressions.Group _regGroup in _reg.Match(_test1).Groups) {
+                Console.WriteLine(_regGroup.Index + " | " + _regGroup.Value);
+            }
+            Console.WriteLine("====================================================================");
+            Console.WriteLine(_reg.IsMatch(_test2));
+            Console.WriteLine(_reg.Match(_test2).Groups["compress"]);
+            foreach (System.Text.RegularExpressions.Group _regGroup in _reg.Match(_test2).Groups) {
+                Console.WriteLine(_regGroup.Index + " | " + _regGroup.Value);
+            }
+            Console.WriteLine("====================================================================");
+            Console.WriteLine(_reg.IsMatch(_test3));
+            Console.WriteLine(_reg.Match(_test3).Groups["compress"]);
+            foreach (System.Text.RegularExpressions.Group _regGroup in _reg.Match(_test3).Groups) {
+                Console.WriteLine(_regGroup.Index + " | " + _regGroup.Value);
+            }
+            Console.WriteLine("====================================================================");
         }
 
         static void _tw_WatchEvent1() {

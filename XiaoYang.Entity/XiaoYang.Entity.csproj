@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\Attributes.cs" />
     <Compile Include="EntityInterface.cs" />
     <Compile Include="Handle\Default.cs" />
     <Compile Include="Handle\MultipleLanguage.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Runtime\HandleFactory.cs" />
     <Compile Include="Tools\Entity.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

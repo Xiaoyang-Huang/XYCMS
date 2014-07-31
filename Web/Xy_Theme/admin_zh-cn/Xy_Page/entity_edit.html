@@ -6,7 +6,9 @@
 		<div class="widget-head">
 			<ul>
                 <% @Data Provider="Data" Name="TypeChain" %>
-				    <li><a href="#Entity_{Key}" data-toggle="tab"><span class="strong"><xsl:value-of select="Name" /></span><span><xsl:value-of select="Description" /></span></a></li>
+                    <xsl:if test="IsNeedInput = 'True'">
+				        <li><a href="#Entity_{Key}" data-toggle="tab"><span class="strong"><xsl:value-of select="Name" /></span><span><xsl:value-of select="Description" /></span></a></li>
+                    </xsl:if>
                 <% @End %>
 			</ul>
 		</div>
@@ -14,9 +16,18 @@
 		<div class="widget-body">
 			<div class="tab-content">
                 <% @Data Provider="Data" Name="TypeChain" %>
-				    <div class="tab-pane" id="Entity_{Key}">
-                        <xsl:value-of select="EditPage" disable-output-escaping="yes" />
-				    </div>
+                    <xsl:choose>
+                        <xsl:when test="IsNeedInput = 'True'">
+				            <div class="tab-pane" id="Entity_{Key}">
+                                <xsl:value-of select="EditPage" disable-output-escaping="yes" />
+				            </div>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <div class="tab-pane" style="display:none">
+                                <xsl:value-of select="EditPage" disable-output-escaping="yes" />
+				            </div>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 <% @End %>
 			</div>
 		</div>

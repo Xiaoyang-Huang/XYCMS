@@ -22,17 +22,9 @@ namespace XiaoYang.Web.Admin {
                     //PageData.AddXyDataModel("Entity", _entity);
                     break;
             }
-            System.Data.DataTable _typeChain = new System.Data.DataTable();
-            _typeChain.Columns.Add("ID", typeof(Int16));
-            _typeChain.Columns.Add("Name", typeof(String));
-            _typeChain.Columns.Add("Key", typeof(String));
-            _typeChain.Columns.Add("IsDisplay", typeof(Boolean));
-            _typeChain.Columns.Add("IsActive", typeof(Boolean));
-            _typeChain.Columns.Add("UpdateTime", typeof(DateTime));
-            _typeChain.Columns.Add("Description", typeof(String));
-            _typeChain.Columns.Add("ParentTypeID", typeof(Int16));
-            _typeChain.Columns.Add("Handle", typeof(String));
+            System.Data.DataTable _typeChain = Entity.EntityType.CreateEmptyTable();
             _typeChain.Columns.Add("EditPage", typeof(String));
+            _typeChain.Columns.Add("IsNeedInput", typeof(Boolean));
             Entity.EntityType _type = Entity.EntityType.GetInstance(_typeID);
             if (_type == null) throw new Exception("can not found entity type");
             PageData.AddXyDataModel("Type", _type);
@@ -45,6 +37,8 @@ namespace XiaoYang.Web.Admin {
                 _editPage.SetNewContainer(new Xy.Web.HTMLContainer(WebSetting.Encoding));
                 _editPage.Handle("editPage", string.Empty, true, true);
                 _row["EditPage"] = _editPage.HTMLContainer.ToString();
+
+                _row["IsNeedInput"] = Entity.Cache.EntityCacheCollection.GetInstance(_type.ID).IsNeedInput;
 
                 _typeChain.Rows.Add(_row);
 

@@ -99,6 +99,16 @@ namespace XiaoYang.Entity {
 			return new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xmlBuilder.ToString()));
 		}
 
+		public static System.Data.DataTable CreateEmptyTable() {
+			System.Data.DataTable _table = new System.Data.DataTable();
+			_table.Columns.Add("ID", typeof(Int64));
+			_table.Columns.Add("Name", typeof(String));
+			_table.Columns.Add("Template", typeof(String));
+			_table.Columns.Add("Resource", typeof(String));
+			_table.Columns.Add("TypeClass", typeof(String));
+			return _table;
+		}
+
     }
 }
 

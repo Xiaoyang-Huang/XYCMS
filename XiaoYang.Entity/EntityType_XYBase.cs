@@ -123,6 +123,20 @@ namespace XiaoYang.Entity {
 			return new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xmlBuilder.ToString()));
 		}
 
+		public static System.Data.DataTable CreateEmptyTable() {
+			System.Data.DataTable _table = new System.Data.DataTable();
+			_table.Columns.Add("ID", typeof(Int16));
+			_table.Columns.Add("Name", typeof(String));
+			_table.Columns.Add("Key", typeof(String));
+			_table.Columns.Add("IsDisplay", typeof(Boolean));
+			_table.Columns.Add("IsActive", typeof(Boolean));
+			_table.Columns.Add("UpdateTime", typeof(DateTime));
+			_table.Columns.Add("Description", typeof(String));
+			_table.Columns.Add("ParentTypeID", typeof(Int16));
+			_table.Columns.Add("Handle", typeof(String));
+			return _table;
+		}
+
     }
 }
 
