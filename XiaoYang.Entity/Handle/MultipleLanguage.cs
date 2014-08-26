@@ -8,19 +8,20 @@ namespace XiaoYang.Entity.Handle {
             throw new NotImplementedException();
         }
 
-        public void CreateTable() {
-            throw new NotImplementedException();
-        }
-
-        public void DropTable() {
-            throw new NotImplementedException();
-        }
-
         public Xy.Web.Page.PageAbstract GetEditPageClass() {
             throw new NotImplementedException();
         }
 
         public Xy.Web.HTMLContainer GetEditPageTemplate(Xy.Web.HTMLContainer container) {
+            throw new NotImplementedException();
+        }
+
+
+        public void CreateTable(Xy.Data.DataBase DB) {
+            throw new NotImplementedException();
+        }
+
+        public void DropTable(Xy.Data.DataBase DB) {
             throw new NotImplementedException();
         }
     }

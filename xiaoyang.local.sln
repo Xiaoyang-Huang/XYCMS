@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiaoYang.Web", "XiaoYang.Web\XiaoYang.Web.csproj", "{3F90A314-B8A2-4809-8A9F-BBDDDD6124A3}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web", "Web\", "{344E8A74-035C-4072-A491-AB9F7DAFFF6E}"
@@ -21,6 +21,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web", "Web\", "{344E8A74-03
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "18730"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject

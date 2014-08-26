@@ -18,8 +18,8 @@ namespace XiaoYang.Entity {
 
         void Init(XiaoYang.Entity.EntityType type);
 
-        void CreateTable();
-        void DropTable();
+        void CreateTable(Xy.Data.DataBase DB);
+        void DropTable(Xy.Data.DataBase DB);
         Xy.Web.Page.PageAbstract GetEditPageClass();
 
         //void AddAttribute();

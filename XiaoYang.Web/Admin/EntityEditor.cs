@@ -31,10 +31,8 @@ namespace XiaoYang.Web.Admin {
             while (_type != null) {
                 System.Data.DataRow _row = _typeChain.NewRow();
                 _type.FillRow(_row);
-
                 Xy.Web.Page.PageAbstract _editPage = _type.HandleInstance.GetEditPageClass();
-                _editPage.Init(this, WebSetting);
-                _editPage.SetNewContainer(new Xy.Web.HTMLContainer(WebSetting.Encoding));
+                _editPage.Init(this, WebSetting, new Xy.Web.HTMLContainer(WebSetting.Encoding));
                 _editPage.Handle("editPage", string.Empty, true, true);
                 _row["EditPage"] = _editPage.HTMLContainer.ToString();
 

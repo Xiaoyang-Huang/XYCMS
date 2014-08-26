@@ -7,6 +7,7 @@
 <% @SetData Name="PageClass" %>attrlist<% @End %>
 <% @Include File="head.html" EnableScript="True" Config="admin_zh-cn" %>
 <div class="innerLR innerT">
+    <h3><% @Tag Provider="Data" Name="Item.Name" %>(<% @Tag Provider="Data" Name="Item.Key" %>)</h3>
     <div class="widget">
 		<!-- Widget heading -->
 		<div class="widget-head">
@@ -38,17 +39,51 @@
 				    <!-- Table body -->
 				    <tbody>
 					    <!-- Table row -->
-                        <% @Data Provider="Data" Name="Attributes" XsltParameter="{ CurrentTypeID='Data:Item.ID' CurrentTypeActive='Data:Item.IsActive' Ext='Config:ext' }" %>
+                        <% @Data Provider="Data" Name="Attributes" XsltParameter="{ CurrentTypeID='Data:Item.ID' CurrentTypeActive='Data:Item.IsActive' Ext='Config:ext' }" EnableScript="True" %>
 					        <tr class="item{ID}">
-						        <td><xsl:value-of select="Name" /></td>
+						        <td>
+                                    <xsl:choose>
+                                        <xsl:when test="$CurrentTypeID = TypeID">
+                                            <b><xsl:value-of select="Name" /></b>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="Name" />
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </td>
                                 <td><xsl:value-of select="Key" /></td>
 						        <td><xsl:value-of select="Type" /></td>
                                 <td><xsl:choose><xsl:when test="string-length(Default) > 0"><xsl:value-of select="Default" /></xsl:when><xsl:otherwise><i>Null</i></xsl:otherwise></xsl:choose></td>
                                 <td><xsl:choose><xsl:when test="Display = 0">无</xsl:when><xsl:otherwise><xsl:value-of select="DisplayName" /></xsl:otherwise></xsl:choose></td>
-                                <td><xsl:choose><xsl:when test="IsNull = 'True'">是</xsl:when><xsl:otherwise>否</xsl:otherwise></xsl:choose></td>
-                                <td><xsl:choose><xsl:when test="IsPrimary = 'True'">是</xsl:when><xsl:otherwise>否</xsl:otherwise></xsl:choose></td>
-                                <td><xsl:choose><xsl:when test="IsIncrease = 'True'">是</xsl:when><xsl:otherwise>否</xsl:otherwise></xsl:choose></td>
-                                <td><xsl:choose><xsl:when test="FKID = 0">无</xsl:when><xsl:otherwise><xsl:value-of select="FKID" /></xsl:otherwise></xsl:choose></td>
+                                <xsl:choose>
+                                    <xsl:when test="IsNull = 'True'">
+                                        <td class="table-yes">是</td>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <td class="table-no">否</td>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="IsPrimary = 'True'">
+                                        <td class="table-yes">是</td>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <td class="table-no">否</td>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="IsIncrease = 'True'">
+                                        <td class="table-yes">是</td>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <td class="table-no">否</td>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <td><xsl:choose><xsl:when test="FKID = 0">无</xsl:when><xsl:otherwise>
+                                    [% @Data Provider="Procedure" Command="select * from [EntityAttribute] where [ID] = <xsl:value-of select ="FKID"/>"%]
+                                        <xyxsl:value-of select="Name" />(<xyxsl:value-of select="Key" />)
+                                    [% @End %]
+                                    </xsl:otherwise></xsl:choose></td>
                                 <td><xsl:value-of select="Description" /></td>
 						        <td>
                                     <xsl:choose>
@@ -89,7 +124,7 @@
                             <label>标识</label>
                             <input type="text" name="Key" />
                         </div>
-                        <div class="span6">
+                        <div class="span3">
                             <label>类型</label>
                             <select id="typeName" style="width:150px">
                                 <option value="System.Data.DbType.AnsiString">AnsiString(x)</option>
@@ -123,13 +158,24 @@
                             <input id="typeLength" style="width:50px" type="text" value="" />
                             <input type="hidden" name="Type"/>
                         </div>
+                        <div class="span3">
+                            <label>外键</label>
+                            <select name="FKID">
+                                <option value="0">请选择外键</option>
+                                <% @Data Provider="Data" Name="Attributes" XsltParameter="{ CurrentTypeID='Data:Item.ID' }" %>
+                                    <xsl:if test="TypeID != $CurrentTypeID">
+                                        <option value="{ID}"><xsl:value-of select="Name" />(<xsl:value-of select="Key" />)</option>
+                                    </xsl:if>
+                                <% @End %>
+                            </select>
+                        </div>
                     </div>
                     <div class="row-fluid">
-                        <div class="span4">
+                        <div class="span3">
                             <label>默认值</label>
                             <input name="Default" type="text" value="" />
                         </div>
-                        <div class="span4">
+                        <div class="span3">
                             <label>模板</label>
                             <select name="Display">
                                 <option value="0">请选择模板</option>
@@ -138,22 +184,17 @@
                                 <% @End %>
                             </select>
                         </div>
-                        <div class="span4">
+                        <div class="span6">
                             <div class="row-fluid">
-                                <div class="span3">
+                                <div class="span4">
                                     <label>主键</label>
                                     <input type="checkbox" name="IsPrimary" value="True"/>
                                 </div>
-                                <div class="span3">
-                                    <label>外键</label>
-                                    <input type="hidden" value="0" name="FKID" />
-                                    <a href="javascript:;" class="btn" >选择</a>
-                                </div>
-                                <div class="span3">
+                                <div class="span4">
                                     <label>空值</label>
                                     <input type="checkbox" name="IsNull" value="True"/>
                                 </div>
-                                <div class="span3">
+                                <div class="span4">
                                     <label>自增</label>
                                     <input type="checkbox" name="IsIncrease" value="True"/>
                                 </div>
@@ -206,11 +247,13 @@
         $form.find('input[name=IsNull]').prop('checked', $row.find('td:eq(5)').text() == '是');
         $form.find('input[name=IsPrimary]').prop('checked', $row.find('td:eq(6)').text() == '是');
         $form.find('input[name=IsIncrease]').prop('checked', $row.find('td:eq(7)').text() == '是');
-        $form.find('input[name=FKID]').val($row.find('td:eq(8)').text() == "无" ? "0" : $row.find('td:eq(8)').text());
+        $form.find('select[name=FKID]').val($row.find('td:eq(8)').text() == "无" ? "0" : $row.find('td:eq(8)').text());
         $form.find('input[name=Description]').val($row.find('td:eq(9)').text().trim());
         $form.attr('action', "/entityAction_attr_edit.html");
-        $form.find('input[type=button]').val('确定');
-        var resetBtn = $form.find('input[type=button]').after('<input type="button" class="btn" id="reset_btn" onclick="ResetForm()" value="重置表单" />');
+        if ($form.find('#reset_btn').length == 0) {
+            $form.find('input[type=button]').val('确定');
+            var resetBtn = $form.find('input[type=button]').after('<input type="button" class="btn" id="reset_btn" onclick="ResetForm()" value="重置表单" />');
+        }
     }
 
     function ResetForm() {

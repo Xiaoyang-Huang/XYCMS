@@ -18,7 +18,7 @@ namespace XiaoYang.Web.Action {
                             if (string.Compare(Request.Form["captcha"], Session["login-SecureCode"], true) != 0) throw new Exception(WebSetting.Translate["login-failed"]);
                         }
                         Xy.Web.Security.IUser _u = User.User.Login(Request.Form["username"], Request.Form["password"], true, out error);
-                        if (_u.HasPower("BO-Login")) _u.WriteCookie();
+                        if (_u.HasPower("BO-Login")) _u.WriteCookie(WebSetting.SessionOutTime, URL.Domain);
                         if (!string.IsNullOrEmpty(error)) {
                             Session["errCount"] = _errCount.ToString();
                             throw new Exception(WebSetting.Translate["login-failed"]);

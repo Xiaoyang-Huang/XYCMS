@@ -8,13 +8,14 @@ namespace XiaoYang.Entity.Handle {
         private Entity.EntityType _type;
         EntityAttribute[] _attrs;
 
-        public void DropTable() {
+        public void DropTable(Xy.Data.DataBase DB) {
             StringBuilder _command = new StringBuilder();
             _command.AppendFormat("DROP TABLE [Entity_{0}]", _type.Key);
             Xy.Data.Procedure _procedure = new Xy.Data.Procedure("DropTable", _command.ToString());
+            _procedure.InvokeProcedure(DB);
         }
 
-        public void CreateTable() {
+        public void CreateTable(Xy.Data.DataBase DB) {
             
             StringBuilder _command = new StringBuilder();
             StringBuilder _commandAfter = new StringBuilder();
@@ -43,6 +44,7 @@ namespace XiaoYang.Entity.Handle {
             _command.Append(_commandAfter);
             if (!_hasPrimaryKey) throw new Exception("missing primary key");
             Xy.Data.Procedure _procedure = new Xy.Data.Procedure("CreateTable", _command.ToString());
+            _procedure.InvokeProcedure(DB);
         }
 
         public void Init(EntityType type) {
@@ -82,6 +84,7 @@ namespace XiaoYang.Entity.Handle {
     </xsl:choose>
 <% @End %>";
             private string _hiddenInput = @"<input type=""hidden"" name=""{0}"" value=""{1}"" />";
+            private List<string> _cachedResource = new List<string>();
 
             internal Entity.EntityType _type;
             internal Entity.EntityAttribute[] _attrs;
@@ -94,6 +97,15 @@ namespace XiaoYang.Entity.Handle {
                 System.Data.DataTable _attrTable = Entity.EntityAttribute.GetByTypeID(_type.ID);
                 _attrTable.Columns.Add("DisplayHTML", typeof(String));
 
+                StringBuilder _attrResource = new StringBuilder();
+
+                if (PageData["CachedAttributeResourceID"] != null) {
+                    _cachedResource = new List<string>(PageData["CachedAttributeResourceID"].GetDataString().Split(','));
+                }
+                if (PageData["CachedAttributeResource"] != null) {
+                    _attrResource.AppendLine(PageData["CachedAttributeResource"].GetDataString());
+                }
+
                 foreach (System.Data.DataRow _row in _attrTable.Rows) {
                     long _attrID = Convert.ToInt64(_row["ID"]);
                     long _displayID = Convert.ToInt64(_row["Display"]);
@@ -104,15 +116,20 @@ namespace XiaoYang.Entity.Handle {
                             .Replace("{{AttributeKey}}", _row["Key"].ToString())
                             .Replace("{{TypeID}}", _type.ID.ToString())
                             .Replace("{{TypeName}}", _type.Name.ToString())
-                            .Replace("{{TypeKey}}", _type.Key.ToString());
-                        //Value:属性值, 对于新Post此标签将用作处理默认值
-                        //PostID:此模板关联的PostID
+                            .Replace("{{TypeKey}}", _type.Key.ToString())
+                            .Replace("{{Value}}", string.Empty) //Value:属性值, 对于新Post此标签将用作处理默认值
+                            .Replace("{{PostID}}", "0"); //PostID:此模板关联的PostID
                         _row["DisplayHTML"] = _attrTemplate;
+                        if (!_cachedResource.Contains(_display.ID.ToString())){
+                            _cachedResource.Add(_display.ID.ToString());
+                            _attrResource.AppendLine(_display.Resource);
+                        }
                     } else {
                         _row["DisplayHTML"] = string.Format(_hiddenInput, _row["Key"].ToString(), string.Empty);
                     }
                 }
-
+                PageData.Add("CachedAttributeResourceID", string.Join(",", _cachedResource.ToArray()));
+                PageData.Add("CachedAttributeResource", _attrResource.ToString());
                 PageData.Add("AttributesTable", _attrTable);
             }
 

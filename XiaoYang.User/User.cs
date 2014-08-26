@@ -147,10 +147,10 @@ namespace XiaoYang.User {
         #endregion
 
 
-        public void WriteCookie() {
+        public void WriteCookie(int Expire, string Domain) {
             string userKey = GenerateUserKey(Name, Password);
             if (string.IsNullOrEmpty(Xy.Tools.Web.Cookie.Get("UserKey")) || Xy.Tools.Web.Cookie.Get("UserKey").CompareTo(userKey) != 0) {
-                Xy.Tools.Web.Cookie.Add("UserKey", userKey);
+                Xy.Tools.Web.Cookie.Add("UserKey", userKey, Expire, Domain);
             }
         }
     }

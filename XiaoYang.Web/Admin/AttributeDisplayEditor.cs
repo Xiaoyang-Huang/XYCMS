@@ -4,6 +4,11 @@ using System.Text;
 
 namespace XiaoYang.Web.Admin {
     public class AttributeDisplayEditor : Xy.Web.Page.PageAbstract {
+        public override void onGetRequest() {
+            if (!string.IsNullOrEmpty(Request.QueryString["ID"])) {
+                PageData.AddXyDataModel("Item", XiaoYang.Entity.EntityAttributeDisplay.GetInstance(Request.QueryString));
+            }
+        }
         //public override void onGetRequest() {
         //    if (!string.IsNullOrEmpty(Request.QueryString["ID"])) {
         //        PageData.AddXyDataModel("Item", XiaoYang.Entity.EntityAttributeDisplay.GetInstance(Request.QueryString));

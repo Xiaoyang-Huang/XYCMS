@@ -15,10 +15,10 @@ namespace XiaoYang.Entity {
 
         static void EntityAttribute_BeforeAdd(Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
             short _typeId = Convert.ToInt16(procedure.GetItem("TypeID"));
-            string _name = procedure.GetItem("Name").ToString();
+            string _key = procedure.GetItem("Key").ToString();
             System.Data.DataTable _dt = GetAllByTypeID(_typeId, DB);
             foreach (System.Data.DataRow _row in _dt.Rows) {
-                if (string.Compare(_row["Name"].ToString(), _name, true) == 0) throw new Exception(_name + " was exist in the type chain");
+                if (string.Compare(_row["Key"].ToString(), _key, true) == 0) throw new Exception(_key + " was exist in the type chain");
             }
         }
 

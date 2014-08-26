@@ -30,7 +30,11 @@ namespace XiaoYang.Entity {
                 }
             } else {
                 System.Data.DataTable _dt = EntityType.GetChildType(_typeID);
-                if (_dt.Rows.Count > 0) throw new Exception("Child type is actived");
+                if (_dt.Rows.Count > 0) {
+                    foreach (System.Data.DataRow _row in _dt.Rows) {
+                        if (Convert.ToBoolean(_row["IsActive"])) throw new Exception("Child type is actived");
+                    }
+                } 
             }
         }
 
@@ -39,10 +43,11 @@ namespace XiaoYang.Entity {
             bool _isActive = Convert.ToBoolean(procedure.GetItem("IsActive"));
             EntityType _type = EntityType.GetInstance(_typeID, DB);
             if (_isActive) {
-                _type.HandleInstance.CreateTable();
+                _type.HandleInstance.CreateTable(DB);
             } else {
-                _type.HandleInstance.DropTable();
+                _type.HandleInstance.DropTable(DB);
             }
+
         }
     }
 }
