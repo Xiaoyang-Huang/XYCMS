@@ -34,7 +34,7 @@
 				<div class="widget-body">
 				
 					<!-- Form -->
-					<form method="post" action="/accessAction_login.<% @Tag Provider='Config' Name='ext' %>" class="ajaxForm">
+					<form method="post" action="<% @Tag Provider='App' Name='BasePath' %>/accessAction_login.<% @Tag Provider='Config' Name='ext' %>" class="ajaxForm">
 						<label>用户名</label>
 						<input type="text" class="input-block-level" name="username" placeholder="请输入您的用户名或邮箱"/> 
 						<label>密码</label>
@@ -72,7 +72,7 @@
 </body>
 <% @Tag Provider="Data" Name="CurrentUser.ID" Mode="Exist" EnableScript="True" %>
 <script type="text/javascript">
-    location.href = "/dashboard.<% @Tag Provider='Config' Name='ext' %>";
+    location.href = "<% @Tag Provider='App' Name='BasePath' %>/dashboard.<% @Tag Provider='Config' Name='ext' %>";
 </script>
 <% @End %>
 <script type="text/javascript">
@@ -87,7 +87,7 @@
         $form.ajaxSubmit({ includeHidden: true, success: function (data) {
             var result = eval('(' + data + ')');
             if (result.status == "success") {
-                location.href = "/dashboard.html"
+                location.href = "<% @Tag Provider='App' Name='BasePath' %>/dashboard.html"
             } else {
                 if (isNaN(result.count) || result.count > 5) {
                     $('#captcha-wrap').show();

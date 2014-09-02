@@ -38,6 +38,8 @@
 
     <Item File="error.html" Page="Xy.Web,Xy.Web.Page.ErrorPage" Mime="text/html" EnableScript="True"><![CDATA[^/error.(aspx|html)$]]></Item>
   </WebSite>
+
+  <WebSite SiteUrlReg="admin\..*" WebConfig="admin_normal" />
   
   <Item Page="XiaoYang.Web,XiaoYang.Web.Admin.AttributeDisplay" />
 </UrlRewrite>

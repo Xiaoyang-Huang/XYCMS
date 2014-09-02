@@ -2,15 +2,15 @@
 <ul class="menu-0">
 	<!-- Blank page template menu example -->
 	<!-- Menu Regular Item (add class active to LI for an active menu item) -->
-	<li class="glyphicons right_arrow"><a href="/dashboard.<% @Tag Provider="Config" Name="ext" %>"><i></i><span>控制面板</span></a></li>
+	<li class="glyphicons right_arrow"><a href="<% @Tag Provider='App' Name='BasePath' %>/dashboard.<% @Tag Provider="Config" Name="ext" %>"><i></i><span>控制面板</span></a></li>
 
     <!-- Submenu Level 1 (active) -->
 	<li class="hasSubmenu glyphicons right_arrow">
 		<a data-toggle="collapse" href="#submenu-article"><i></i><span>发布内容管理</span></a>
 		<ul class="collapse" id="submenu-article">
 			<!-- Submenu Level 1 Regular Items -->
-            <% @Data Provider="Procedure" Command="select * from [EntityType] where [IsActive] = 'True' and [IsDisplay] = 'True'" EnableScript="True" %>
-                <li><a href="/entityAction_entity_list_{ID}.[% @Tag Provider='Config' Name='ext' %]"><span><xsl:value-of select="Name" /></span></a></li>
+            <% @Data Provider="Procedure" Command="select * from [EntityType] where [IsActive] = 'True' and [IsDisplay] = 'True'" XsltParameter="{ Ext='Config:ext' BasePath='App:BasePath' }" %>
+                <li><a href="{$BasePath}/entityAction_entity_list_{ID}.{$Ext}"><span><xsl:value-of select="Name" /></span></a></li>
             <% @End %>
 			<!-- // Submenu Level 1 Regular Items END -->
 		</ul>
@@ -21,8 +21,8 @@
 		<a data-toggle="collapse" href="#submenu-entity"><i></i><span>实体发布系统</span></a>
 		<ul class="collapse" id="submenu-entity">
 			<!-- Submenu Level 1 Regular Items -->
-			<li><a href="/entityType_list.<% @Tag Provider="Config" Name="ext" %>"><span>实体类型</span></a></li>
-            <li><a href="/entityAttributeDisplay_list.<% @Tag Provider="Config" Name="ext" %>"><span>实体属性模板</span></a></li>
+			<li><a href="<% @Tag Provider='App' Name='BasePath' %>/entityType_list.<% @Tag Provider='Config' Name='ext' %>"><span>实体类型</span></a></li>
+            <li><a href="<% @Tag Provider='App' Name='BasePath' %>/entityAttributeDisplay_list.<% @Tag Provider='Config' Name='ext' %>"><span>实体属性模板</span></a></li>
 			<!-- // Submenu Level 1 Regular Items END -->
 		</ul>
 	</li>
@@ -32,9 +32,9 @@
 		<a data-toggle="collapse" href="#submenu-user"><i></i><span>用户系统</span></a>
 		<ul class="collapse" id="submenu-user">
 			<!-- Submenu Level 1 Regular Items -->
-			<li><a href="/userPower_list.<% @Tag Provider="Config" Name="ext" %>"><span>权限列表</span></a></li>
-			<li><a href="/userGroup_list.<% @Tag Provider="Config" Name="ext" %>"><span>分组列表</span></a></li>
-            <li><a href="/user_list.<% @Tag Provider="Config" Name="ext" %>"><span>用户列表</span></a></li>
+			<li><a href="<% @Tag Provider='App' Name='BasePath' %>/userPower_list.<% @Tag Provider='Config' Name='ext' %>"><span>权限列表</span></a></li>
+			<li><a href="<% @Tag Provider='App' Name='BasePath' %>/userGroup_list.<% @Tag Provider='Config' Name='ext' %>"><span>分组列表</span></a></li>
+            <li><a href="<% @Tag Provider='App' Name='BasePath' %>/user_list.<% @Tag Provider='Config' Name='ext' %>"><span>用户列表</span></a></li>
 			<!-- // Submenu Level 1 Regular Items END -->
 		</ul>
 	</li>

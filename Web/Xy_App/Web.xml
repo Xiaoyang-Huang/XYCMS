@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <WebSettingCollection>
   <WebSetting>
-    <SiteUrl>self</SiteUrl>
+    <Root>test</Root>
     <Theme>admin_default</Theme>
     <Encoding>UTF-8</Encoding>
     <SessionOutTime>30</SessionOutTime>
@@ -12,6 +12,11 @@
     <Config>
       <Item Name="ext">html</Item>
     </Config>
+  </WebSetting>
+  <WebSetting Name="admin_normal">
+    <Theme>admin_zh-cn</Theme>
+    <Root>Normal</Root>
+    <Compatible>True</Compatible>
   </WebSetting>
   <WebSetting Name="admin_en-us">
     <Theme>admin_en-us</Theme>
