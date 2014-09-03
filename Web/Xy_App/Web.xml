@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <WebSettingCollection>
   <WebSetting>
+    <Root>admin</Root>
     <Theme>admin_default</Theme>
     <Encoding>UTF-8</Encoding>
     <SessionOutTime>30</SessionOutTime>

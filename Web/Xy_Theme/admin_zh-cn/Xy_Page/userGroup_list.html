@@ -24,13 +24,13 @@
 				    <!-- Table body -->
 				    <tbody>
 					    <!-- Table row -->
-                        <% @Data Provider="Procedure" Command="select * from [UserGroup]" EnableScript="True" %>
+                        <% @Data Provider="Procedure" Command="select * from [UserGroup]" XsltParameter="{ Ext='Config:ext' BasePath='App:BasePath' }" %>
 					        <tr class="item{ID}">
 						        <td><xsl:value-of select="Name" /></td>
 						        <td><xsl:value-of select="Key" /></td>
 						        <td>
                                     <a href="javascript:ShowPermissons({ID})" class="btn">修改组权限</a>
-                                    <a class="btn ajaxlink" ajax-confirm="您确定要删除该组?" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="/powerAction_delgroup.[% @Tag Provider='Config' Name='ext' %]?ID={ID}">删除</a>
+                                    <a class="btn ajaxlink" ajax-confirm="您确定要删除该组?" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="{$BasePath}/powerAction_delgroup.{$Ext}?ID={ID}">删除</a>
                                 </td>
 					        </tr>
                         <% @End %>
@@ -42,7 +42,7 @@
             </div>
             <hr />
             <div class="row-fluid">
-                <form id="validateSubmitForm" action="/powerAction_addgroup.<% @Tag Provider="Config" Name="ext" %>" method="post">
+                <form id="validateSubmitForm" action="<% @Tag Provider='App' Name='BasePath' %>/powerAction_addgroup.<% @Tag Provider="Config" Name="ext" %>" method="post">
                     <div class="span2">
                         <input class="mb0 span12" id="powername" name="Name" type="text" placeholder="组名称" />
                     </div>
@@ -71,9 +71,9 @@
         $tar.addClass('disabled');
         var requestUrl = '';
         if ($tar.hasClass('active'))
-            requestUrl = '<% @Tag Provider="App" Name="Domain" %>/powerAction_delship.<% @Tag Provider="Config" Name="ext" %>';
+            requestUrl = '<% @Tag Provider="App" Name="BasePath" %>/powerAction_delship.<% @Tag Provider="Config" Name="ext" %>';
         else
-            requestUrl = '<% @Tag Provider="App" Name="Domain" %>/powerAction_addship.<% @Tag Provider="Config" Name="ext" %>';
+            requestUrl = '<% @Tag Provider="App" Name="BasePath" %>/powerAction_addship.<% @Tag Provider="Config" Name="ext" %>';
         $.ajax({
             url: requestUrl,
             type: 'POST',
@@ -129,7 +129,7 @@
 
     function ShowPermissons(id) {
         $.ajax({
-            url: "/powerAction_getpowerbygroup.<% @Tag Provider="Config" Name="ext" %>?ID=" + id,
+            url: "<% @Tag Provider='App' Name='BasePath' %>/powerAction_getpowerbygroup.<% @Tag Provider='Config' Name='ext' %>?ID=" + id,
             success: function (data) {
                 if($('.groups .item' + id).length == 0) return;
                 var _list = eval('(' + data + ')');
