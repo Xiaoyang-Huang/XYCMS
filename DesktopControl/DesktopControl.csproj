@@ -54,10 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XiaoYang.Entity\XiaoYang.Entity.csproj">
-      <Project>{49CDE4CB-2C03-4C69-BF2F-83D73D598C71}</Project>
-      <Name>XiaoYang.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\XiaoYang.Installation\XiaoYang.Installation.csproj">
       <Project>{47F071C9-93C6-4752-A2C3-2343C066A924}</Project>
       <Name>XiaoYang.Installation</Name>
