@@ -3,6 +3,7 @@
   <WebSetting>
     <SiteUrl>self</SiteUrl>
     <Theme>admin_default</Theme>
+    <Compatible>True</Compatible>
     <Encoding>UTF-8</Encoding>
     <SessionOutTime>30</SessionOutTime>
     <EncryptKey>THISISXYFRAMEENCRYPTKEY</EncryptKey>
