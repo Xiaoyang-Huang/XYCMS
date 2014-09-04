@@ -1,5 +1,5 @@
 #ignore DB file
-DB/
+/DB
 
 #ignore dll file
 *.dll
