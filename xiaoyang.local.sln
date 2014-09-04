@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopControl", "DesktopCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiaoYang.Installation", "XiaoYang.Installation\XiaoYang.Installation.csproj", "{47F071C9-93C6-4752-A2C3-2343C066A924}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiaoYang.Entity", "XiaoYang.Entity\XiaoYang.Entity.csproj", "{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,16 @@ Global
 		{47F071C9-93C6-4752-A2C3-2343C066A924}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{47F071C9-93C6-4752-A2C3-2343C066A924}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{47F071C9-93C6-4752-A2C3-2343C066A924}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3D965C6D-FB38-4E13-9BD2-E3AAE5E5E01C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
