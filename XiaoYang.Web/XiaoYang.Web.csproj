@@ -58,7 +58,6 @@
     <Compile Include="Action\AccessAction.cs" />
     <Compile Include="Action\InstallAction.cs" />
     <Compile Include="Action\PowerAction.cs" />
-    <Compile Include="Action\TemplateAction.cs" />
     <Compile Include="Action\UserAction.cs" />
     <Compile Include="Global\ThemePage.cs" />
     <Compile Include="Global\Captcha.cs" />
