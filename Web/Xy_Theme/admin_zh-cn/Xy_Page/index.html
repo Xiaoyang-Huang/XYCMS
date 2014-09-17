@@ -34,7 +34,7 @@
 				<div class="widget-body">
 				
 					<!-- Form -->
-					<form method="post" action="/accessAction_login.<% @Tag Provider='Config' Name='ext' %>" class="ajaxForm">
+					<form method="post" action="<% @Tag Provider='App' Name='BasePath' %>/accessAction_login.<% @Tag Provider='Config' Name='ext' %>" class="ajaxForm">
 						<label>用户名</label>
 						<input type="text" class="input-block-level" name="username" placeholder="请输入您的用户名或邮箱"/> 
 						<label>密码</label>

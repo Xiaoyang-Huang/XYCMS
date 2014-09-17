@@ -58,10 +58,10 @@ namespace DesktopControl {
             //Console.WriteLine(string.Join(",", _array1));
             //Console.WriteLine(string.Join(",", _array2));
             //Console.WriteLine(string.Join(",", _array3));
-            XiaoYang.Entity.EntityHelper _helper = new XiaoYang.Entity.EntityHelper(25);
-            int rowCount = -1;
-            Xy.Data.IDataModelDisplay _display = (Xy.Data.IDataModelDisplay)_helper.GetList(string.Empty, 0, 10, "ID desc", ref rowCount);
-            Console.WriteLine(_display.GetXml().CreateNavigator().OuterXml);
+            //XiaoYang.Entity.EntityHelper _helper = new XiaoYang.Entity.EntityHelper(25);
+            //int rowCount = -1;
+            //Xy.Data.IDataModelDisplay _display = (Xy.Data.IDataModelDisplay)_helper.GetList(string.Empty, 0, 10, "ID desc", ref rowCount);
+            //Console.WriteLine(_display.GetXml().CreateNavigator().OuterXml);
         }
         #region Multiple attribute test
 //        static void Main(string[] args) {
