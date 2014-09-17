@@ -4,7 +4,7 @@
     <div class="widget">
 		<!-- Widget heading -->
 		<div class="widget-head">
-			<h3 class="heading">当前的权限列表</h3>
+			<h3 class="heading">Permission list</h3>
 		</div>
 		<!-- // Widget heading END -->
 		
@@ -23,7 +23,7 @@
 				        </div>
 				        <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span> </a>
 				        <ul class="dropdown-menu pull-right">
-					        <li><a class="delete" deleteid="{ID}" href="#">删除</a></li>
+					        <li><a class="delete" deleteid="{ID}" href="#">Delete</a></li>
 				        </ul>
 			        </div>
                     <xsl:if test="position() = count(/DataTable/DataItem)">
@@ -35,13 +35,13 @@
             <div class="row-fluid">
                 <form id="validateSubmitForm" action="<% @Tag Provider='App' Name='BasePath' %>/powerAction_add.<% @Tag Provider='Config' Name='ext' %>" method="post">
                     <div class="span2">
-                        <input class="mb0 span12" id="powername" name="Description" type="text" placeholder="权限名称" />
+                        <input class="mb0 span12" id="powername" name="Description" type="text" placeholder="Name" />
                     </div>
                     <div class="span6">
-                        <input class="mb0 span12" id="powerkey" name="Key" type="text" placeholder="权限识别码" />
+                        <input class="mb0 span12" id="powerkey" name="Key" type="text" placeholder="Key" />
                     </div>
                     <div class="span4">
-                        <button class="span6 btn btn-default btn-primary" type="submit">添加</button>
+                        <button class="span6 btn btn-default btn-primary" type="submit">Add</button>
                     </div>
                 </form>
             </div>
@@ -57,8 +57,8 @@
             Key: "required"
         },
         messages: {
-            Description: "请输入权限的名称",
-            Key: "请输入权限的识别码"
+            Description: "please type in name",
+            Key: "please type in key"
         }
     });
     $('#validateSubmitForm').submit(function (evt) {
@@ -80,7 +80,7 @@
     })
 
     $('a.delete[deleteid]').live('click', function (evt) {
-        bootbox.confirm('确定要删除该权限?', function (result) {
+        bootbox.confirm('verify delete this?', function (result) {
             if (result) {
                 $target = $(evt.target);
                 $.ajax({

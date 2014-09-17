@@ -5,7 +5,7 @@
 <!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
 <!--[if !IE]><!--><html><!-- <![endif]-->
 <head>
-	<title>XYCMS - 更新</title>
+	<title>XYCMS - Update</title>
 	
 	<!-- Meta -->
 	<meta charset="UTF-8" />
@@ -29,14 +29,14 @@
 			<!-- Box -->
 			<div class="widget">
 				<div class="widget-head">
-					<h4 class="heading">安装信息</h4>
+					<h4 class="heading">Install Information</h4>
 				</div>
 				<div class="widget-body">
                     <div class="infoBox hide">
                         <div class="message">
-                            检查到一个更新文件,点击开始按钮进行更新
+                            Found a update file, press 'Start' button to Update.
                         </div>
-                        <a class="btn btn-block btn-primary" href="javascript:start()">开始</a>
+                        <a class="btn btn-block btn-primary" href="javascript:start()">Start</a>
                     </div>
 				</div>
 			</div>
@@ -59,11 +59,11 @@
                         $('.infoBox').show();
                     }else if(result.status == 'processing'){
                         $('.infoBox a.btn').hide();
-                        $('.infoBox .message').html("一个更新正在进行中");
+                        $('.infoBox .message').html("a update already in the process");
                         $('.infoBox').show();
                     }else{
                         $('.infoBox a.btn').hide()
-                        $('.infoBox .message').html("未找到更新文件");
+                        $('.infoBox .message').html("cannot found update file");
                         $('.infoBox').show();
                     }
                 }
@@ -74,7 +74,7 @@
         var loadProcessID = 0;
         function start(){
             unfinished = true;
-            $('.infoBox a.btn').addClass('disabled').html("处理中");
+            $('.infoBox a.btn').addClass('disabled').html("Processing");
             $('.infoBox a.btn').click(function(){return false;});
             $.ajax({
                 url:"<% @Tag Provider='App' Name='BasePath' %>/installAction_start.<% @Tag Provider='Config' Name='ext' %>",
@@ -87,7 +87,7 @@
                     }else if(result.status == 'error'){
                         $('.infoBox .message').html(result.message);
                     }
-                    $('.infoBox a.btn').html("完成");
+                    $('.infoBox a.btn').html("Complete");
                 },
                 error:function(data){
                     unfinished = false;

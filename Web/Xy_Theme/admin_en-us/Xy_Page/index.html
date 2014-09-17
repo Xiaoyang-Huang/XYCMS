@@ -24,30 +24,30 @@
 	
 		<div class="wrapper">
 		
-			<h1 class="glyphicons lock">XYCMS Admin <i></i></h1>
+			<h1 class="glyphicons lock">XYCMS Admin Panel <i></i></h1>
 		
 			<!-- Box -->
 			<div class="widget">
 				<div class="widget-head">
-					<h4 class="heading">Login</h4><a class="pull-right" href="?theme=zh-cn">简体中文</a>
+					<h4 class="heading">Sing in</h4><a class="pull-right" href="?theme=zh-cn">简体中文</a>
 				</div>
 				<div class="widget-body">
 				
 					<!-- Form -->
-					<form method="post" action="/accessAction_login.<% @Tag Provider='Config' Name='ext' %>" class="ajaxForm">
-						<label>Username</label>
-						<input type="text" class="input-block-level" name="username" placeholder="Your Username or Email address"/> 
+					<form method="post" action="<% @Tag Provider='App' Name='BasePath' %>/accessAction_login.<% @Tag Provider='Config' Name='ext' %>" class="ajaxForm">
+						<label>UserName</label>
+						<input type="text" class="input-block-level" name="username" placeholder="please type in your username"/> 
 						<label>Password</label>
-						<input type="password" class="input-block-level" placeholder="Your Password" name="password" />
+						<input type="password" class="input-block-level" placeholder="please type in your password" name="password" />
                         <div id="captcha-wrap" <% @Tag Provider="Session" Name="errCount" Mode="Compare" CompareMethod="Lesser" CompareValue="5" %>class="hide"<% @End %>>
-                            <label>Captcha</label>
-						    <input type="text" placeholder="Number on the right" name="captcha" />
+                            <label>Captcha Code</label>
+						    <input type="text" placeholder="Type in the letters right" name="captcha" />
                             <a title="click to refresh" class="captcha" href="javascript:;"><img src="<%@Tag Provider="App" Name="Domain"%>/captcha.<% @Tag Provider='Config' Name='ext' %>?path=login" /></a>
                         </div>
 						<div class="separator bottom"></div> 
 						<div class="row-fluid">
 							<div class="span8">
-								<div class="uniformjs"><label class="checkbox"><input type="checkbox" value="remember-me" name="remeber">Remember me in a week</label></div>
+								<div class="uniformjs"><label class="checkbox"><input type="checkbox" value="remember-me" name="remember" class="remeber">Remeber me in one week</label></div>
 							</div>
 							<div class="span4 center">
 								<button class="btn btn-block btn-primary" type="submit">Sign in</button>
@@ -57,7 +57,7 @@
 					<!-- // Form END -->
 				</div>
 				<div class="widget-footer">
-					<p class="glyphicons restart"><i></i>Please enter your username and password ...</p>
+					<p class="glyphicons restart"><i></i>pleasey type in your username and password ...</p>
 				</div>
 			</div>
 			<!-- // Box END -->
@@ -69,16 +69,14 @@
 </div>
 <!-- // Wrapper END -->
     <% @Include File="script_reference.html" EnableScript="True" Config="default" %>
-    <script type="text/javascript">
-        $('input[type=checkbox]').uniform();
-    </script>
 </body>
-<% @Tag Provider="Data" Name="CurrentUser.ID" Mode="Exist" %>
+<% @Tag Provider="Data" Name="CurrentUser.ID" Mode="Exist" EnableScript="True" %>
 <script type="text/javascript">
-    location.href = "/dashboard.<% @Tag Provider='Config' Name='ext' %>";
+    location.href = "<% @Tag Provider='App' Name='BasePath' %>/dashboard.<% @Tag Provider='Config' Name='ext' %>";
 </script>
 <% @End %>
 <script type="text/javascript">
+    $('input[type=checkbox]').uniform();
     $('a.captcha').click(function (evt) {
         $tar = $(evt.target);
         $tar.attr('src', $tar.attr('src') + '&' + Math.random() * 100);
@@ -86,16 +84,17 @@
 
     $('form.ajaxForm').submit(function (evt) {
         $form = $(evt.target);
-        $form.ajaxSubmit(function (data) {
+        $form.ajaxSubmit({ includeHidden: true, success: function (data) {
             var result = eval('(' + data + ')');
-            if (result.state == "success") {
-                location.href = "/dashboard.html"
+            if (result.status == "success") {
+                location.href = "<% @Tag Provider='App' Name='BasePath' %>/dashboard.<% @Tag Provider='Config' Name='ext' %>";
             } else {
                 if (isNaN(result.count) || result.count > 5) {
                     $('#captcha-wrap').show();
                 }
                 notyfy({ text: result.message, type: 'error', layout: 'top' });
             }
+        } 
         })
         return false;
     })

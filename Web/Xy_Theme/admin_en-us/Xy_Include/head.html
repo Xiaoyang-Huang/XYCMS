@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
@@ -8,7 +8,7 @@
 	<title>XYStudio - Admin (v1.0)</title>
 	
 	<!-- Meta -->
-	<meta charset="UTF-8" />
+	<meta name="content-type" content="text/html" charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -17,7 +17,7 @@
 	<% @Include File="css_reference.html" EnableScript="True" Config="default" %>
 	
 </head>
-<body class="">
+<body class="<% @Tag Provider='Data' Name='PageClass' %>">
 	
 		<!-- Main Container Fluid -->
 	<div class="container-fluid fixed menu-left">
@@ -40,22 +40,22 @@
 				
 					<!-- Language menu -->
 					<li class="hidden-phone dropdown dd-1 dd-flags" id="lang_nav">
-						<a href="#" data-toggle="dropdown"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/lang/english.png" alt="en" /></a>
+						<a href="#" data-toggle="dropdown"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/chinese.png" alt="zh" /></a>
 				    	<ul class="dropdown-menu pull-left">
-                            <li class="active"><a href="?theme=en-us" title="English"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/lang/english.png" alt="English"> English</a></li>
-				      		<li><a href="?theme=zh-cn" title="Romanian"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/lang/chinese.png" alt="Chinese"> 简体中文</a></li>
+                            <li class="active"><a href="?theme=zh-cn" title="Romanian"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/chinese.png" alt="简体中文">简体中文</a></li>
+				      		<li><a href="?theme=en-us" title="English"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/english.png" alt="English">English</a></li>
 				    	</ul>
 					</li>
 					<!-- // Language menu END -->
 				
 					<!-- Dropdown -->
 					<li class="dropdown dd-1 visible-desktop">
-						<a href="" data-toggle="dropdown" class="glyphicons shield"><i></i>Get Help <span class="caret"></span></a>
+						<a href="" data-toggle="dropdown" class="glyphicons shield"><i></i>Help <span class="caret"></span></a>
 						<ul class="dropdown-menu pull-right">
 							<li class="dropdown submenu">
-	                    		<a href="#" class="dropdown-toggle glyphicons bell" data-toggle="dropdown"><i></i>About XYStudio</a>
+	                    		<a href="#" class="dropdown-toggle glyphicons bell" data-toggle="dropdown"><i></i>About XiaoYang Studio</a>
 								<ul class="dropdown-menu submenu-hide pull-left">
-			                        <li><a href="#">Description</a>	</li>
+			                        <li><a href="#">Description</a></li>
 			                        <li><a href="#">XYFrame</a></li>
                                     <li><a href="#">XYCMS</a></li>
 			                    </ul>
@@ -67,15 +67,15 @@
 					
 					<!-- Profile / Logout menu -->
 					<li class="account dropdown dd-1">
-						<a data-toggle="dropdown" href="my_account.html" class="glyphicons logout lock"><span class="hidden-phone">XYCMS</span><i></i></a>
+						<a data-toggle="dropdown" href="#" class="glyphicons logout lock"><span class="hidden-phone">XYCMS</span><i></i></a>
 						<ul class="dropdown-menu pull-right">
-							<li><a href="my_account.html" class="glyphicons cogwheel">Settings<i></i></a></li>
+							<li><a href="#" class="glyphicons cogwheel">Site config<i></i></a></li>
 							<li class="profile">
 								<span>
-									<span class="heading">Profile <a href="my_account.html" class="pull-right">edit</a></span>
+									<span class="heading">Profile <a href="#" class="pull-right">Edit</a></span>
 									<span class="img"></span>
 									<span class="details">
-										<a href="my_account.html"><% @Tag Provider="Data" Name="CurrentUser.Name" %></a>
+										<a href="#"><% @Tag Provider="Data" Name="CurrentUser.Name" %></a>
 										<% @Tag Provider="Data" Name="CurrentUser.Email" %>
 									</span>
 									<span class="clearfix"></span>
@@ -83,11 +83,11 @@
 							</li>
 							<li>
 								<span>
-									<a class="btn btn-default btn-mini pull-right" href="/accessAction_logout.<% @Tag Provider='Config' Name='ext' %>">Sign Out</a>
+									<a class="btn btn-default btn-mini pull-right" href="<% @Tag Provider='App' Name='BasePath' %>/accessAction_logout.<% @Tag Provider='Config' Name='ext' %>">Sign out</a>
 								</span>
 							</li>
 						</ul>
-											</li>
+					</li>
 					<!-- // Profile / Logout menu END -->
 					
 				</ul>
@@ -105,31 +105,32 @@
 		<div id="wrapper">
 		
 		<!-- Sidebar Menu -->
-		<div id="menu" class="hidden-phone hidden-print">
+		<div id="menu" class="hidden-print">
 		
 			<!-- Brand -->
-			<a href="/dashborad.html" class="appbrand">XYStudio <span>XYCMS</span></a>
+			<a href="/dashborad.html" class="appbrand">XiaoYang Studio <span>XYCMS</span></a>
 		
 			<!-- Scrollable menu wrapper with Maximum height -->
 			<div class="slim-scroll" data-scroll-height="800px">
 			
 			<!-- Sidebar Profile -->
 			<span class="profile">
-				<p>Welcome <a href="my_account.html"></p>
-				<a class="img" href="my_account.html"><img src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/images/avatar.jpg" alt="Avatar" /></a>
+				<p>Welcome</p>
+				<a class="img" href="#"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/avatar.jpg" alt="Avatar" /></a>
 				<span>
 					<ul>
-						<li><a href="" class="glyphicons lock"><i></i><% @Tag Provider="Data" Name="CurrentUser.Name" %></a></li>
-						<li><a href="" class="glyphicons keys"><i></i><% @Tag Provider="Data" Name="CurrentUser.Nickname" %></a></li>
+						<li><a href="#" class="glyphicons lock"><i></i><% @Tag Provider="Data" Name="CurrentUser.Name" %></a></li>
+						<li><a href="#" class="glyphicons keys"><i></i><% @Tag Provider="Data" Name="CurrentUser.Nickname" %></a></li>
                         <% @Data Provider="Procedure" Command="select [Name] from [UserGroup] where [ID] = @ID" Parameter="{ ID='Data:CurrentUser.UserGroup|i' }" %>
-                            <li><a href="" class="glyphicons eject"><i></i><xsl:value-of select="Name" /></a></li>
+                            <li><a href="#" class="glyphicons eject"><i></i><xsl:value-of select="Name" /></a></li>
                         <% @End %>
 					</ul>
 				</span>
 			</span>
 			<!-- // Sidebar Profile END -->
+
 			<% @Include File="navigation.html" EnableScript="True" %>
-			
+
 			<ul class="menu-1">
 				<li class="hasSubmenu active">
 					<a class="glyphicons wifi_alt" href="#menu-recent-stats" data-toggle="collapse"><i></i><span>Recent stats</span></a>
@@ -147,7 +148,7 @@
 				<div class="innerLR">
 					<label for="toggle-menu-position" class="checkbox">
 						<div class="checker" id="uniform-toggle-menu-position"><span><input type="checkbox" class="checkbox" id="toggle-menu-position" style="opacity: 0;"></span></div> 
-						right menu
+						Put navigation to right
 					</label>
 				</div>
 			</div>
@@ -155,7 +156,7 @@
 				<div class="innerLR">
 					<label for="toggle-layout" class="checkbox">
 						<div class="checker" id="uniform-toggle-layout"><span><input type="checkbox" class="checkbox" id="toggle-layout" checked="checked" style="opacity: 0;"></span></div> 
-						fixed layout
+						Change display
 					</label>
 				</div>
 			</div>

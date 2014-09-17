@@ -4,7 +4,7 @@
     <div class="widget">
 		<!-- Widget heading -->
 		<div class="widget-head">
-			<h3 class="heading">当前的用户列表</h3>
+			<h3 class="heading">User List</h3>
 		</div>
 		<!-- // Widget heading END -->
 		
@@ -12,23 +12,23 @@
             <div class="row-fluid mb10">
                 <form id="FilterForm" method="post" action="<% @Tag Provider='App' Name='BasePath' %>/userAction_getlist.<% @Tag Provider='Config' Name='ext' %>">
                     <div class="span10">
-                        <label>过滤</label>
+                        <label>Filter</label>
                         <div class="row-fluid">
-                            <input class="mb0 span2" id="powername" name="Nickname" type="text" placeholder="用户名" />
-                            <input class="mb0 span2" id="Text1" name="Name" type="text" placeholder="用户账号" />
-                            <input class="mb0 span2" id="Text2" name="Email" type="text" placeholder="用户邮箱" />
+                            <input class="mb0 span2" id="powername" name="Nickname" type="text" placeholder="Nickname" />
+                            <input class="mb0 span2" id="Text1" name="Name" type="text" placeholder="Username" />
+                            <input class="mb0 span2" id="Text2" name="Email" type="text" placeholder="E-mail" />
                             <select class="mb0 span2" name="UserGrouop">
-                                <option value="-1">请选择用户组</option>
+                                <option value="-1">Select user group</option>
                                 <% @Data Provider="Procedure" Command="Select [ID],[Name] from [UserGroup]" %>
                                     <option value="{ID}"><xsl:value-of select="Name" /></option>
                                 <% @End %>
                             </select>
                             <input type="hidden" value="0" name="PageIndex" />
-                            <input class="span1 btn btn-default btn-primary" type="button" onclick="UpdateContent(0)" value="搜索" />        
+                            <input class="span1 btn btn-default btn-primary" type="button" onclick="UpdateContent(0)" value="Search" />        
                         </div>
                     </div>
                     <div class="span2">
-                        <label>每页显示个数</label>
+                        <label>Display</label>
                         <select class="page-size" name="PageSize" onchange="UpdateContent(0)">
                             <option value="10">10</option>
                             <option value="20">20</option>
@@ -47,12 +47,12 @@
 				        <!-- Table heading -->
 				        <thead>
 					        <tr>
-						        <th>用户ID</th>
-						        <th>用户名</th>
-						        <th>用户账号</th>
-                                <th>用户邮箱</th>
-                                <th>用户组</th>
-                                <th>操作</th>
+						        <th>ID</th>
+						        <th>Nickname</th>
+						        <th>Username</th>
+                                <th>E-mail</th>
+                                <th>Group</th>
+                                <th>Operation</th>
 					        </tr>
 				        </thead>
 				        <!-- // Table heading END -->
@@ -67,8 +67,8 @@
                                     <td><xsl:value-of select="Email" /></td>
                                     <td><xsl:value-of select="GroupName" /><span class="hide"><xsl:value-of select="UserGroup" /></span></td>
 						            <td>
-                                        <a href="javascript:ShowEditUserBox({ID})" class="btn">修改</a>
-                                        <a class="btn ajaxlink" ajax-confirm="您确定要删除该用户?" href="{$BasePath}/userAction_del.{$Ext}" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent">删除</a>
+                                        <a href="javascript:ShowEditUserBox({ID})" class="btn">Edit</a>
+                                        <a class="btn ajaxlink" ajax-confirm="Verify delete this?" href="{$BasePath}/userAction_del.{$Ext}" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent">Delete</a>
                                     </td>
 					            </tr>
                             </xsl:for-each>
@@ -78,7 +78,7 @@
 			        </table>
 			        <!-- // Table END -->
                     <div class="row-fluid mt10">
-                        <div class="span6"><button class="btn btn-default btn-primary" type="submit" onclick="ShowAddUserBox()">添加用户</button></div>
+                        <div class="span6"><button class="btn btn-default btn-primary" type="submit" onclick="ShowAddUserBox()">Add User</button></div>
                         <div class="pagination pagination-right margin-none span6">
 	                        [% @Pagination Index="<xsl:value-of select="$PageIndex+1" />" Max="<xsl:value-of select="$TotalCount" />" Size="<xsl:value-of select="$PageSize" />" Count="3"  %]
                                 <xsl:text disable-output-escaping="yes"><![CDATA[
@@ -120,39 +120,39 @@
 	</div>
 </div>
 <div class="adduser hide">
-    <h3>添加用户</h3>
+    <h3>Add User</h3>
     <hr />
     <div class="innerLR">
         <form id="addUserForm" method="post" action="<% @Tag Provider='App' Name='BasePath' %>/userAction_add.<% @Tag Provider='Config' Name='ext' %>">
             <div class="row-fluid">
                 <div class="span6">
-                    <label>账号</label>
+                    <label>Username</label>
                     <input type="text" name="Name" />
                 </div>
                 <div class="span6">
-                    <label>用户名</label>
+                    <label>Nickname</label>
                     <input type="text" name="Nickname" />
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span6">
-                    <label>密码</label>
+                    <label>Password</label>
                     <input type="password" name="Password" />
                 </div>
                 <div class="span6">
-                    <label>重复密码</label>
+                    <label>Password verify</label>
                     <input type="password" name="RepeatPassword" />
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span6">
-                    <label>邮箱</label>
+                    <label>E-mail</label>
                     <input type="text" name="Email" />
                 </div>
                 <div class="span6">
-                    <label>用户组</label>
+                    <label>User Group</label>
                     <select name="UserGroup">
-                        <option value="-1">请选择用户组</option>
+                        <option value="-1">Select group</option>
                         <% @Data Provider="Procedure" Command="Select [ID],[Name] from [UserGroup]" %>
                             <option value="{ID}"><xsl:value-of select="Name" /></option>
                         <% @End %>
@@ -163,40 +163,40 @@
     </div>
 </div>
 <div class="edituser hide">
-    <h3>编辑用户</h3>
+    <h3>Edit User</h3>
     <hr />
     <div class="innerLR">
         <form id="editUserForm" method="post" action="<% @Tag Provider='App' Name='BasePath' %>/userAction_edit.<% @Tag Provider='Config' Name='ext' %>">
             <div class="row-fluid">
                 <div class="span6">
-                    <label>账号</label>
+                    <label>Username</label>
                     <h4 class="Name"></h4>
                     <input type="hidden" name="ID"/>
                 </div>
                 <div class="span6">
-                    <label>用户名</label>
+                    <label>Nickname</label>
                     <input type="text" name="Nickname" />
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span6">
-                    <label>密码</label>
+                    <label>Password</label>
                     <input type="password" name="Password" />
                 </div>
                 <div class="span6">
-                    <label>重复密码</label>
+                    <label>Password verify</label>
                     <input type="password" name="RepeatPassword" />
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span6">
-                    <label>邮箱</label>
+                    <label>E-mail</label>
                     <span class="Email"></span>
                 </div>
                 <div class="span6">
-                    <label>用户组</label>
+                    <label>User Group</label>
                     <select name="UserGroup">
-                        <option value="-1">请选择用户组</option>
+                        <option value="-1">Select group</option>
                         <% @Data Provider="Procedure" Command="Select [ID],[Name] from [UserGroup]" %>
                             <option value="{ID}"><xsl:value-of select="Name" /></option>
                         <% @End %>
@@ -239,18 +239,18 @@
                     }
             },
             messages: {
-                Name: "请输入用户名",
-                Nickname: "请输入用户昵称",
-                Password: "请输入密码",
+                Name: "please type in username",
+                Nickname: "please type in nickname",
+                Password: "please type in password",
                 RepeatPassword: {
-                    required: "请重复密码",
-                    repeat: "密码不一致"
+                    required: "please type in your password again",
+                    repeat: "password not match"
                 },
                 Email: {
-                    required: "请输入邮箱",
-                    email: "邮箱格式不正确"
+                    required: "please type in e-mail",
+                    email: "incorrect format"
                 },
-                UserGroup: "请选择用户组"
+                UserGroup: "please select a user group"
             }
         });
 
@@ -297,16 +297,16 @@
                 }
             },
             messages: {
-                Name: "请输入用户名",
-                Nickname: "请输入用户昵称",
+                Name: "please type in username",
+                Nickname: "please type in nickname",
                 RepeatPassword: {
-                    repeat: "密码不一致"
+                    repeat: "password not match"
                 },
                 Email: {
-                    required: "请输入邮箱",
-                    email: "邮箱格式不正确"
+                    required: "please type in e-mail",
+                    email: "incorrect format"
                 },
-                UserGroup: "请选择用户组"
+                UserGroup: "please select a user group"
             }
         });
         box.on('shown', function () {

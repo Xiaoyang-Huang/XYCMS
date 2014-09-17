@@ -4,7 +4,7 @@
     <div class="widget">
 		<!-- Widget heading -->
 		<div class="widget-head">
-			<h3 class="heading">当前已有用户组列表</h3>
+			<h3 class="heading">Group List</h3>
 		</div>
 		<!-- // Widget heading END -->
 		
@@ -15,9 +15,9 @@
 				    <!-- Table heading -->
 				    <thead>
 					    <tr>
-						    <th>组名</th>
-						    <th>识别码</th>
-						    <th>操作</th>
+						    <th>Name</th>
+						    <th>Key</th>
+						    <th>Operation</th>
 					    </tr>
 				    </thead>
 				    <!-- // Table heading END -->
@@ -29,8 +29,8 @@
 						        <td><xsl:value-of select="Name" /></td>
 						        <td><xsl:value-of select="Key" /></td>
 						        <td>
-                                    <a href="javascript:ShowPermissons({ID})" class="btn">修改组权限</a>
-                                    <a class="btn ajaxlink" ajax-confirm="您确定要删除该组?" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="{$BasePath}/powerAction_delgroup.{$Ext}?ID={ID}">删除</a>
+                                    <a href="javascript:ShowPermissons({ID})" class="btn">Edit</a>
+                                    <a class="btn ajaxlink" ajax-confirm="Verify delete this?" ajax-data="{{ ID:{ID} }}" ajax-success="UpdateContent" href="{$BasePath}/powerAction_delgroup.{$Ext}?ID={ID}">Delete</a>
                                 </td>
 					        </tr>
                         <% @End %>
@@ -42,15 +42,15 @@
             </div>
             <hr />
             <div class="row-fluid">
-                <form id="validateSubmitForm" action="<% @Tag Provider='App' Name='BasePath' %>/powerAction_addgroup.<% @Tag Provider="Config" Name="ext" %>" method="post">
+                <form id="validateSubmitForm" action="<% @Tag Provider='App' Name='BasePath' %>/powerAction_addgroup.<% @Tag Provider='Config' Name='ext' %>" method="post">
                     <div class="span2">
-                        <input class="mb0 span12" id="powername" name="Name" type="text" placeholder="组名称" />
+                        <input class="mb0 span12" id="powername" name="Name" type="text" placeholder="Name" />
                     </div>
                     <div class="span6">
-                        <input class="mb0 span12" id="powerkey" name="Key" type="text" placeholder="组识别码" />
+                        <input class="mb0 span12" id="powerkey" name="Key" type="text" placeholder="Key" />
                     </div>
                     <div class="span4">
-                        <button class="span6 btn btn-default btn-primary" type="submit">添加</button>
+                        <button class="span6 btn btn-default btn-primary" type="submit">Add</button>
                     </div>
                 </form>
             </div>
@@ -95,8 +95,8 @@
             Key: "required"
         },
         messages: {
-            Name: "请输入组的名字",
-            Key: "请输入组的识别码"
+            Name: "please type in name",
+            Key: "please type in key"
         }
     });
     $('#validateSubmitForm').submit(function (evt) {
