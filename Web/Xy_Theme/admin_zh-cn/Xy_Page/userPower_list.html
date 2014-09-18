@@ -33,7 +33,7 @@
             </div>
             <hr />
             <div class="row-fluid">
-                <form id="validateSubmitForm" action="<% @Tag Provider='App' Name='BasePath' %>/powerAction_add.<% @Tag Provider='Config' Name='ext' %>" method="post">
+                <form id="validateSubmitForm" action="<% @Tag Provider='Url' Name='BaseUrl' %>/powerAction_add.<% @Tag Provider='Config' Name='ext' %>" method="post">
                     <div class="span2">
                         <input class="mb0 span12" id="powername" name="Description" type="text" placeholder="权限名称" />
                     </div>
@@ -84,7 +84,7 @@
             if (result) {
                 $target = $(evt.target);
                 $.ajax({
-                    url: '<% @Tag Provider="App" Name="BasePath" %>/powerAction_del.<% @Tag Provider="Config" Name="ext" %>?ID=' + $target.attr('deleteid'),
+                    url: '<% @Tag Provider="Url" Name="BaseUrl" %>/powerAction_del.<% @Tag Provider="Config" Name="ext" %>?ID=' + $target.attr('deleteid'),
                     success: function (data) {
                         var result = eval('(' + data + ')');
                         if (result.status == "success") {

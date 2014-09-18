@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <WebSettingCollection>
   <WebSetting>
-    <Root>admin</Root>
     <Theme>admin_default</Theme>
     <Encoding>UTF-8</Encoding>
     <SessionOutTime>30</SessionOutTime>
@@ -28,5 +27,11 @@
       <Item Name="error-empty">请填写所有的表单内容。</Item>
       <Item Name="adduser-failed">用户名已存在。</Item>
     </Translate>
+  </WebSetting>
+  <WebSetting Name="admin_zh-cn_folder" Inherit="admin_zh-cn">
+    <Root>zh-cn</Root>
+  </WebSetting>
+  <WebSetting Name="admin_en-us_folder" Inherit="admin_en-us">
+    <Root>en-us</Root>
   </WebSetting>
 </WebSettingCollection>

@@ -10,7 +10,7 @@
 		
 		<div class="widget-body">
             <div class="row-fluid mb10">
-                <form id="FilterForm" method="post" action="<% @Tag Provider='App' Name='BasePath' %>/userAction_getlist.<% @Tag Provider='Config' Name='ext' %>">
+                <form id="FilterForm" method="post" action="<% @Tag Provider='Url' Name='BaseUrl' %>/userAction_getlist.<% @Tag Provider='Config' Name='ext' %>">
                     <div class="span10">
                         <label>过滤</label>
                         <div class="row-fluid">
@@ -123,7 +123,7 @@
     <h3>添加用户</h3>
     <hr />
     <div class="innerLR">
-        <form id="addUserForm" method="post" action="<% @Tag Provider='App' Name='BasePath' %>/userAction_add.<% @Tag Provider='Config' Name='ext' %>">
+        <form id="addUserForm" method="post" action="<% @Tag Provider='Url' Name='BaseUrl' %>/userAction_add.<% @Tag Provider='Config' Name='ext' %>">
             <div class="row-fluid">
                 <div class="span6">
                     <label>账号</label>
@@ -166,7 +166,7 @@
     <h3>编辑用户</h3>
     <hr />
     <div class="innerLR">
-        <form id="editUserForm" method="post" action="<% @Tag Provider='App' Name='BasePath' %>/userAction_edit.<% @Tag Provider='Config' Name='ext' %>">
+        <form id="editUserForm" method="post" action="<% @Tag Provider='Url' Name='BaseUrl' %>/userAction_edit.<% @Tag Provider='Config' Name='ext' %>">
             <div class="row-fluid">
                 <div class="span6">
                     <label>账号</label>

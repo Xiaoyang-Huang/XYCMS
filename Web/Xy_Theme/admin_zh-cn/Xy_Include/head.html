@@ -42,8 +42,8 @@
 					<li class="hidden-phone dropdown dd-1 dd-flags" id="lang_nav">
 						<a href="#" data-toggle="dropdown"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/chinese.png" alt="zh" /></a>
 				    	<ul class="dropdown-menu pull-left">
-                            <li class="active"><a href="?theme=zh-cn" title="Romanian"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/chinese.png" alt="简体中文">简体中文</a></li>
-				      		<li><a href="?theme=en-us" title="English"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/english.png" alt="English">English</a></li>
+                            <li class="active"><a href="<% @Tag Provider='Url' Name='Domain' %>/zh-cn/<% @Tag Provider='Url' Name='Path' %>" title="Chinese"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/chinese.png" alt="简体中文">简体中文</a></li>
+				      		<li><a href="<% @Tag Provider='Url' Name='Domain' %>/en-us/<% @Tag Provider='Url' Name='Path' %>" title="English"><img src="<% @Tag Provider='App' Name='ScriptPath' Config='default' %>theme/images/lang/english.png" alt="English">English</a></li>
 				    	</ul>
 					</li>
 					<!-- // Language menu END -->
@@ -83,7 +83,7 @@
 							</li>
 							<li>
 								<span>
-									<a class="btn btn-default btn-mini pull-right" href="<% @Tag Provider='App' Name='BasePath' %>/accessAction_logout.<% @Tag Provider='Config' Name='ext' %>">登出</a>
+									<a class="btn btn-default btn-mini pull-right" href="<% @Tag Provider='Url' Name='BaseUrl' %>/accessAction_logout.<% @Tag Provider='Config' Name='ext' %>">登出</a>
 								</span>
 							</li>
 						</ul>
@@ -108,7 +108,7 @@
 		<div id="menu" class="hidden-print">
 		
 			<!-- Brand -->
-			<a href="/dashborad.html" class="appbrand">XYStudio <span>XYCMS</span></a>
+			<a href="/dashborad.html" class="appbrand">小洋工作室 <span>XYCMS</span></a>
 		
 			<!-- Scrollable menu wrapper with Maximum height -->
 			<div class="slim-scroll" data-scroll-height="800px">

@@ -42,7 +42,7 @@
             </div>
             <hr />
             <div class="row-fluid">
-                <form id="validateSubmitForm" action="<% @Tag Provider='App' Name='BasePath' %>/powerAction_addgroup.<% @Tag Provider='Config' Name='ext' %>" method="post">
+                <form id="validateSubmitForm" action="<% @Tag Provider='Url' Name='BaseUrl' %>/powerAction_addgroup.<% @Tag Provider='Config' Name='ext' %>" method="post">
                     <div class="span2">
                         <input class="mb0 span12" id="powername" name="Name" type="text" placeholder="Name" />
                     </div>
@@ -71,9 +71,9 @@
         $tar.addClass('disabled');
         var requestUrl = '';
         if ($tar.hasClass('active'))
-            requestUrl = '<% @Tag Provider="App" Name="BasePath" %>/powerAction_delship.<% @Tag Provider="Config" Name="ext" %>';
+            requestUrl = '<% @Tag Provider="Url" Name="BaseUrl" %>/powerAction_delship.<% @Tag Provider="Config" Name="ext" %>';
         else
-            requestUrl = '<% @Tag Provider="App" Name="BasePath" %>/powerAction_addship.<% @Tag Provider="Config" Name="ext" %>';
+            requestUrl = '<% @Tag Provider="Url" Name="BaseUrl" %>/powerAction_addship.<% @Tag Provider="Config" Name="ext" %>';
         $.ajax({
             url: requestUrl,
             type: 'POST',
@@ -129,7 +129,7 @@
 
     function ShowPermissons(id) {
         $.ajax({
-            url: "<% @Tag Provider='App' Name='BasePath' %>/powerAction_getpowerbygroup.<% @Tag Provider='Config' Name='ext' %>?ID=" + id,
+            url: "<% @Tag Provider='Url' Name='BaseUrl' %>/powerAction_getpowerbygroup.<% @Tag Provider='Config' Name='ext' %>?ID=" + id,
             success: function (data) {
                 if($('.groups .item' + id).length == 0) return;
                 var _list = eval('(' + data + ')');

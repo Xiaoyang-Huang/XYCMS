@@ -52,7 +52,7 @@
     <script type="text/javascript">
         $(function () {
             $.ajax({
-                url:"<% @Tag Provider='App' Name='BasePath' %>/installAction_check.<% @Tag Provider='Config' Name='ext' %>",
+                url:"<% @Tag Provider='Url' Name='BaseUrl' %>/installAction_check.<% @Tag Provider='Config' Name='ext' %>",
                 success:function(data){
                     var result = eval('(' + data + ')');
                     if(result.status == 'success'){
@@ -77,7 +77,7 @@
             $('.infoBox a.btn').addClass('disabled').html("Processing");
             $('.infoBox a.btn').click(function(){return false;});
             $.ajax({
-                url:"<% @Tag Provider='App' Name='BasePath' %>/installAction_start.<% @Tag Provider='Config' Name='ext' %>",
+                url:"<% @Tag Provider='Url' Name='BaseUrl' %>/installAction_start.<% @Tag Provider='Config' Name='ext' %>",
                 success:function(data){
                     var result = eval('(' + data + ')');
                     unfinished = false;
@@ -99,7 +99,7 @@
 
         function loadInformation(){
             $.ajax({
-                url:"<% @Tag Provider='App' Name='BasePath' %>/installAction_process.<% @Tag Provider='Config' Name='ext' %>",
+                url:"<% @Tag Provider='Url' Name='BaseUrl' %>/installAction_process.<% @Tag Provider='Config' Name='ext' %>",
                 async:false,
                 hide:true,
                 success:function(data){

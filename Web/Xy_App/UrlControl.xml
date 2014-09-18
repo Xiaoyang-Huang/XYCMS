@@ -6,9 +6,8 @@
 
   <!-- captcha -->
   <Item Page="XiaoYang.Web,XiaoYang.Web.Global.Captcha" Mime="image/gif" EnableScript="True"><![CDATA[^/captcha\.(aspx|html)$]]></Item>
-  
-  <WebSite SiteUrlReg="admin\..*" WebConfig="admin_zh-cn">
-    
+
+  <UrlCollection Name="AdminUrlCollection">
     <Item File="install.html" Page="XiaoYang.Web,XiaoYang.Web.Global.ThemePage" Mime="text/html" EnableScript="True"><![CDATA[^/install\.(aspx|html)$]]></Item>
 
     <Item File="index.html" Page="XiaoYang.Web,XiaoYang.Web.Global.ThemePage" Mime="text/html" EnableScript="True"><![CDATA[^/((default|index)\.(aspx|html))?$]]></Item>
@@ -28,5 +27,9 @@
     <Item Page="XiaoYang.Web,XiaoYang.Web.Action.PowerAction" Mime="text/html" EnableScript="True"><![CDATA[^/powerAction_(?<type>[A-Za-z]*)\.(aspx|html)$]]></Item>
 
     <Item File="error.html" Page="Xy.Web,Xy.Web.Page.ErrorPage" Mime="text/html" EnableScript="True"><![CDATA[^/error.(aspx|html)$]]></Item>
-  </WebSite>
+  </UrlCollection>
+
+  <UrlCollection SiteUrlReg="admin\..*" WebConfig="admin_zh-cn_folder" Inherit="AdminUrlCollection" />
+  <UrlCollection SiteUrlReg="admin\..*" WebConfig="admin_en-us_folder" Inherit="AdminUrlCollection" />
+  <UrlCollection SiteUrlReg="admin\..*" WebConfig="admin_zh-cn" Inherit="AdminUrlCollection" />
 </UrlRewrite>
