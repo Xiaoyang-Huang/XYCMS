@@ -1,0 +1,67 @@
+﻿<% @Include File="head.html" EnableScript="True" %>
+<div class="innerLR innerT typelist">
+    <div class="widget">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h3 class="heading">Entity list</h3>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+            <div  class="types">
+			    <table class="table table-bordered table-mid">
+				    <thead>
+					    <tr>
+                            <th>ID</th>
+						    <th>Name</th>
+						    <th>Key</th>
+                            <th>Handle</th>
+                            <th>Description</th>
+						    <th>Operation</th>
+					    </tr>
+				    </thead>
+				    <tbody>
+                        <% @Data Provider="Procedure" Command="select * from [EntityType]" XsltParameter="{ Ext='Config:ext' BasePath='App:BasePath' }" %>
+					        <tr class="item{ID}">
+                                <td><xsl:value-of select="ID" /></td>
+						        <td><xsl:value-of select="Name" /></td>
+						        <td><xsl:value-of select="Key" /></td>
+                                <td><xsl:value-of select="Handle" /></td>
+                                <td><xsl:value-of select="Description" /></td>
+						        <td>
+                                    <a href="{$BasePath}/entityType_edit_{ID}.{$Ext}" class="btn">Edit</a>
+                                    <a class="btn ajaxlink" ajax-refresh=".typelist .types" ajax-confirm="Verify delete this?" ajax-data="{{ ID:{ID} }}" href="{$BasePath}/entityAction_type_del.{$Ext}">Delete</a>
+                                </td>
+					        </tr>
+                        <% @End %>
+				    </tbody>
+			    </table>
+            </div>
+            <hr />
+            <div class="row-fluid">
+                <form id="validateSubmitForm" data-refresh=".typelist .types" action="<% @Tag Provider='Url' Name='BaseUrl' %>/entityAction_type_add.<% @Tag Provider='Config' Name='ext' %>" method="post">
+                    <div class="span2">
+                        <input class="mb0 span12" name="Name" type="text" placeholder="Name" data-validate="{required:true}" data-validate-message="{required:'please type in Name'}" />
+                    </div>
+                    <div class="span2">
+                        <input class="mb0 span12" name="Key" type="text" placeholder="Key" data-validate="{required:true}" data-validate-message="{required:'please type in Key'}" />
+                    </div>
+                    <div class="span2">
+                        <select name="Handle">
+                            <% @Data Provider="EntityHandles" %>
+                                <option value="{Name}"><xsl:value-of select="Name" /></option>
+                            <% @End %>
+                        </select>
+                    </div>
+                    <div class="span5">
+                        <input class="mb0 span12" name="Description" type="text" placeholder="Description" />
+                    </div>
+                    <div class="span1">
+                        <button class="span6 btn btn-default btn-primary" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+		</div>
+	</div>
+</div>
+<% @Include File="foot.html" EnableScript="True" %>

@@ -12,6 +12,8 @@
     return _str;
 }
 
+if ($('.uniformjs').length) $('.uniformjs').uniform();
+
 function AnalysisUrl(url) {
     if (url == null) { url = location.href; }
     var _protocol = '';
@@ -101,131 +103,199 @@ function AnalysisUrl(url) {
         }
     }
 }
-
-function SelectDefault() {
-    $('select[data-default]').each(function (i, o) {
-        $o = $(o);
-        if ($o.find('option[selected]').length > 0) return;
-        var value = $o.attr('data-default');
-        $o.find('option').each(function (ii, io) {
-            if ($(io).val() == value) $(io).attr('selected', 'selected');
-        })
-        $o.change();
-    })
-}
-
-function AjaxLink() {
-    $("a.ajaxlink").live('click', function (evt) {
-        var $tar = $(evt.target);
-        var originTxt = $tar.html();
-        var ajaxData = {};
-        if (typeof $tar.attr('ajax-data') != 'undefined') {
-            ajaxData = eval('(' + $tar.attr('ajax-data') + ')');
-        }
-        var doAjax = function () {
-            var link = $tar.attr('href');
-            $tar.html("正在处理");
-            $.ajax({
-                url: link,
-                data: ajaxData,
-                type: 'post',
-                success: function (data) {
-                    if (typeof $tar.attr('ajax-success') != 'undefined') {
-                        var fun = eval('(' + $tar.attr('ajax-success') + ')');
-                        if (typeof fun === 'function') {
-                            fun(data);
-                        }
-                    }
-                    $tar.html(originTxt);
-                },
-                error: function () {
-                    $tar.html(originTxt);
-                }
+var XY = {
+    Effect: {
+        SelectDefault: function ($o) {
+            if ($o.find('option[selected]').length > 0) return;
+            var value = $o.attr('data-default');
+            $o.find('option').each(function (ii, io) {
+                if ($(io).val() == value) $(io).attr('selected', 'selected');
             })
-        }
-        if (typeof $tar.attr('ajax-confirm') != 'undefined') {
-            bootbox.confirm($tar.attr('ajax-confirm'), function (result) {
-                if (result) {
+            $o.change();
+        },
+        AjaxLink: function ($o) {
+            $o.click(function (evt) {
+                var $tar = $(evt.target);
+                var originTxt = $tar.html();
+                var ajaxData = {};
+                if (typeof $tar.attr('ajax-data') != 'undefined') {
+                    ajaxData = eval('(' + $tar.attr('ajax-data') + ')');
+                }
+                var doAjax = function () {
+                    var link = $tar.attr('href');
+                    $tar.html("正在处理");
+                    $.ajax({
+                        url: link,
+                        data: ajaxData,
+                        type: 'post',
+                        success: function (data) {
+                            if (typeof $tar.attr('ajax-success') != 'undefined') {
+                                var fun = eval('(' + $tar.attr('ajax-success') + ')');
+                                if (typeof fun === 'function') {
+                                    fun(data);
+                                }
+                            }
+                            if (typeof $tar.attr('ajax-refresh') != 'undefined') {
+                                var refresh = $tar.attr('ajax-refresh');
+                                $.ajax({
+                                    url: window.location.href.toString(),
+                                    type: "POST",
+                                    success: function (data) {
+                                        $data = $(refresh, data);
+                                        $(refresh).html($data.html());
+                                        XY.Effect.Init();
+                                    },
+                                    error: function () {
+                                        $tar.html('update error')
+                                    }
+                                })
+                            } else {
+                                $tar.html(originTxt);
+                            }
+                        },
+                        error: function () {
+                            $tar.html('connect error');
+                        }
+                    })
+                }
+                if (typeof $tar.attr('ajax-confirm') != 'undefined') {
+                    bootbox.confirm($tar.attr('ajax-confirm'), function (result) {
+                        if (result) {
+                            doAjax();
+                        }
+                    })
+                } else {
                     doAjax();
                 }
+                return false;
+            });
+        },
+        AjaxProcess: function () {
+            $(document).ajaxSend(function (evt, xhr, ajaxObj) {
+                if (ajaxObj.hide) return;
+                if (!isInProcess(ajaxObj)) {
+                    ajaxObj.notyfy = notyfy({
+                        text: "正在请求...Requesting..." + ajaxObj.url,
+                        type: "information",
+                        layout: "top",
+                        events: {
+                            shown: function (evt, objthis) {
+                                if (ajaxObj.notyfy == null) objthis.close();
+                            }
+                        }
+                    });
+                } else {
+                    notyfy({ text: "已经有一个请求正在处理中<br />your already doing a request", "type": 'error', layout: "topRight", timeout: 3000 })
+                    return false;
+                }
+            }).ajaxComplete(function (evt, xhr, ajaxObj) {
+                if (ajaxObj.hide) return;
+                EndProcess(ajaxObj);
+                if (ajaxObj.notyfy) ajaxObj.notyfy.close();
+                ajaxObj.notyfy = null;
             })
-        } else {
-            doAjax();
-        }
-        return false;
-    });
-}
 
-function PartialRefresh() {
-    $('.ajaxreload').each(function (i, o) {
-        
-    })
-}
-
-(function ($) {
-    //init ajax inform
-    $(document).ajaxSend(function (evt, xhr, ajaxObj) {
-        if (ajaxObj.hide) return;
-        if (!isInProcess(ajaxObj)) {
-            ajaxObj.notyfy = notyfy({
-                text: "正在请求...Requesting..." + ajaxObj.url,
-                type: "information",
-                layout: "top",
-                events: {
-                    shown: function (evt, objthis) {
-                        if (ajaxObj.notyfy == null) objthis.close();
-                    }
+            var _store = [];
+            function isInProcess(req) {
+                for (var i = 0; i < _store.length; i++) {
+                    var _temp_store = _store[i];
+                    if (_temp_store.url == req.url
+                    && _temp_store.data == req.data
+                    && _temp_store.type == req.type) return true;
+                }
+                var _temp = {
+                    url: req.url,
+                    data: req.data,
+                    type: req.type
+                };
+                _store.push(_temp);
+                return false;
+            }
+            function EndProcess(req) {
+                for (var i = 0; i < _store.length; i++) {
+                    var _temp_store = _store[i];
+                    if (_temp_store.url == req.url
+                    && _temp_store.data == req.data
+                    && _temp_store.type == req.type) return _store.splice(i, 1);
+                }
+            }
+        },
+        MenuSelect: function () {
+            $('.menu-0').find('a').each(function (i, o) {
+                var curUrl = location.href.toString();
+                if (curUrl.indexOf('#') > -1)
+                    curUrl = curUrl.substr(0, curUrl.indexOf('#'));
+                if (o.href == curUrl) {
+                    $(o).closest('ul.collapse').addClass('in');
+                    $(o).closest('li.hasSubmenu').addClass('active');
+                    $(o).closest('li').addClass('current');
                 }
             });
-        } else {
-            notyfy({ text: "已经有一个请求正在处理中<br />your already doing a request", "type": 'error', layout: "topRight", timeout: 3000 })
-            return false;
-        }
-    }).ajaxComplete(function (evt, xhr, ajaxObj) {
-        if (ajaxObj.hide) return;
-        EndProcess(ajaxObj);
-        ajaxObj.notyfy.close();
-        ajaxObj.notyfy = null;
-    })
+        },
+        AutoAjaxForm: function ($o) {
+            function addValidate() {
+                var validateOption = { rules: {}, messages: {} };
+                $o.find("*[data-validate]").each(function (i, o) {
+                    var $o = $(o);
+                    var name = $o.attr('name');
+                    var validate = eval('(' + $o.attr('data-validate') + ')');
+                    validateOption.rules[name] = validate;
+                    if ($o.attr('data-validate-message') != undefined) {
+                        var message = eval('(' + $o.attr('data-validate-message') + ')');
+                        validateOption.messages[name] = message;
+                    }
+                });
+                return $o.validate(validateOption);
+            }
 
-    var _store = [];
-    function isInProcess(req) {
-        for (var i = 0; i < _store.length; i++) {
-            var _temp_store = _store[i];
-            if (_temp_store.url == req.url
-            && _temp_store.data == req.data
-            && _temp_store.type == req.type) return true;
+            function partialRefresh(select) {
+                $.ajax({
+                    url: window.location.href.toString(),
+                    type: "POST",
+                    success: function (data) {
+                        $data = $(select, data);
+                        $(select).html($data.html());
+                        XY.Effect.Init();
+                    }
+                })
+            }
+
+            addValidate();
+
+            $o.submit(function (evt) {
+                if ($o.valid()) {
+                    $.ajax({
+                        url: $o.attr('action'),
+                        data: $o.serialize(),
+                        type: "Post",
+                        success: function (data) {
+                            var refreshSelect = $o.attr("data-refresh");
+                            partialRefresh(refreshSelect);
+                        }
+                    })
+                }
+                return false;
+            })
+        },
+        Init: function () {
+            XY.Effect.MenuSelect();
+
+            $("form[data-refresh]").each(function (i, o) {
+                XY.Effect.AutoAjaxForm($(o));
+
+            })
+            $('select[data-default]').each(function (i, o) {
+                XY.Effect.SelectDefault($(o));
+            })
+            $("a.ajaxlink").each(function (i, o) {
+                XY.Effect.AjaxLink($(o));
+            })
         }
-        var _temp = {
-            url: req.url,
-            data: req.data,
-            type: req.type
-        };
-        _store.push(_temp);
-        return false;
     }
-    function EndProcess(req) {
-        for (var i = 0; i < _store.length; i++) {
-            var _temp_store = _store[i];
-            if (_temp_store.url == req.url
-            && _temp_store.data == req.data
-            && _temp_store.type == req.type) return _store.splice(i, 1);
-        }
-    }
+};
 
-    //set current navigation
-    $('.menu-0').find('a').each(function (i, o) {
-        var curUrl = location.href.toString();
-        if (curUrl.indexOf('#') > -1)
-            curUrl = curUrl.substr(0, curUrl.indexOf('#'));
-        if (o.href == curUrl) {
-            $(o).closest('ul.collapse').addClass('in');
-            $(o).closest('li.hasSubmenu').addClass('active');
-            $(o).closest('li').addClass('current');
-        }
-    });
 
-    //start effect;
-    SelectDefault();
-    AjaxLink();
-})(jQuery)
+(function ($) {
+    XY.Effect.AjaxProcess();
+    XY.Effect.Init();
+})(jQuery);

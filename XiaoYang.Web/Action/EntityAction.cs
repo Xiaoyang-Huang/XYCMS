@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace XiaoYang.Web.Action {
+    public class EntityAction: Global.UserPage {
+        public override void ValidateUrl() {
+            base.ValidateUrl();
+            switch (Request.GroupString["type"]) {
+                case "type":
+                    switch (Request.GroupString["action"]) { 
+                        case "add":
+                            XiaoYang.Entity.EntityType.Add(Request.Form);
+                            break;
+                        case "del":
+                            XiaoYang.Entity.EntityType.Del(Request.Form);
+                            break;
+                        case "check":
+                            string[] _errors = XiaoYang.Entity.EntityType.Check(Convert.ToInt64(Request.Form["ID"]));
+                            if (_errors.Length == 0) {
+                                Response.Write("{status:'success',message:'success'}");
+                            } else {
+                                Response.Write(string.Format("{{status:'{0}',message:[\"{1}\"]}}", "failed", string.Join("\",\"", _errors)));
+                            }
+                            break;
+                        case "active":
+                            XiaoYang.Entity.EntityType.EditActive(Request.Form);
+                            break;
+                        case "available":
+                            XiaoYang.Entity.EntityType.EditAvailable(Request.Form);
+                            break;
+                    }
+                    break;
+                case "table":
+                    switch (Request.GroupString["action"]) {
+                        case "add":
+                            XiaoYang.Entity.EntityTable.Add(Request.Form);
+                            break;
+                        case "del":
+                            XiaoYang.Entity.EntityTable.Del(Request.Form);
+                            break;
+                    }
+                    break;
+                case "field":
+                    switch (Request.GroupString["action"]) { 
+                        case "add":
+                            XiaoYang.Entity.EntityField.Add(Request.Form);
+                            break;
+                        case "del":
+                            XiaoYang.Entity.EntityField.Del(Request.Form);
+                            break;
+                    }
+                    break;
+            }
+        }
+    }
+}

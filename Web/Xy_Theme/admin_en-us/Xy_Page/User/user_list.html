@@ -1,6 +1,5 @@
-﻿<% @SetData Name="PageClass" %>userlist<% @End %>
-<% @Include File="head.html" EnableScript="True" %>
-<div class="innerLR innerT">
+﻿<% @Include File="head.html" EnableScript="True" %>
+<div class="innerLR innerT userlist">
     <div class="widget">
 		<!-- Widget heading -->
 		<div class="widget-head">
@@ -254,7 +253,8 @@
             }
         });
 
-        box.on('hide', function () {
+        box.on('hide', function (evt) {
+            validate.checkForm();
             if (boxresult) {
                 if (!validate.valid()) {
                     validate.showErrors()

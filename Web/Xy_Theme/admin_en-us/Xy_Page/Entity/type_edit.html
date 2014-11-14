@@ -1,0 +1,289 @@
+﻿<% @Include File="head.html" EnableScript="True" %>
+<div class="innerLR innerT typeedit">
+    <div class="widget tables">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h3 class="heading">Table list</h3>
+		</div>
+		<!-- // Widget heading END -->
+		<div class="widget-body">
+            <% @Data Provider="Procedure" Command="select * from [EntityTable] where [TypeID] = @TypeID" Parameter="{ TypeID='Group:id' }" XsltParameter="{ Ext='Config:ext' BasePath='App:BasePath' }" EnableScript="True" %>
+            <div class="widget table{ID}">
+		        <!-- Widget heading -->
+		        <div class="widget-head">
+                    <h3 class="heading">
+                        <xsl:value-of select="Name" />
+                        <xsl:if test="Main = 'True'" >
+                            <span>main</span>
+                        </xsl:if>
+                        <xsl:if test="Multiply = 'True'" >
+                            <span>multiply</span>
+                        </xsl:if>
+                    </h3>
+                    <a href="{$BasePath}/entityAction_table_del.{$Ext}" ajax-confirm="Verify delete this?" ajax-data="{{ ID:{ID} }}" ajax-refresh=".typeedit .tables" class="btn btn-danger pull-right ajaxlink">Delete Table</a>
+                    <a href="javascript:AddField({ID});" class="btn btn-primary pull-right">Add Field</a>
+		        </div>
+		        <!-- // Widget heading END -->
+		        <div class="widget-body">
+                    <table class="table table-condensed table-mid">
+				        <!-- Table heading -->
+				        <thead>
+					        <tr>
+						        <th>Name</th>
+                                <th>Key</th>
+						        <th>Type</th>
+						        <th>Default</th>
+                                <th>Template</th>
+                                <th>Attributes<br />(Primary,Increase,Null,Foreign)</th>
+                                <th>Description</th>
+                                <th>Operation</th>
+					        </tr>
+				        </thead>
+				        <!-- // Table heading END -->
+				        <!-- Table body -->
+				        <tbody>
+					        <!-- Table row -->
+                            [% @Data Provider="Procedure" Command="select * from [EntityField] where [TableID] = <xsl:value-of select="ID" />" %]
+					            <tr class="item{{ID}}">
+						            <td><xyxsl:value-of select="Name" /></td>
+                                    <td><xyxsl:value-of select="Key" /></td>
+						            <td><xyxsl:value-of select="Type" /></td>
+                                    <td>
+                                        <xyxsl:choose>
+                                            <xyxsl:when test="string-length(Default) > 0">
+                                                <xyxsl:value-of select="Default" />
+                                            </xyxsl:when>
+                                            <xyxsl:otherwise>
+                                                <i>Null</i>
+                                            </xyxsl:otherwise>
+                                        </xyxsl:choose>
+                                    </td>
+                                    <td><xyxsl:value-of select="Template" /></td>
+                                    <td>
+                                    <xyxsl:choose>
+                                        <xyxsl:when test="Primary = 'True'">
+                                            <p class="glyphicons no-js ok"><i></i></p>
+                                        </xyxsl:when>
+                                        <xyxsl:otherwise>
+                                            <p class="glyphicons no-js remove"><i></i></p>
+                                        </xyxsl:otherwise>
+                                    </xyxsl:choose>
+                                    <xyxsl:choose>
+                                        <xyxsl:when test="Increase = 'True'">
+                                            <p class="glyphicons no-js ok"><i></i></p>
+                                        </xyxsl:when>
+                                        <xyxsl:otherwise>
+                                            <p class="glyphicons no-js remove"><i></i></p>
+                                        </xyxsl:otherwise>
+                                    </xyxsl:choose>
+                                    <xyxsl:choose>
+                                        <xyxsl:when test="Null = 'True'">
+                                            <p class="glyphicons no-js ok"><i></i></p>
+                                        </xyxsl:when>
+                                        <xyxsl:otherwise>
+                                            <p class="glyphicons no-js remove"><i></i></p>
+                                        </xyxsl:otherwise>
+                                    </xyxsl:choose>
+                                    <xyxsl:choose>
+                                        <xyxsl:when test="Foreign = 'True'">
+                                            <p class="glyphicons no-js ok"><i></i></p>
+                                        </xyxsl:when>
+                                        <xyxsl:otherwise>
+                                            <p class="glyphicons no-js remove"><i></i></p>
+                                        </xyxsl:otherwise>
+                                    </xyxsl:choose>
+                                    </td>
+                                    <td><xyxsl:value-of select="Description" /></td>
+						            <td>
+                                        <a href="{$BasePath}/entityAction_field_del.{$Ext}" ajax-confirm="Verify delete this?" ajax-data="{{{{ ID:{{ID}} }}}}" ajax-refresh=".typeedit .table{ID}" class="btn btn-danger ajaxlink">Delete</a>
+                                    </td>
+					            </tr>
+                            [% @End %]
+					        <!-- // Table row END -->
+				        </tbody>
+				        <!-- // Table body END -->
+			        </table>
+		        </div>
+	        </div>
+            <% @End %>
+            <hr />
+            <div class="row-fluid ">
+                <form id="validateSubmitForm" data-refresh=".typeedit .tables" action="<% @Tag Provider='Url' Name='BaseUrl' %>/entityAction_table_add.<% @Tag Provider='Config' Name='ext' %>" method="post">
+                    <div class="span2">
+                        <input type="hidden" name="TypeID" value="<% @Tag Provider='Group' Name='id' %>" />
+                        <input class="mb0 span12" name="Name" type="text" placeholder="Name" data-validate="{required:true}" data-validate-message="{required:'please type in Name'}" />
+                    </div>
+                    <div class="span2">
+                        <input class="mb0 span12" name="Key" type="text" placeholder="Key" data-validate="{required:true}" data-validate-message="{required:'please type in Key'}" />
+                    </div>
+                    <div class="span2">
+                        <div class="span6">
+                            <label class="checkbox">
+						        <input type="checkbox" class="uniformjs" value="True" name="Main" />Main
+					        </label>
+                        </div>
+                        <div class="span6">
+                            <label class="checkbox">
+						        <input type="checkbox" class="uniformjs" value="True" name="Multiply" />Multiply
+					        </label>
+                        </div>
+                    </div>
+                    <div class="span5">
+                        <input class="mb0 span12" name="Description" type="text" placeholder="Description" />
+                    </div>
+                    <div class="span1">
+                        <button class="span6 btn btn-default btn-primary" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+		</div>
+	</div>
+    <% @Data Provider='Procedure' Command='select * from [EntityType] where [ID] = @ID' Parameter='{ ID="Group:id" }' XsltParameter='{ Ext="Config:ext" BasePath="App:BasePath" }' %>
+        <xsl:choose>
+            <xsl:when test="IsActive = 'True'">
+                <a href="{$BasePath}/entityAction_type_active.{$Ext}" ajax-confirm="Verify clear this?" ajax-data="{{ ID:{ID},IsActive:'False' }}"  ajax-refresh="#content" class="ajaxlink btn btn-danger pull-right">Clear</a>
+            </xsl:when>
+            <xsl:otherwise>
+                <a href="{$BasePath}/entityAction_type_active.{$Ext}" ajax-confirm="Verify active this?" ajax-data="{{ ID:{ID},IsActive:'True' }}"  ajax-refresh="#content" class="ajaxlink btn btn-danger pull-right">Active</a>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="IsAvailable = 'True'">
+                <a href="{$BasePath}/entityAction_type_available.{$Ext}" ajax-confirm="Verify enable this?" ajax-data="{{ ID:{ID},IsAvailable:'False' }}"  ajax-refresh="#content" class="ajaxlink btn btn-primary pull-right">Disable</a>
+            </xsl:when>
+            <xsl:otherwise>
+                <a href="{$BasePath}/entityAction_type_available.{$Ext}" ajax-confirm="Verify disable this?" ajax-data="{{ ID:{ID},IsAvailable:'True' }}"  ajax-refresh="#content" class="ajaxlink btn btn-primary pull-right">Enable</a>
+            </xsl:otherwise>
+        </xsl:choose>
+    <% @End %>
+    <a href="javascript:Check()" class="btn btn-warning pull-right">Check</a>
+</div>
+<div id="AddField" class="hide">
+    <h3>Add Field</h3>
+    <hr />
+    <div class="innerLR">
+        <form id="addFieldForm" method="post"  data-refresh=".typeedit .tables" action="<% @Tag Provider='Url' Name='BaseUrl' %>/entityAction_field_add.<% @Tag Provider='Config' Name='ext' %>">
+            <input type="hidden" name="TableID" value="" />
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>名称</label>
+                    <input type="text" name="Name" />
+                </div>
+                <div class="span6">
+                    <label>标识</label>
+                    <input type="text" name="Key" />
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>类型</label>
+                    <select id="typeName" style="width:150px">
+                        <option value="System.Data.DbType.AnsiString">AnsiString(x)</option>
+                        <option value="System.Data.DbType.Binary">Binary(x)</option>
+                        <option value="System.Data.DbType.Byte">Byte</option>
+                        <option value="System.Data.DbType.Boolean">Boolean</option>
+                        <option value="System.Data.DbType.Currency">Currency</option>
+                        <option value="System.Data.DbType.Date">Date</option>
+                        <option value="System.Data.DbType.DateTime">DateTime</option>
+                        <option value="System.Data.DbType.Decimal">Decimal(x,y)</option>
+                        <option value="System.Data.DbType.Double">Double</option>
+                        <option value="System.Data.DbType.Guid">Guid</option>
+                        <option value="System.Data.DbType.Int16">Int16</option>
+                        <option value="System.Data.DbType.Int32">Int32</option>
+                        <option value="System.Data.DbType.Int64">Int64</option>
+                        <option value="System.Data.DbType.Object">Object</option>
+                        <option value="System.Data.DbType.SByte">SByte</option>
+                        <option value="System.Data.DbType.Single">Single</option>
+                        <option value="System.Data.DbType.String">String</option>
+                        <option value="System.Data.DbType.Time">Time(x)</option>
+                        <option value="System.Data.DbType.UInt16">UInt16</option>
+                        <option value="System.Data.DbType.UInt32">UInt32</option>
+                        <option value="System.Data.DbType.UInt64">UInt64</option>
+                        <option value="System.Data.DbType.VarNumeric">VarNumeric(x,y)</option>
+                        <option value="System.Data.DbType.AnsiStringFixedLength">AnsiStringFixedLength(x)</option>
+                        <option value="System.Data.DbType.StringFixedLength">StringFixedLength</option>
+                        <option value="System.Data.DbType.Xml">Xml</option>
+                        <option value="System.Data.DbType.DateTime2">DateTime2(x)</option>
+                        <option value="System.Data.DbType.DateTimeOffset">DateTimeOffset(x)</option>
+                    </select>
+                    <input id="typeLength" style="width:50px" type="text" value="" />
+                    <input type="hidden" name="Type"/>
+                </div>
+                <div class="span6">
+                    <label>默认值</label>
+                    <input name="Default" type="text" value="" />
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <label>模板</label>
+                    <select name="Template">
+                        <option value="1">abc</option>
+                        <option value="2">bcd</option>
+                        <option value="3">cde</option>
+                    </select>
+                </div>
+                <div class="span6">
+                    <div class="row-fluid">
+                        <div class="span3">
+                            <label>Primary</label>
+                            <input type="checkbox" name="Primary" value="True"/>
+                        </div>
+                        <div class="span3">
+                            <label>Increase</label>
+                            <input type="checkbox" name="Increase" value="True"/>
+                        </div>
+                        <div class="span3">
+                            <label>Null</label>
+                            <input type="checkbox" name="Null" value="True"/>
+                        </div>
+                        <div class="span3">
+                            <label>Foreign</label>
+                            <input type="checkbox" name="Foreign" value="True"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <label>描述</label>
+                    <input class="full" type="text" name="Description" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<% @Include File="foot.html" EnableScript="True" %>
+<script type="text/javascript">
+    function AddField(tableid) {
+        var box = bootbox.confirm($('#AddField').html(), function (result) {
+            if (result) {
+                box.find('input[type=hidden][name=Type]').val(box.find("#typeName").val() + "|" + box.find("#typeLength").val());
+                box.find('form').submit();
+            }
+        })
+        box.find('form').each(function (i, o) {
+            var $o = $(o);
+            $o.attr('class', '.typeedit .table' + tableid);
+            XY.Effect.AutoAjaxForm($o);
+        })
+        box.find('input[name="TableID"]').val(tableid);
+    }
+
+    function Check() {
+        $.ajax({
+            url: "<% @Tag Provider='Url' Name='BaseUrl' %>/entityAction_type_check.<% @Tag Provider='Config' Name='ext' %>",
+            type: "Post",
+            data: { ID: '<% @Tag Provider="Group" Name="id" %>' },
+            success: function(data){
+                var result = eval('(' + data + ')');
+                console.log(result);
+                if (result.status == 'success') {
+                    bootbox.alert('Check passed');
+                } else {
+                    bootbox.alert(result.message.join('<br />'));
+                }
+            }
+        })
+    }
+</script>
