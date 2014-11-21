@@ -50,6 +50,7 @@
     <Compile Include="DefaultHandle.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityHandlesDataBuilder.cs" />
+    <Compile Include="EntityTemplateControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityType.cs" />
     <Compile Include="EntityType_XYBase.cs">
@@ -71,6 +72,13 @@
     </Compile>
     <Compile Include="EntityField_XYFunction.cs">
       <DependentUpon>EntityField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFieldForm.cs" />
+    <Compile Include="EntityFieldForm_XYBase.cs">
+      <DependentUpon>EntityFieldForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFieldForm_XYFunction.cs">
+      <DependentUpon>EntityFieldForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

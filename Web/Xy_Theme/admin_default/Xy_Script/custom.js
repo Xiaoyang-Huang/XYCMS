@@ -132,7 +132,7 @@ var XY = {
                             if (typeof $tar.attr('ajax-success') != 'undefined') {
                                 var fun = eval('(' + $tar.attr('ajax-success') + ')');
                                 if (typeof fun === 'function') {
-                                    fun(data);
+                                    fun.call(evt.target, data);
                                 }
                             }
                             if (typeof $tar.attr('ajax-refresh') != 'undefined') {
@@ -240,14 +240,13 @@ var XY = {
                     var name = $o.attr('name');
                     var validate = eval('(' + $o.attr('data-validate') + ')');
                     validateOption.rules[name] = validate;
-                    if ($o.attr('data-validate-message') != undefined) {
+                    if (typeof $o.attr('data-validate-message') != 'undefined') {
                         var message = eval('(' + $o.attr('data-validate-message') + ')');
                         validateOption.messages[name] = message;
                     }
                 });
                 return $o.validate(validateOption);
             }
-
             function partialRefresh(select) {
                 $.ajax({
                     url: window.location.href.toString(),
@@ -263,14 +262,34 @@ var XY = {
             addValidate();
 
             $o.submit(function (evt) {
+                if (typeof $o.attr('ajax-before') != 'undefined') {
+                    var fun = eval('(' + $o.attr('ajax-before') + ')');
+                    if (typeof fun === 'function') {
+                        fun.call($o.context);
+                    }
+                }
+                var _data = $o.serialize();
+                if (typeof $o.attr('ajax-encode') != 'undefined') {
+                    if ($o.attr('ajax-encode') == 'true') {
+                        _data = encodeURI(_data);
+                    }
+                }
                 if ($o.valid()) {
                     $.ajax({
                         url: $o.attr('action'),
-                        data: $o.serialize(),
+                        data: _data,
                         type: "Post",
                         success: function (data) {
-                            var refreshSelect = $o.attr("data-refresh");
-                            partialRefresh(refreshSelect);
+                            if (typeof $o.attr('ajax-success') != 'undefined') {
+                                var fun = eval('(' + $o.attr('ajax-success') + ')');
+                                if (typeof fun === 'function') {
+                                    fun.call(evt.target, data);
+                                }
+                            }
+                            if (typeof  $o.attr('data-refresh') != 'undefined') {
+                                var refreshSelect = $o.attr("data-refresh");
+                                partialRefresh(refreshSelect);
+                            }
                         }
                     })
                 }
@@ -280,9 +299,8 @@ var XY = {
         Init: function () {
             XY.Effect.MenuSelect();
 
-            $("form[data-refresh]").each(function (i, o) {
+            $("form[data-refresh],form.ajaxform").each(function (i, o) {
                 XY.Effect.AutoAjaxForm($(o));
-
             })
             $('select[data-default]').each(function (i, o) {
                 XY.Effect.SelectDefault($(o));

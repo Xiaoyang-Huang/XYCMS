@@ -22,7 +22,7 @@ namespace XiaoYang.Web.Global {
         public override void ValidateUser() {
             if (CurrentUser != null) {
                 U = XiaoYang.User.User.GetInstance(CurrentUser.ID);
-                PageData.AddXyDataModel("CurrentUser", U);
+                PageData.AddSplitedXyDataModel("CurrentUser", U);
             }
         }
 

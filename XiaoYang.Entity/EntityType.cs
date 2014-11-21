@@ -6,15 +6,26 @@ namespace XiaoYang.Entity{
     partial class EntityType{
         public static void RegisterEvents() {
             _procedures[R("EditActive")].BeforeInvoke += EditActive_BeforeInvoke;
-            _procedures[R("EditActive")].AfterInvoke += EditActivee_AfterInvoke;
+            _procedures[R("EditActive")].AfterInvoke += EditActive_AfterInvoke;
             _procedures[R("EditActive")].OnError += EditActive_onError;
+
+            _procedures[R("EditAvailable")].BeforeInvoke += EditAvailable_BeforeInvoke;
         }
 
-        private static void EditActive_onError(Exception exception, Xy.Data.DataBase DB) {
+        private static void EditAvailable_BeforeInvoke(Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
+            long ID = Convert.ToInt64(procedure.GetItem("ID"));
+            bool IsAvailable = Convert.ToBoolean(procedure.GetItem("IsAvailable"));
+            if (IsAvailable) { 
+                if (Check(ID).Length > 0) throw new Exception("Enable type failed while check process.");
+            }
+        }
+
+        private static bool EditActive_onError(Exception exception, Xy.Data.DataBase DB) {
             DB.RollbackTransation();
             DB.Close();
+            return true;
         }
-        private static void EditActivee_AfterInvoke(Xy.Data.ProcedureResult result, Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
+        private static void EditActive_AfterInvoke(Xy.Data.ProcedureResult result, Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
             DB.CommitTransaction();
             DB.Close();
         }
@@ -53,6 +64,7 @@ namespace XiaoYang.Entity{
                     }
                     bool _hasPrimary = false;
                     bool _hasForeign = false;
+                    bool _hasInput = false;
                     System.Data.DataTable _dataField = EntityField.GetListByTabldID(_tempTable.ID, inDB);
                     if (_dataField.Rows.Count == 0) {
                         _errors.Add(string.Format("please add field into table {0}.", _tempTable.Name));
@@ -67,9 +79,14 @@ namespace XiaoYang.Entity{
                             if (_tempField.Foreign) {
                                 _hasForeign = true;
                                 if (_tempField.Null) _errors.Add(string.Format("table {0} field {1} can not set Null as it's a foreign key", _tempTable.Name, _tempField.Name));
+                                if (_tempField.Increase) _errors.Add(string.Format("table {0} field {1} can not set Increase as it's a foreign key", _tempTable.Name, _tempField.Name));
+                            }
+                            if (!_tempField.Increase && !_tempField.Foreign) {
+                                _hasInput = true;
                             }
                         }
                         if (!_hasPrimary) _errors.Add(string.Format("table {0} did't have Primary key.", _tempTable.Name));
+                        if (!_hasInput) _errors.Add(string.Format("table {0} did't a field need user to input.", _tempTable.Name));
                         if (!_tempTable.Main) {
                             if (!_hasForeign) _errors.Add(string.Format("table {0} did't have Foreign key as it's not Main table.", _tempTable.Name));
                         } else {

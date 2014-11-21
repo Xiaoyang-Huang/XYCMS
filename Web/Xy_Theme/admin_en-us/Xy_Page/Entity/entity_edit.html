@@ -1,0 +1,34 @@
+﻿<% @Include File="head.html" EnableScript="True" %>
+<div class="innerLR innerT typeedit">
+    <form id="EditForm" method="post" action="<% @Tag Provider='Url' Name='BaseUrl' %>/entityAction_entity_<% @Tag Provider="Group" Name="type" %>_<% @Tag Provider="Group" Name="id" %>.<% @Tag Provider="Config" Name="ext" %>">
+        <div class="widget widget-tabs widget-tabs-double-2">
+            <div class="widget-head">
+                <ul>
+                    <% @Data Provider="Procedure" Command="select [Name],[Key] from [EntityTable] where [TypeID] = @TypeID" Parameter="{ TypeID='Group:id' }" %>
+                        <li><a class="glyphicons notes_2" href="#{Key}" data-toggle="tab"><i></i><span><xsl:value-of select="Name" /></span></a></li>
+                    <% @End %>
+                </ul>
+            </div>
+            <div class="widget-body">
+                <div class="tab-content">
+                    <% @Data Provider="Procedure" Command="select [ID],[Key] from [EntityTable] where [TypeID] = @TypeID" Parameter="{ TypeID='Group:id' }" EnableScript="True" %>
+                    <div id="{Key}" class="tab-pane widget-body-regular">
+                        [% @Data Provider="Procedure" Command="select * from [EntityField] where [TableID] = @TableID" Parameter="{ TableID='<xsl:value-of select="ID" />|s' }" EnableScript="True" %]
+                        <div class="row-fluid">
+                            <xyxsl:if test="Increase != 'True'">
+                                <label>
+                                    <xyxsl:value-of select="Name" />
+                                    <xyxsl:if test="string-length(Description) > 0">(<xyxsl:value-of select="Description" />)</xyxsl:if>
+                                </label>
+                            </xyxsl:if>
+                        </div>
+                        [% @End %]
+                    </div>
+                    <% @End %>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary pull-right" type="submit">保存</button>
+    </form>
+</div>
+<% @Include File="foot.html" EnableScript="True" %>

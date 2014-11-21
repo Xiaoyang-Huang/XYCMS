@@ -17,9 +17,7 @@ namespace XiaoYang.Web.Action {
                             break;
                         case "check":
                             string[] _errors = XiaoYang.Entity.EntityType.Check(Convert.ToInt64(Request.Form["ID"]));
-                            if (_errors.Length == 0) {
-                                Response.Write("{status:'success',message:'success'}");
-                            } else {
+                            if (_errors.Length > 0) {
                                 Response.Write(string.Format("{{status:'{0}',message:[\"{1}\"]}}", "failed", string.Join("\",\"", _errors)));
                             }
                             break;
@@ -51,6 +49,22 @@ namespace XiaoYang.Web.Action {
                             break;
                     }
                     break;
+                case "form":
+                    switch (Request.GroupString["action"]) {
+                        case "add":
+                            Response.Write("{status:'success',message:'success',id:'" + XiaoYang.Entity.EntityFieldForm.Add(Request.Form["Name"], Server.UrlDecode(Request.Form["Resource"]), Server.UrlDecode(Request.Form["Template"])) + "'}");
+                            break;
+                        case "edit":
+                            XiaoYang.Entity.EntityFieldForm.Edit(Convert.ToInt64(Request.Form["ID"]), Request.Form["Name"], Server.UrlDecode(Request.Form["Resource"]), Server.UrlDecode(Request.Form["Template"]));
+                            break;
+                        case "del":
+                            XiaoYang.Entity.EntityFieldForm.Del(Request.Form);
+                            break;
+                    }
+                    break;
+            }
+            if (!HTMLContainer.HasContent) {
+                Response.Write("{status:'success',message:'success'}");
             }
         }
     }

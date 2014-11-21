@@ -4,10 +4,7 @@ using System.Text;
 
 
 namespace XiaoYang.Entity {
-    public partial class EntityTable : Xy.Data.IDataModel {
-
-        public static readonly string TABLE_PREFIX = "Entity_";
-
+    public partial class EntityFieldForm : Xy.Data.IDataModel {
         static void RegisterEvents() { }
 
     }

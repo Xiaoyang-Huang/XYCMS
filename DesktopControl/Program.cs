@@ -62,6 +62,14 @@ namespace DesktopControl {
             //int rowCount = -1;
             //Xy.Data.IDataModelDisplay _display = (Xy.Data.IDataModelDisplay)_helper.GetList(string.Empty, 0, 10, "ID desc", ref rowCount);
             //Console.WriteLine(_display.GetXml().CreateNavigator().OuterXml);
+
+            XiaoYang.Entity.DefaultHandler _handle = new XiaoYang.Entity.DefaultHandler();
+            _handle.Init(8);
+            System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
+            _nvc.Add("IsActive", "False");
+            _nvc.Add("Title", "testTitle");
+            _nvc.Add("Content", "testContent");
+            _handle.Add(_nvc);
         }
 
         #region Multiple attribute test

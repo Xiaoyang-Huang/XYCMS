@@ -1,0 +1,47 @@
+﻿<% @Include File="head.html" EnableScript="True" %>
+<div class="innerLR innerT">
+    <div class="widget">
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h3 class="heading">当前已有属性模板列表</h3>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+            <div class="templates">
+                <!-- Table -->
+			    <table class="table table-bordered table-mid">
+				    <!-- Table heading -->
+				    <thead>
+					    <tr>
+						    <th>模板名</th>
+						    <th>操作</th>
+					    </tr>
+				    </thead>
+				    <!-- // Table heading END -->
+				    <!-- Table body -->
+				    <tbody>
+					    <!-- Table row -->
+                        <% @Data Provider="Procedure" Command="select [ID],[Name] from [EntityFieldForm]" EnableScript="True" XsltParameter="{ Ext='Config:ext' }" %>
+					        <tr class="item{ID}">
+						        <td><xsl:value-of select="Name" /></td>
+						        <td>
+                                    <a class="btn" href="/entityForm_edit_{ID}.{$Ext}">编辑</a>
+                                    <a class="btn ajaxlink" ajax-confirm="您确定要删除该模板?" ajax-data="{{ ID:{ID} }}" ajax-refresh=".templates" href="/entityAction_form_del.{$Ext}">删除</a>
+                                </td>
+					        </tr>
+                        <% @End %>
+					    <!-- // Table row END -->
+				    </tbody>
+				    <!-- // Table body END -->
+			    </table>
+			    <!-- // Table END -->
+            </div>
+            <hr />
+            <div class="row-fluid">
+                <a class="btn btn-primary" href="/entityForm_edit.<% @Tag Provider='Config' Name='ext' %>">添加模板</a>
+            </div>
+		</div>
+	</div>
+</div>
+<% @Include File="foot.html" EnableScript="True" %>

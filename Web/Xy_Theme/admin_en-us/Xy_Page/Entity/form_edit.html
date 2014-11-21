@@ -1,0 +1,97 @@
+﻿<% @SetData Name="PageClass" %>template_attr_edit<% @End %>
+<% @SetData Name="PageCSS" PreEnableScript="True" %>
+    <link rel="Stylesheet" type="text/css" href="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/scripts/plugins/wysiswyg/codemirror-3.0/lib/codemirror.css" />
+<% @End %>
+<% @SetData Name="PageScript" PreEnableScript="True" %>
+    <script Type="text/javascript" src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/scripts/plugins/wysiswyg/codemirror-3.0/lib/codemirror.js"></script>
+    <script Type="text/javascript" src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/scripts/plugins/wysiswyg/codemirror-3.0/mode/javascript/javascript.js"></script>
+    <script Type="text/javascript" src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/scripts/plugins/wysiswyg/codemirror-3.0/mode/xml/xml.js"></script>
+    <script Type="text/javascript" src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/scripts/plugins/wysiswyg/codemirror-3.0/mode/css/css.js"></script>
+    <script Type="text/javascript" src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/scripts/plugins/wysiswyg/codemirror-3.0/mode/htmlmixed/htmlmixed.js"></script>
+    <script Type="text/javascript" src="<% @Tag Provider="App" Name="ScriptPath" Config="default" %>theme/scripts/plugins/wysiswyg/codemirror-3.0/mode/htmlembedded/htmlembedded.js"></script>
+<% @End %>
+<% @Include File="head.html" EnableScript="True" %>
+<div class="innerLR innerT">
+    <% @Tag Provider="Group" Name="id" Mode="Exist" EnableScript="True" %>
+    <form class="ajaxform" method="post" action="<% @Tag Provider='Url' Name='BaseUrl' %>/entityAction_form_edit.<% @Tag Provider="Config" Name="ext" %>" ajax-before="SaveContent" ajax-success="Success" ajax-encode="true">
+        <input type="hidden" name="ID" value="<% @Tag Provider="Group" Name="id" %>" />
+    <% @End %>
+    <% @Tag Provider="Group" Name="id" Mode="NotExist" EnableScript="True" %>
+    <form class="ajaxform" method="post" action="<% @Tag Provider='Url' Name='BaseUrl' %>/entityAction_form_add.<% @Tag Provider="Config" Name="ext" %>" ajax-before="SaveContent" ajax-success="Success" ajax-encode="true">
+    <% @End %>
+        <div class="row-fluid">
+            <label>模板名称</label>
+            <input class="span12" type="text" name="Name" value="<% @Tag Provider="Data" Name="Item.Name" %>" />
+        </div>
+        <div class="row-fluid resourceEditorWrap">
+            <label>模板资源</label>
+            <textarea id="resourceArea" name="Resource"><% @Tag Provider="Data" Name="Item.Resource" %></textarea>
+        </div>
+        <div class="row-fluid templcateEditorWrap">
+            <label>模板内容</label>
+            <textarea id="templcateArea" name="Template"><% @Tag Provider="Data" Name="Item.Template" %></textarea>
+        </div>
+        <div class="row-fluid mt10">
+            <button class="btn btn-primary pull-right">保存</button>
+        </div>
+        <div class="row-fluid">
+            <strong>标签:</strong>
+            <dl>
+                <dt>AttributeName: </dt>
+                <dd>属性名称</dd>
+                <dt>AttributeKey: </dt>
+                <dd>属性标识</dd>
+                <dt>AttributeTable: </dt>
+                <dd>属性所在的表名称</dd>
+                <dt>Value: </dt>
+                <dd>属性值, 对于新Post此标签将用作处理默认值</dd>
+                <dt>TypeID: </dt>
+                <dd>此模板用作的类型ID</dd>
+                <dt>TypeKey: </dt>
+                <dd>此模板用作的类型标识</dd>
+                <dt>TypeName: </dt>
+                <dd>此模板用作的类型名称</dd>
+                <dt>EntityID: </dt>
+                <dd>此模板关联的PostID</dd>
+                <dt>IsMultiple: </dt>
+                <dd>此模板关联的属性是否为多值属性</dd>
+                <dt>Split:</dt>
+                <dd>此模板适用多值属性时用于分隔的符号</dd>
+            </dl>
+        </div>
+    </form>
+</div>
+<% @Include File="foot.html" EnableScript="True" %>
+<script type="text/javascript">
+    var templcateEditor = CodeMirror.fromTextArea(document.getElementById("templcateArea"), {
+        lineNumbers: true,
+        mode: "application/x-ejs",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift"
+    });
+    var resourceEditor = CodeMirror.fromTextArea(document.getElementById("resourceArea"), {
+        lineNumbers: true,
+        mode: "application/x-ejs",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift"
+    });
+    function SaveContent() {
+        templcateEditor.save();
+        resourceEditor.save();
+    }
+
+    function Success(data) {
+        var result = eval('(' + data + ')');
+        if (result.status == 'success') {
+            if(typeof result.id != 'undefined'){
+                window.location.href = "<% @Tag Provider='Url' Name='BaseUrl' %>/entityForm_edit_" + result.id + ".<% @Tag Provider='Config' Name='ext' %>";
+            } else {
+                alert(result.message);
+            }
+        }
+    }
+</script>

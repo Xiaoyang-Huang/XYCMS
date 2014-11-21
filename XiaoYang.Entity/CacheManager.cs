@@ -41,7 +41,9 @@ namespace XiaoYang.Entity {
         public IEnumerable<EntityTable> TableList { get { return _tableList; } }
 
         private EntityField _primaryField;
+        public EntityField PrimaryField { get { return _primaryField; } }
         private EntityTable _mainTable;
+        public EntityTable MainTable { get { return _mainTable; } }
 
         private EntityType _type;
 
@@ -53,6 +55,7 @@ namespace XiaoYang.Entity {
                 EntityTable _tempTable = new EntityTable();
                 _tempTable.Fill(_tempTables.Rows[i]);
                 if (_tempTable.Main) {
+                    _mainTable = _tempTable;
                     _tableList.Insert(0, _tempTable);
                 } else { 
                     _tableList.Add(_tempTable);
@@ -61,10 +64,13 @@ namespace XiaoYang.Entity {
                 System.Data.DataTable _tempFields = EntityField.GetListByTabldID(_tempTable.ID);
                 for (int j = 0; j < _tempFields.Rows.Count; j++) {
                     EntityField _tempField = new EntityField();
-                    _tempField.Fill(_tempFields.Rows[i]);
+                    _tempField.Fill(_tempFields.Rows[j]);
                     _tempField.Table = _tempTable;
                     if (_tempField.Primary) {
                         _fieldList.Insert(_fieldFirst, _tempField);
+                        if (_tempTable.Main) {
+                            _primaryField = _tempField;
+                        }
                     } else {
                         _fieldList.Add(_tempField);
                     }                    

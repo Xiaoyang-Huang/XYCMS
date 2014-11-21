@@ -63,6 +63,8 @@
     <Compile Include="Action\InstallAction.cs" />
     <Compile Include="Action\PowerAction.cs" />
     <Compile Include="Action\UserAction.cs" />
+    <Compile Include="Admin\EntityEdit.cs" />
+    <Compile Include="Admin\EntityFieldFormEdit.cs" />
     <Compile Include="Global\LessHandle.cs" />
     <Compile Include="Global\ThemePage.cs" />
     <Compile Include="Global\Captcha.cs" />
@@ -70,9 +72,7 @@
     <Compile Include="Global\UserPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Admin\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\XiaoYang.Entity\XiaoYang.Entity.csproj">
       <Project>{3a84c551-8f88-4f27-a6b6-f6219b8002d9}</Project>

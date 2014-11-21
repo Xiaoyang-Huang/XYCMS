@@ -48,7 +48,7 @@ namespace XiaoYang.User {
         }
 
         private static void Add_AfterInvoke(Xy.Data.ProcedureResult result, Xy.Data.Procedure produce, Xy.Data.DataBase DB) {
-            UserExtra.Add(Convert.ToInt64(result.IntResult), string.Empty, 0, new DateTime(1900, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, DB);
+            UserExtra.Add(Convert.ToInt64(result.ObjectResult), string.Empty, 0, new DateTime(1900, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, DB);
         }
 
         private static void Add_BeforeInvoke(Xy.Data.Procedure produce, Xy.Data.DataBase DB) {
