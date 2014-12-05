@@ -65,6 +65,7 @@
     <Compile Include="Action\UserAction.cs" />
     <Compile Include="Admin\EntityEdit.cs" />
     <Compile Include="Admin\EntityFieldFormEdit.cs" />
+    <Compile Include="Admin\EntityList.cs" />
     <Compile Include="Global\LessHandle.cs" />
     <Compile Include="Global\ThemePage.cs" />
     <Compile Include="Global\Captcha.cs" />

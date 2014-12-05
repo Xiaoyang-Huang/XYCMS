@@ -218,9 +218,9 @@
                 <div class="span6">
                     <label>模板</label>
                     <select name="Template">
-                        <option value="1">abc</option>
-                        <option value="2">bcd</option>
-                        <option value="3">cde</option>
+                        <% @Data Provider="Procedure" Command="select [ID],[Name] from [EntityFieldForm]" %>
+                        <option value="{ID}"><xsl:value-of select="Name" /></option>
+                        <% @End %>
                     </select>
                 </div>
                 <div class="span6">

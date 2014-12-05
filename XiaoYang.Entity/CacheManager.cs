@@ -34,20 +34,26 @@ namespace XiaoYang.Entity {
 
     public class Cache {
 
-        private List<EntityField> _fieldList = new List<EntityField>();
-        public IEnumerable<EntityField> FieldList { get { return _fieldList; } }
+        private System.Collections.ObjectModel.ReadOnlyCollection<EntityField> _fieldList;
+        public System.Collections.ObjectModel.ReadOnlyCollection<EntityField> FieldList { get { return _fieldList; } }
 
-        private List<EntityTable> _tableList = new List<EntityTable>();
-        public IEnumerable<EntityTable> TableList { get { return _tableList; } }
+        private System.Collections.ObjectModel.ReadOnlyCollection<EntityTable> _tableList;
+        public System.Collections.ObjectModel.ReadOnlyCollection<EntityTable> TableList { get { return _tableList; } }
+
+        private string[] _attributeNameList;
+        public string[] AttributeNameList { get { return _attributeNameList; } }
 
         private EntityField _primaryField;
         public EntityField PrimaryField { get { return _primaryField; } }
         private EntityTable _mainTable;
         public EntityTable MainTable { get { return _mainTable; } }
-
         private EntityType _type;
+        public EntityType Type { get { return _type; } }        
 
         internal Cache(long inTypeID) {
+            List<EntityField> _tempFieldList = new List<EntityField>();
+            List<EntityTable> _tempTableList = new List<EntityTable>();
+            List<string> _tempAttributeName = new List<string>();
             _type = EntityType.GetInstance(inTypeID);
             System.Data.DataTable _tempTables = EntityTable.GetListByTypeID(_type.ID);
             int _fieldFirst = 0;
@@ -56,27 +62,31 @@ namespace XiaoYang.Entity {
                 _tempTable.Fill(_tempTables.Rows[i]);
                 if (_tempTable.Main) {
                     _mainTable = _tempTable;
-                    _tableList.Insert(0, _tempTable);
+                    _tempTableList.Insert(0, _tempTable);
                 } else { 
-                    _tableList.Add(_tempTable);
+                    _tempTableList.Add(_tempTable);
                 }
                 _tempTable.Key = string.Concat(EntityTable.TABLE_PREFIX, _tempTable.Key);
                 System.Data.DataTable _tempFields = EntityField.GetListByTabldID(_tempTable.ID);
                 for (int j = 0; j < _tempFields.Rows.Count; j++) {
                     EntityField _tempField = new EntityField();
+                    _tempAttributeName.Add(_tempField.Key);
                     _tempField.Fill(_tempFields.Rows[j]);
                     _tempField.Table = _tempTable;
                     if (_tempField.Primary) {
-                        _fieldList.Insert(_fieldFirst, _tempField);
+                        _tempFieldList.Insert(_fieldFirst, _tempField);
                         if (_tempTable.Main) {
                             _primaryField = _tempField;
                         }
                     } else {
-                        _fieldList.Add(_tempField);
+                        _tempFieldList.Add(_tempField);
                     }                    
                 }
                 _fieldFirst += _tempFields.Rows.Count;
             }
+            _fieldList = new System.Collections.ObjectModel.ReadOnlyCollection<EntityField>(_tempFieldList);
+            _tableList = new System.Collections.ObjectModel.ReadOnlyCollection<EntityTable>(_tempTableList);
+            _attributeNameList = _tempAttributeName.ToArray();
         }
     }
 }

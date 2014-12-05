@@ -15,6 +15,7 @@ namespace XiaoYang.Entity {
         public string Name { get; set; }
         public string Resource { get; set; }
         public string Template { get; set; }
+        public DateTime UpdateTime { get; set; }
 
 		public static string R(string name) {
 		    return "XiaoYang_Entity_EntityFieldForm_" + name;
@@ -46,6 +47,7 @@ namespace XiaoYang.Entity {
 			if (cols["Name"] != null) { this.Name = Convert.ToString(inTempRow["Name"]); }
 			if (cols["Resource"] != null) { this.Resource = Convert.ToString(inTempRow["Resource"]); }
 			if (cols["Template"] != null) { this.Template = Convert.ToString(inTempRow["Template"]); }
+			if (cols["UpdateTime"] != null) { this.UpdateTime = Convert.ToDateTime(inTempRow["UpdateTime"]); }
 		}
 
 		public void FillRow(System.Data.DataRow inTempRow) {
@@ -53,6 +55,7 @@ namespace XiaoYang.Entity {
 			inTempRow["Name"] = this.Name;
 			inTempRow["Resource"] = this.Resource;
 			inTempRow["Template"] = this.Template;
+			inTempRow["UpdateTime"] = this.UpdateTime;
 		}
 
 		public Xy.Data.Procedure FillProcedure(Xy.Data.Procedure inItem) {
@@ -60,11 +63,12 @@ namespace XiaoYang.Entity {
 			inItem.SetItem("Name", this.Name);
 			inItem.SetItem("Resource", this.Resource);
 			inItem.SetItem("Template", this.Template);
+			inItem.SetItem("UpdateTime", this.UpdateTime);
 			return inItem;
 		}
 
 		public string[] GetAttributesName() {
-			return new string[]{ "ID", "Name", "Resource", "Template" };
+			return new string[]{ "ID", "Name", "Resource", "Template", "UpdateTime" };
 		}
 
 		public object GetAttributesValue(string inName) {
@@ -77,6 +81,8 @@ namespace XiaoYang.Entity {
 					return this.Resource;
 				case "Template":
 					return this.Template;
+				case "UpdateTime":
+					return this.UpdateTime;
 				default:
 					return null;
 			}
@@ -99,6 +105,7 @@ namespace XiaoYang.Entity {
 			_table.Columns.Add("Name", typeof(String));
 			_table.Columns.Add("Resource", typeof(String));
 			_table.Columns.Add("Template", typeof(String));
+			_table.Columns.Add("UpdateTime", typeof(DateTime));
 			return _table;
 		}
 
@@ -111,14 +118,16 @@ namespace XiaoYang.Entity {
 	@ID bigint,
 	@Name nvarchar(32),
 	@Resource text,
-	@Template text
+	@Template text,
+	@UpdateTime datetime
 
-	[ID] , [Name] , [Resource] , [Template]
-	@ID , @Name , @Resource , @Template
+	[ID] , [Name] , [Resource] , [Template] , [UpdateTime]
+	@ID , @Name , @Resource , @Template , @UpdateTime
 	[ID] = @ID,
 	[Name] = @Name,
 	[Resource] = @Resource,
-	[Template] = @Template
+	[Template] = @Template,
+	[UpdateTime] = @UpdateTime
 */
 #endregion
 
@@ -129,32 +138,37 @@ namespace XiaoYang.Entity {
             item.AddItem("Name", System.Data.DbType.System.Data.DbType.String);
             item.AddItem("Resource", System.Data.DbType.System.Data.DbType.String);
             item.AddItem("Template", System.Data.DbType.System.Data.DbType.String);
+            item.AddItem("UpdateTime", System.Data.DbType.System.Data.DbType.DateTime);
             AddProcedure(item);
 
-            long formID, string formName, string formResource, string formTemplate
-            formID, formName, formResource, formTemplate
+            long formID, string formName, string formResource, string formTemplate, DateTime formUpdateTime
+            formID, formName, formResource, formTemplate, formUpdateTime
             protected long formID;
             protected string formName;
             protected string formResource;
             protected string formTemplate;
+            protected DateTime formUpdateTime;
 
             formID = Convert.ToInt64(Request.Form["ID"]);
             formName = Request.Form["Name"];
             formResource = Request.Form["Resource"];
             formTemplate = Request.Form["Template"];
+            formUpdateTime = Convert.ToDateTime(Request.Form["UpdateTime"]);
 
-            long inID, string inName, string inResource, string inTemplate
-            inID, inName, inResource, inTemplate
+            long inID, string inName, string inResource, string inTemplate, DateTime inUpdateTime
+            inID, inName, inResource, inTemplate, inUpdateTime
             item.SetItem("ID", inID);
             item.SetItem("Name", inName);
             item.SetItem("Resource", inResource);
             item.SetItem("Template", inTemplate);
+            item.SetItem("UpdateTime", inUpdateTime);
 
-            ID, Name, Resource, Template
+            ID, Name, Resource, Template, UpdateTime
             ID = _item.ID;
             Name = _item.Name;
             Resource = _item.Resource;
             Template = _item.Template;
+            UpdateTime = _item.UpdateTime;
 
 */
 #endregion

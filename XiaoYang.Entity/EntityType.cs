@@ -10,6 +10,15 @@ namespace XiaoYang.Entity{
             _procedures[R("EditActive")].OnError += EditActive_onError;
 
             _procedures[R("EditAvailable")].BeforeInvoke += EditAvailable_BeforeInvoke;
+
+            _procedures[R("Del")].BeforeInvoke += Del_BeforeInvoke;
+        }
+
+        private static void Del_BeforeInvoke(Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
+            System.Data.DataTable _dt = EntityTable.GetListByTypeID(Convert.ToInt64(procedure.GetItem("ID")), DB);
+            for (int i = 0; i < _dt.Rows.Count; i++) {
+                EntityTable.Del(Convert.ToInt64(_dt.Rows[i]["ID"]), DB);
+            }
         }
 
         private static void EditAvailable_BeforeInvoke(Xy.Data.Procedure procedure, Xy.Data.DataBase DB) {
@@ -80,6 +89,7 @@ namespace XiaoYang.Entity{
                                 _hasForeign = true;
                                 if (_tempField.Null) _errors.Add(string.Format("table {0} field {1} can not set Null as it's a foreign key", _tempTable.Name, _tempField.Name));
                                 if (_tempField.Increase) _errors.Add(string.Format("table {0} field {1} can not set Increase as it's a foreign key", _tempTable.Name, _tempField.Name));
+                                if (_tempTable.Multiply && _tempField.Primary) _errors.Add(string.Format("table {0} field {1} can not set Primary as it's a foreign key in multiply table", _tempTable.Name, _tempField.Name));
                             }
                             if (!_tempField.Increase && !_tempField.Foreign) {
                                 _hasInput = true;
@@ -91,6 +101,7 @@ namespace XiaoYang.Entity{
                             if (!_hasForeign) _errors.Add(string.Format("table {0} did't have Foreign key as it's not Main table.", _tempTable.Name));
                         } else {
                             if (_hasForeign) _errors.Add(string.Format("table {0} cannot have Foreign key as it's Main table.", _tempTable.Name));
+                            if (_tempTable.Multiply) _errors.Add(string.Format("table {0} cannot set 'Multiply' atrribute as it's Main table.", _tempTable.Name));
                         }
                     }
                 }

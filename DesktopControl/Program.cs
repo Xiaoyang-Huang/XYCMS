@@ -63,14 +63,179 @@ namespace DesktopControl {
             //Xy.Data.IDataModelDisplay _display = (Xy.Data.IDataModelDisplay)_helper.GetList(string.Empty, 0, 10, "ID desc", ref rowCount);
             //Console.WriteLine(_display.GetXml().CreateNavigator().OuterXml);
 
-            XiaoYang.Entity.DefaultHandler _handle = new XiaoYang.Entity.DefaultHandler();
-            _handle.Init(8);
-            System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
-            _nvc.Add("IsActive", "False");
-            _nvc.Add("Title", "testTitle");
-            _nvc.Add("Content", "testContent");
-            _handle.Add(_nvc);
+            //XiaoYang.Entity.DefaultHandler _handle = new XiaoYang.Entity.DefaultHandler();
+            //_handle.Init(8);
+            //System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
+            //_nvc.Add("IsActive", "False");
+            //_nvc.Add("Title", "testTitle");
+            //_nvc.Add("Content", "testContent");
+            //_handle.Add(_nvc);
+
+//            System.Data.SqlClient.SqlConnection _con = new System.Data.SqlClient.SqlConnection(Xy.DataSetting.DataSettingCollection.GetDataBaseItem("Default").ConnectionString);
+//            System.Data.SqlClient.SqlCommand _cmd = new System.Data.SqlClient.SqlCommand(@"declare @PrimaryKey bigint 
+//set @PrimaryKey = 1
+//select * from [Entity_testKey] where [ID] = @PrimaryKey
+//select * from [Entity_Article] where [ID] = 20", _con);
+//            _con.Open();
+//            try {
+//                System.Data.SqlClient.SqlDataAdapter _sda = new System.Data.SqlClient.SqlDataAdapter(_cmd);
+//                System.Data.DataSet _ds = new System.Data.DataSet();
+//                _sda.Fill(_ds);
+//                Console.WriteLine("Table count:"+_ds.Tables.Count);
+//                for (int i = 0; i < _ds.Tables.Count; i++) {
+//                    System.Data.DataTable _dt = _ds.Tables[i];
+//                    //Console.WriteLine(Xy.Tools.Debug.Decompose.DecomposeObject(_dt));
+//                    Console.WriteLine("==============================");
+//                }
+//            } catch (Exception ex) {
+//                Console.WriteLine(ex.Message);
+//            } finally {
+//                _con.Close();
+//            }
+            //XiaoYang.Entity.DefaultHandler _dh = new XiaoYang.Entity.DefaultHandler();
+            //_dh.Init(8, new Xy.Data.DataBase());
+            //System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
+            //_nvc.Add("ID", "1");
+            //XiaoYang.Entity.Entity _entity = _dh.Get(_nvc);
+            //Console.WriteLine(_entity.GetAttributesValue("Content"));
+
+            Xy.Tools.Debug.TimeWatch _tw = new Xy.Tools.Debug.TimeWatch();
+            _tw.WatchEvent += _tw_WatchEvent1;
+            _tw.WatchEvent += _tw_WatchEvent2;
+            _tw.WatchEvent += _tw_WatchEvent3;
+            _tw.Watch(100000, 3, true);
+
+            //_tw_WatchEvent3();
         }
+
+        static void _tw_WatchEvent3() {
+            System.Xml.XPath.XPathNavigator _xml = new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xmlString)).CreateNavigator();
+            XiaoYang.Entity.Cache _cache = XiaoYang.Entity.CacheManager.Get(8);
+            StringBuilder _command = new StringBuilder();
+            int _fieldPoint = 0;
+            //_command.Append("DECLARE @PrimaryKey ").Append(_cache.PrimaryField.SqlDeclare).AppendLine(";");
+            for (int i = 0; i < _cache.TableList.Count; i++) {
+                XiaoYang.Entity.EntityTable _table = _cache.TableList[i];
+                System.Xml.XPath.XPathNodeIterator _tableIter = _xml.Select(_cache.Type.Key + "/" + _table.Key);
+                if (_tableIter.Count > 0) {
+                    int _tableFieldStart = _fieldPoint;
+                    while (_tableIter.MoveNext()) {
+                        //Console.WriteLine(_table.Key + ":");
+                        bool _edit = false;
+                        int _commandStart = _command.Length;
+                        _command.Append("Insert into [").Append(_table.Key).AppendLine("](").Append("\t");
+                        int _parameterOffset = _command.Length;
+                        _command.AppendLine().AppendLine(")VALUES(").Append("\t");
+                        int _valueOffset = _command.Length;
+                        _command.AppendLine().AppendLine(");");
+                        if (_table.Main) _command.AppendLine("set @PrimaryKey = SCOPE_IDENTITY();");
+                        int _commandLength = _command.Length;
+                        _fieldPoint = _tableFieldStart;
+                        for (int j = _fieldPoint; j < _cache.FieldList.Count; j = _fieldPoint) {
+                            XiaoYang.Entity.EntityField _field = _cache.FieldList[j];
+                            if (_field.Table != _table) break;
+                            if (_field.Increase) {
+                                _fieldPoint++; continue;
+                            }
+                            if (_field.Foreign) {
+                                _command.Insert(_parameterOffset, string.Format("{1}[{0}]", _field.Key, _edit ? "," : string.Empty));
+                                _parameterOffset += _command.Length - _commandLength; _valueOffset += _command.Length - _commandLength; _commandLength = _command.Length;
+                                _command.Insert(_valueOffset, string.Format("{0}@PrimaryKey", _edit ? "," : string.Empty));
+                                _valueOffset += _command.Length - _commandLength; _commandLength = _command.Length;
+                                _fieldPoint++; _edit = true; continue;
+                            }
+                            System.Xml.XPath.XPathNavigator _value = _tableIter.Current.SelectSingleNode(_field.Key);
+                            if (_value != null) {
+                                _command.Insert(_parameterOffset, string.Format("{1}[{0}]", _field.Key, _edit ? "," : string.Empty));
+                                _parameterOffset += _command.Length - _commandLength; _valueOffset += _command.Length - _commandLength; _commandLength = _command.Length;
+                                _command.Insert(_valueOffset, string.Format("{1}'{0}'", _value.Value, _edit ? "," : string.Empty));
+                                _valueOffset += _command.Length - _commandLength; _commandLength = _command.Length;
+                                _edit = true;
+                            }
+                            _fieldPoint++;
+                        }
+                    }
+                }
+            }
+            //Console.WriteLine(_command);
+            //Xy.Data.ProcedureParameter _primaryKey = new Xy.Data.ProcedureParameter("PrimaryKey", System.Data.DbType.Int64);
+            //_primaryKey.Value = 0;
+            //_primaryKey.Direction = System.Data.ParameterDirection.InputOutput;
+            //Xy.Data.Procedure _procedure = new Xy.Data.Procedure("AddNew", _command.ToString());
+            //_procedure.AddItem(_primaryKey);
+            //_procedure.InvokeProcedure();
+            //long id = Convert.ToInt64(_procedure.GetItem("PrimaryKey"));
+            //Console.WriteLine(id);
+        }
+
+        static void _tw_WatchEvent2() {
+            System.Xml.XPath.XPathNavigator _xml = new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xmlString)).CreateNavigator();
+            XiaoYang.Entity.Cache _cache = XiaoYang.Entity.CacheManager.Get(8);
+            int _fieldPoint = 0;
+            for (int i = 0; i < _cache.TableList.Count; i++) {
+                XiaoYang.Entity.EntityTable _table = _cache.TableList[i];
+                System.Xml.XPath.XPathNodeIterator _tableIter = _xml.Select(_cache.Type.Key + "/" + _table.Key);
+                if (_tableIter.Count > 0) {
+                    int _tableFieldStart = _fieldPoint;
+                    while (_tableIter.MoveNext()) {
+                        //Console.WriteLine(_table.Key + ":");
+                        _fieldPoint = _tableFieldStart;
+                        for (int j = _fieldPoint; j < _cache.FieldList.Count; j = _fieldPoint) {
+                            XiaoYang.Entity.EntityField _field = _cache.FieldList[j];
+                            if (_field.Table != _table) break;
+                            System.Xml.XPath.XPathNavigator _value = _tableIter.Current.SelectSingleNode(_field.Key);
+                            if (_value != null) {
+                                //Console.WriteLine("\t" + _field.Key + " | " + _value.Value);
+                            }
+                            _fieldPoint++;
+                        }
+                    }
+                }
+                
+            }
+        }
+
+        static void _tw_WatchEvent1() {
+            System.Xml.XPath.XPathNavigator _xml = new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xmlString)).CreateNavigator();
+            XiaoYang.Entity.Cache _cache = XiaoYang.Entity.CacheManager.Get(8);
+            //StringBuilder _command = new StringBuilder();
+            //_command.Append("DECLARE @PrimaryKey ").Append(_cache.PrimaryField.SqlDeclare).AppendLine(";");
+            for (int i = 0; i < _cache.TableList.Count; i++) {
+                XiaoYang.Entity.EntityTable _table = _cache.TableList[i];
+                System.Xml.XPath.XPathNodeIterator _tableIter = _xml.Select(_cache.Type.Key + "/" + _table.Key);
+                if (_tableIter.Count > 0) {
+                    while (_tableIter.MoveNext()) {
+                        //Console.WriteLine(_tableIter.Current.OuterXml);
+                        //Console.WriteLine(_tableIter.Current.Name + ":");
+                        System.Xml.XPath.XPathNodeIterator _fieldIter = _tableIter.Current.Select("*");
+                        if (_fieldIter.Count > 0) {
+                            while (_fieldIter.MoveNext()) {
+                                //Console.WriteLine(_fieldIter.Current.OuterXml);
+                                System.Xml.XPath.XPathNavigator _current = _fieldIter.Current;
+                                //Console.WriteLine("\t" + _current.Name + " | " + _current.Value);
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        static string _xmlString = @"
+<testKey>
+    <Entity_testKey>
+        <IsActive>True</IsActive>
+    </Entity_testKey>
+    <Entity_Article>
+        <Title>中文标题</Title>
+        <Content>中文内容</Content>
+    </Entity_Article>
+    <Entity_Article>
+        <Title>English Title</Title>
+        <Content>English Content</Content>
+    </Entity_Article>
+</testKey>
+";
 
         #region Multiple attribute test
 //        static void Main(string[] args) {
@@ -138,7 +303,7 @@ namespace DesktopControl {
         #endregion
 
         static void InitWebSite() {
-            Console.Write("you sure you want re-install all data in this website? [Y/N] ");
+            Console.Write("Make sure you want re-install all data in this website? [Y/N] ");
             string inputKey = Console.ReadLine();
             if (string.Compare(inputKey, "Y", true) == 0) {
                 Console.WriteLine("re-install now, please wait..." + Environment.NewLine);

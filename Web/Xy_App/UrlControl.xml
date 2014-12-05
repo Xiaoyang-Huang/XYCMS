@@ -21,7 +21,8 @@
     
     <Item File="Entity/type_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/entityType_list\.(aspx|html)$]]></Item>>
     <Item File="Entity/type_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/entityType_edit_(?<id>\d+)\.(aspx|html)$]]></Item>>
-    <Item File="Entity/entity_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityEdit" Mime="text/html" EnableScript="True"><![CDATA[^/entity_(?<type>[A-Za-z]*)_(?<id>\d+)\.(aspx|html)$]]></Item>
+    <Item File="Entity/entity_list.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityList" Mime="text/html" EnableScript="True"><![CDATA[^/entity_list_(?<typeID>\d+)\.(aspx|html)$]]></Item>
+    <Item File="Entity/entity_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityEdit" Mime="text/html" EnableScript="True"><![CDATA[^/entity_(?<type>[A-Za-z]*)_(?<typeID>\d+)(_(?<id>\d+))?\.(aspx|html)$]]></Item>
     <Item File="Entity/form_edit.html" Page="XiaoYang.Web,XiaoYang.Web.Admin.EntityFieldFormEdit" Mime="text/html" EnableScript="True"><![CDATA[^/entityForm_edit(_(?<id>\d+))?\.(aspx|html)$]]></Item>
     <Item File="Entity/form_list.html" Page="XiaoYang.Web,XiaoYang.Web.Global.UserPage" Mime="text/html" EnableScript="True"><![CDATA[^/entityForm_list\.(aspx|html)$]]></Item>
 

@@ -286,8 +286,13 @@ var XY = {
                                     fun.call(evt.target, data);
                                 }
                             }
-                            if (typeof  $o.attr('data-refresh') != 'undefined') {
+                            if (typeof $o.attr('data-refresh') != 'undefined') {
                                 var refreshSelect = $o.attr("data-refresh");
+                                if (typeof $o.attr('data-refresh-mode') != 'undefined' && $o.attr("data-refresh-mode") == 'self') {
+                                    $data = $(refreshSelect, data);
+                                    $(refreshSelect).html($data.html());
+                                    return;
+                                }
                                 partialRefresh(refreshSelect);
                             }
                         }
