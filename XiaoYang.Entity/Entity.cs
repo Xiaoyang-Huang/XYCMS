@@ -6,13 +6,19 @@ namespace XiaoYang.Entity {
     public class Entity: Xy.Data.IDataModelDisplay {
 
         private Cache _cache = null;
+        private string _xmlString = string.Empty;
         System.Xml.XPath.XPathDocument _xml = null;
         System.Xml.XPath.XPathNavigator _navgator = null;
 
         internal Entity(Cache inCache, string inContent) {
             _cache = inCache;
-            _xml = new System.Xml.XPath.XPathDocument(new System.IO.StringReader(inContent));
+            _xmlString = inContent;
+            _xml = new System.Xml.XPath.XPathDocument(new System.IO.StringReader(_xmlString));
             _navgator = _xml.CreateNavigator();
+        }
+
+        internal string XMLString {
+            get { return _xmlString; }
         }
 
         internal System.Xml.XPath.XPathDocument XML {

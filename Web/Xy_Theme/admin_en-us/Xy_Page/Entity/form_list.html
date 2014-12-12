@@ -22,12 +22,12 @@
 				    <!-- Table body -->
 				    <tbody>
 					    <!-- Table row -->
-                        <% @Data Provider="Procedure" Command="select [ID],[Name] from [EntityFieldForm]" EnableScript="True" XsltParameter="{ Ext='Config:ext' }" %>
+                        <% @Data Provider="Procedure" Command="select [ID],[Name] from [EntityFieldForm]" EnableScript="True" XsltParameter="{ Ext='Config:ext' BasePath='App:BasePath' }" %>
 					        <tr class="item{ID}">
 						        <td><xsl:value-of select="Name" /></td>
 						        <td>
                                     <a class="btn" href="/entityForm_edit_{ID}.{$Ext}">编辑</a>
-                                    <a class="btn ajaxlink" ajax-confirm="您确定要删除该模板?" ajax-data="{{ ID:{ID} }}" ajax-refresh=".templates" href="/entityAction_form_del.{$Ext}">删除</a>
+                                    <a class="btn ajaxlink" ajax-confirm="您确定要删除该模板?" ajax-data="{{ ID:{ID} }}" ajax-refresh=".templates" href="{$BasePath}/entityAction_form_del.{$Ext}">删除</a>
                                 </td>
 					        </tr>
                         <% @End %>

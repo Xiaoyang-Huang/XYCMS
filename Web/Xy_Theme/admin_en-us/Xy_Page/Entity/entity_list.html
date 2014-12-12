@@ -5,8 +5,9 @@
             <h3 class="heading">过滤条件</h3>
         </div>
         <div class="widget-body">
-            <form data-refresh-mode="self" data-refresh=".listwrap" method="post" action="<% @Tag Provider='Page' Name='Url' %>">
+            <form id="FilterForm" data-refresh-mode="self" data-refresh=".listwrap" method="post" action="<% @Tag Provider='Page' Name='Url' %>">
                 <input type="hidden" name="PageIndex" value="<% @Tag Provider="Form" Name="PageIndex" Default="0" %>" />
+                <input type="hidden" name="Where" value="1=1" />
                 <input type="hidden" name="Filter" value="" />
                 <div class="row-fluid">
                     <div class="span10">
@@ -31,39 +32,124 @@
             </form>
 		</div>
 	</div>
-    <div class="widget listwrap">
-        <div class="widget-head">
-            <h3 class="heading">当前的<% @Tag Provider="Data" Name="EntityType.Name" %>列表</h3>
-        </div>
-        <div class="widget-body">
-            <div class="entities">
-                <!-- Table -->
-                <table class="table table-bordered table-mid" >
-                    <thead>
-                        <tr class="tableName">
-                            <% @Data Provider="Data" Name="Attributes" Root="/" %>
-                                <xsl:for-each select="DataTable/DataItem[Column>0]">
-                                    <th colspan="{Column}">
-                                        <xsl:value-of select="TableName" />
-                                    </th>
-                                </xsl:for-each>
-                            <% @End %>
-                        </tr>
-                        <tr class="fieldName">
-                            <% @Data Provider="Data" Name="Attributes" %>
-                                <xsl:if test="IsShow = 'True'">
-                                    <th><xsl:value-of select="Name" /></th>
-                                </xsl:if>
-                            <% @End %>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+    <div class="listwrap">
+        <div class="widget" style="display:<% @Tag Provider='Data' Name='HasShow' %>">
+            <div class="widget-head">
+                <h3 class="heading">当前的<% @Tag Provider="Data" Name="EntityType.Name" %>列表</h3>
             </div>
-		</div>
-	</div>
+            <div class="widget-body">
+                <div class="entities">
+                    <!-- Table -->
+                    <table class="table table-bordered table-mid" >
+                        <thead>
+                            <tr class="tableName">
+                                <% @Data Provider="Data" Name="Attributes" Root="/" %>
+                                    <xsl:for-each select="DataTable/DataItem[Column>0]">
+                                        <th colspan="{Column}">
+                                            <xsl:value-of select="TableName" />
+                                        </th>
+                                    </xsl:for-each>
+                                <% @End %>
+                                <th style="width:130px" rowspan="2">Operation</th>
+                            </tr>
+                            <tr class="fieldName">
+                                <% @Data Provider="Data" Name="Attributes" %>
+                                    <xsl:if test="IsShow = 'True'">
+                                        <th><xsl:value-of select="Name" /></th>
+                                    </xsl:if>
+                                <% @End %>
+                            </tr>
+                        </thead>
+                        <% @Data Provider="Data" Name="Attributes" Root="/" EnableScript="True" XsltParameter="{ TypeKey='Data:EntityType.Key' TypeID='Data:EntityType.ID' Ext='Config:ext' PrimaryKey='Data:EntityPrimaryKey' MainTable='Data:EntityMainTableKey' BasePath='App:BasePath' }" %>
+                            <tbody>
+                                [% @Data Provider="Data" Name="EntityList" Root="<xsl:value-of select="$TypeKey" />Collection/<xsl:value-of select="$TypeKey" />" EnableScript="True" %]
+                                <tr>
+                                    <xsl:for-each select="DataTable/DataItem">
+                                        <xsl:if test="IsShow = 'True'">
+                                            <td>
+                                                <xyxsl:choose>
+                                                    <xyxsl:when test="count({TableKey}/{Key}) = 1">
+                                                        <xyxsl:value-of select="{TableKey}/{Key}" />
+                                                    </xyxsl:when>
+                                                    <xyxsl:otherwise>
+                                                        <xyxsl:for-each select="{TableKey}/{Key}">
+                                                            <p>
+                                                                <xyxsl:value-of select="text()" />
+                                                            </p>
+                                                        </xyxsl:for-each>
+                                                    </xyxsl:otherwise>
+                                                </xyxsl:choose>
+                                            </td>
+                                        </xsl:if>
+                                    </xsl:for-each>
+                                    <td>
+                                        <a target="_blank" href="{$BasePath}/entity_edit_{$TypeID}_{{{$MainTable}/{$PrimaryKey}}}.{$Ext}" class="btn">Edit</a>
+                                        <a class="btn ajaxlink" ajax-refresh=".listwrap" ajax-confirm="Verify delete this?" href="{$BasePath}/entity_del_{$TypeID}_{{{$MainTable}/{$PrimaryKey}}}.{$Ext}" >Delete</a>
+                                    </td>
+                                </tr>
+                                [% @End %]
+                            </tbody>
+                        <% @End %>
+                    </table>
+                </div>
+                <div class="row-fluid mt10">
+                  <div class="span6">
+                    <a class="btn btn-default btn-primary" href="entity_add_<% @Tag Provider='Data' Name='EntityType.ID' %>.<% @Tag Provider='Config' Name='ext' %>">Add New <% @Tag Provider="Data" Name="EntityType.Name" %></a>
+                  </div>
+                  <div class="pagination pagination-right margin-none span6">
+			        <ul>
+                        <% @Data Provider="Data" Name="EntityList" Root="/" XsltParameter="{ TypeKey='Data:EntityType.Key' TypeID='Data:EntityType.ID' Ext='Config:ext' PrimaryKey='Data:EntityPrimaryKey' MainTable='Data:EntityMainTableKey' BasePath='App:BasePath' }" %>
+                          <xsl:for-each select="//Pages" >
+                            <xsl:choose>
+                              <xsl:when test="@Current=1">
+                                <li class="disabled">
+                                  <a href="javascript:;">«</a>
+                                </li>
+                              </xsl:when>
+                              <xsl:otherwise>
+                                <li>
+                                  <a href="javascript:UpdateContent({@Current+(-2)});">«</a>
+                                </li>
+                              </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:for-each select="Page">
+                            <xsl:choose>
+                                <xsl:when test="@Index=//Pages/@Current">
+                                  <li class="active">
+                                    <a href="javascript:;">
+                                      <xsl:value-of select="@Index"/>
+                                    </a>
+                                  </li>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                  <li>
+                                    <a href="javascript:UpdateContent({@Index+(-1)});">
+                                      <xsl:value-of select="@Index"/>
+                                    </a>
+                                  </li>
+                                </xsl:otherwise>
+                              </xsl:choose>
+                            </xsl:for-each>
+                            <xsl:choose>
+                              <xsl:when test="@Current=@Max">
+                                <li class="disabled">
+                                  <a href="javascript:;">»</a>
+                                </li>
+                              </xsl:when>
+                              <xsl:otherwise>
+                                <li>
+                                  <a href="javascript:UpdateContent({@Current});">»</a>
+                                </li>
+                              </xsl:otherwise>
+                            </xsl:choose>
+                          </xsl:for-each>
+                        <% @End %>
+                    </ul>
+                  </div>
+                </div>
+		    </div>
+	    </div>
+    </div>
 </div>
 <% @Include File="foot.html" EnableScript="True" %>
 <script type="text/javascript">
@@ -76,5 +162,18 @@
             if ($o.hasClass('active')) _filter += $o.attr('value') + ',';
         })
         $('input[name=Filter]').val(_filter);
+    }
+    function UpdateContent(pageindex) {
+        if (typeof pageindex != 'undefined') $('input[name="PageIndex"]').val(pageindex);
+        $.ajax({
+            url: "<% @Tag Provider='Page' Name='Url' %>",
+            type: "POST",
+            data: $('form#FilterForm').serializeArray(),
+            success: function (data) {
+                $data = $('.listwrap', data);
+                $('.listwrap').html($data.html());
+            }
+        })
+        return false;
     }
 </script>

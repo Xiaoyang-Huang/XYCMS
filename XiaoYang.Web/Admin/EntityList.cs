@@ -7,6 +7,7 @@ namespace XiaoYang.Web.Admin {
     public class EntityList: Global.UserPage {
         public override void ValidateUrl() {
             base.ValidateUrl();
+            bool _hasShow = false;
             XiaoYang.Entity.Cache _cache = XiaoYang.Entity.CacheManager.Get(Convert.ToInt64(Request.GroupString["typeID"]));
             System.Data.DataTable _dt = new System.Data.DataTable();
             _dt.Columns.Add("ID", typeof(string));
@@ -29,6 +30,7 @@ namespace XiaoYang.Web.Admin {
                 _row["TableKey"] = _field.Table.Key;
                 if (!string.IsNullOrEmpty(Request.Form["Filter"])) {
                     _row["IsShow"] = Request.Form["Filter"].IndexOf(_field.Table.Key + "." + _field.Key + ",") > -1;
+                    _hasShow = true;
                 } else {
                     _row["IsShow"] = false;
                 }
@@ -58,6 +60,23 @@ namespace XiaoYang.Web.Admin {
                 if (i == _dt.Rows.Count - 1) _dt.Rows[_lastRow]["Column"] = _showRowCount;
             }
             PageData.Add("Attributes", _dt);
+            PageData.Add("HasShow", _hasShow ? "block" : "none");
+
+            XiaoYang.Entity.DefaultHandler _dh = new Entity.DefaultHandler();
+            _dh.Init(_cache.Type.ID, new Xy.Data.DataBase());
+            int _pageIndex = string.IsNullOrEmpty(Request.Form["PageIndex"]) ? 0 : Convert.ToInt32(Request.Form["PageIndex"]);
+            int _pageSize = string.IsNullOrEmpty(Request.Form["PageSize"]) ? 10 : Convert.ToInt32(Request.Form["PageSize"]);
+            int _total = -1;
+            System.Collections.Specialized.NameValueCollection _nvc = new System.Collections.Specialized.NameValueCollection();
+            _nvc.Add("PageIndex", _pageIndex.ToString());
+            _nvc.Add("PageSize", _pageSize.ToString());
+            _nvc.Add("Where", string.IsNullOrEmpty(Request.Form["Where"]) ? "1=1" : Request.Form["Where"]);
+            XiaoYang.Entity.EntityCollection _ec = _dh.GetList(_nvc, ref _total);
+            PageData.Add("EntityPrimaryKey", _cache.PrimaryField.Key);
+            PageData.Add("EntityMainTableKey", _cache.MainTable.Key);
+            PageData.AddSplitedXyDataModel("EntityType", _cache.Type);
+            PageData.Add("EntityList", _ec);
+            PageData["EntityList"].CreatePagination(_pageIndex, _pageSize, _total, 5);
         }
     }
 }

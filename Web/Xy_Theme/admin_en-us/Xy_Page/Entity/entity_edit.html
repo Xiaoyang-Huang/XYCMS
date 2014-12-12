@@ -13,17 +13,7 @@
                 <div class="tab-content">
                     <% @Data Provider="Procedure" Command="select [ID],[Key] from [EntityTable] where [TypeID] = @TypeID" Parameter="{ TypeID='Group:typeID|l' }" EnableScript="True" %>
                     <div id="{Key}" class="tab-pane widget-body-regular">
-                        [% @Data Provider="Procedure" Command="select * from [EntityField] where [TableID] = @TableID" Parameter="{ TableID='<xsl:value-of select="ID" />|l' }" EnableScript="True" %]
-                        <div class="row-fluid">
-                            <xyxsl:if test="Increase != 'True' and Foreign != 'True'">
-                                <label>
-                                    <xyxsl:value-of select="Name" />
-                                    <xyxsl:if test="string-length(Description) > 0">(<xyxsl:value-of select="Description" />)</xyxsl:if>
-                                </label>
-                                [% @EntityTemplate TemplateID="<xyxsl:value-of select="Template" />" FieldID="<xyxsl:value-of select="ID" />" %]
-                            </xyxsl:if>
-                        </div>
-                        [% @End %]
+                        [% @Include File="Entity/forms.html" Value="{ TableID='<xsl:value-of select='ID' />' }" EnableScript="True" Config="default" %]
                     </div>
                     <% @End %>
                 </div>

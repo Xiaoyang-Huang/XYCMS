@@ -130,7 +130,7 @@ namespace XiaoYang.Entity {
             int _pageIndex = Convert.ToInt32(inForm["PageIndex"]);
             int _pageSize = Convert.ToInt32(inForm["PageSize"]);
             string _where = inForm["Where"];
-            Xy.Data.Procedure item = new Xy.Data.Procedure("SplitPage");
+            Xy.Data.Procedure _procedure = new Xy.Data.Procedure("SplitPage");
             //@Select nvarchar(2048),
             //@TableName nvarchar(1024),
             //@Where nvarchar(2048),
@@ -139,18 +139,18 @@ namespace XiaoYang.Entity {
             //@PageSize int,
             //@TotalRowCount BIGINT=-1 output,
             //@OrderBy nvarchar(2048)
-            item.SetItem("Select", _cache.PrimaryField.Key);
-            item.SetItem("TableName", _cache.MainTable.Key);
-            item.SetItem("Where", _where);
-            item.SetItem("Order", _cache.PrimaryField.Key + " Desc");
-            item.SetItem("PageIndex", _pageIndex);
-            item.SetItem("PageSize", _pageSize);
-            item.SetItem("TotalCount", TotalCount);
-            item.SetItem("OrderBy", _cache.PrimaryField.Key + " Desc");
-            System.Data.DataTable _result = item.InvokeProcedureFill(_db);
-            TotalCount = Convert.ToInt32(item.GetItem("TotalCount"));
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("Select", System.Data.DbType.String, string.Empty, _cache.PrimaryField.Key));
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("TableName", System.Data.DbType.String, string.Empty, _cache.MainTable.Key));
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("Where", System.Data.DbType.String, string.Empty, _where));
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("Order", System.Data.DbType.String, string.Empty, _cache.PrimaryField.Key + " Desc"));
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("PageIndex", System.Data.DbType.Int32, string.Empty, _pageIndex));
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("PageSize", System.Data.DbType.Int32, string.Empty, _pageSize));
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("TotalRowCount", System.Data.DbType.Int64, string.Empty, TotalCount) { Direction = System.Data.ParameterDirection.Output });
+            _procedure.AddItem(new Xy.Data.ProcedureParameter("OrderBy", System.Data.DbType.String, string.Empty, _cache.PrimaryField.Key + " Desc"));
+            System.Data.DataTable _result = _procedure.InvokeProcedureFill(_db);
+            TotalCount = Convert.ToInt32(_procedure.GetItem("TotalRowCount"));
 
-            EntityCollection _ec = new EntityCollection();
+            EntityCollection _ec = new EntityCollection(_cache);
             for (int i = 0; i < _result.Rows.Count; i++) {
                 string _primaryID = _result.Rows[i][_cache.PrimaryField.Key].ToString();
                 Entity _tempEntity = Get(_primaryID);
